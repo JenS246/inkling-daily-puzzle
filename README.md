@@ -68,12 +68,11 @@ The four generated design studies used before implementation are preserved in `d
 
 ## Important URLs and services
 
-- Production site: added after GitHub Pages deployment
-- Source repository: added after public repository creation
+- Production site: https://jens246.github.io/inkling-daily-puzzle/
+- Source repository: https://github.com/JenS246/inkling-daily-puzzle
 - Hosting: GitHub Pages
 - Backend services: none
 
 ## License
 
 MIT
-
