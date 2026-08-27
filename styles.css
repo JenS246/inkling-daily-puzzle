@@ -259,8 +259,10 @@ main {
   grid-template-areas:
     "notice notice"
     "cloud found"
-    "form found";
+    "form found"
+    "complete complete";
   grid-template-columns: minmax(0, 1fr) clamp(150px, 13vw, 190px);
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
   column-gap: clamp(1rem, 2.5vw, 2.6rem);
   max-width: 1420px;
   min-height: calc(100dvh - 88px);
@@ -369,12 +371,26 @@ main {
 }
 
 .found-ledger h2 {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: .65rem;
   margin: 0 0 .85rem;
   font-family: var(--display);
   font-size: .82rem;
   font-weight: 900;
   letter-spacing: .14em;
   text-transform: uppercase;
+}
+
+.found-ledger h2 span {
+  color: var(--ink-soft);
+  font-family: var(--body);
+  font-size: .72rem;
+  font-weight: 750;
+  letter-spacing: .035em;
+  text-transform: none;
+  white-space: nowrap;
 }
 
 .found-ledger ol {
@@ -386,9 +402,9 @@ main {
 }
 
 .found-ledger li {
-  font-size: clamp(.86rem, 1vw, 1rem);
+  font-size: clamp(1.08rem, 1.35vw, 1.38rem);
   font-weight: 750;
-  line-height: 1.15;
+  line-height: 1.08;
 }
 
 .found-ledger li::before {
@@ -506,10 +522,27 @@ main {
 }
 
 .completion {
-  max-width: 720px;
-  margin: clamp(2rem, 6vw, 5rem) auto;
-  padding-top: 1.4rem;
+  grid-area: complete;
+  display: grid;
+  grid-template-areas:
+    "heading connection share"
+    "fallback fallback fallback";
+  grid-template-columns: minmax(190px, .7fr) minmax(280px, 1.3fr) auto;
+  gap: 1rem clamp(1.2rem, 4vw, 4rem);
+  width: min(1120px, 100%);
+  margin: 1rem auto 0;
+  padding-top: 1rem;
   border-top: 2px solid var(--ink);
+}
+
+.completion-heading {
+  grid-area: heading;
+}
+
+.completion > .ink-button {
+  grid-area: share;
+  align-self: end;
+  white-space: nowrap;
 }
 
 .completion-kicker {
@@ -534,7 +567,8 @@ main {
 }
 
 .connection-reveal {
-  margin-block: 1.4rem;
+  grid-area: connection;
+  margin: 0;
 }
 
 .connection-reveal h3 {
@@ -556,9 +590,22 @@ main {
 }
 
 .share-fallback {
+  grid-area: fallback;
   display: grid;
   gap: .45rem;
   margin-top: 1rem;
+}
+
+.gameplay-stage.is-complete {
+  min-height: calc(100dvh - 88px);
+}
+
+.gameplay-stage.is-complete .word-cloud {
+  min-height: clamp(260px, 42dvh, 440px);
+}
+
+.gameplay-stage.is-complete .phrase-form {
+  display: none;
 }
 
 .share-fallback textarea {
@@ -766,8 +813,10 @@ main {
       "notice"
       "cloud"
       "form"
-      "found";
+      "found"
+      "complete";
     grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto auto auto;
     min-height: calc(100dvh - 72px);
   }
 
@@ -821,6 +870,45 @@ main {
   .found-ledger ol {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: .45rem .8rem;
+  }
+
+  .found-ledger li {
+    font-size: clamp(1.15rem, 5vw, 1.32rem);
+  }
+
+  .completion {
+    grid-template-areas:
+      "heading share"
+      "connection connection"
+      "fallback fallback";
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: .75rem 1rem;
+    margin-top: .85rem;
+    padding-top: .8rem;
+  }
+
+  .completion h2 {
+    font-size: clamp(2.15rem, 9vw, 2.8rem);
+  }
+
+  .completion-kicker {
+    margin-bottom: .1rem;
+  }
+
+  .connection-reveal p:first-of-type {
+    font-size: clamp(1.25rem, 6vw, 1.65rem);
+  }
+
+  .connection-reveal p:last-child {
+    font-size: .86rem;
+  }
+
+  .gameplay-stage.is-complete .word-cloud {
+    min-height: clamp(230px, 37dvh, 330px);
+  }
+
+  .gameplay-stage.is-complete .found-ledger {
+    min-height: auto;
   }
 
   .archive-view,

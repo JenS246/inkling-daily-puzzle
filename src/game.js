@@ -4,10 +4,12 @@ import { completeDailyStats, getPuzzleProgress, loadState, saveState } from './s
 const ui = {
   issueLine: document.querySelector('#issue-line'),
   archiveNotice: document.querySelector('#archive-notice'),
+  gameplayStage: document.querySelector('.gameplay-stage'),
   wordCloud: document.querySelector('#word-cloud'),
   phraseForm: document.querySelector('#phrase-form'),
   phraseInput: document.querySelector('#phrase-input'),
   phraseLedger: document.querySelector('#phrase-ledger'),
+  remainingCount: document.querySelector('#remaining-count'),
   feedback: document.querySelector('#feedback'),
   submitButton: document.querySelector('#submit-button'),
   hintButton: document.querySelector('#hint-button'),
@@ -99,6 +101,8 @@ function renderCloud(newlyFoundWords = []) {
 
 function renderLedger(newlyFoundIndex = -1) {
   const solved = new Set(progress().solved);
+  const remaining = puzzle.phrases.length - solved.size;
+  ui.remainingCount.textContent = remaining ? `${remaining} remaining` : 'All found';
   ui.phraseLedger.replaceChildren();
   puzzle.phrases.forEach((phrase, index) => {
     if (!solved.has(index)) return;
@@ -200,6 +204,7 @@ function renderCompletion() {
 function renderPuzzleState(newlyFoundIndex = -1) {
   const result = progress();
   const foundWords = newlyFoundIndex >= 0 ? puzzle.phrases[newlyFoundIndex].words : [];
+  ui.gameplayStage.classList.toggle('is-complete', result.complete);
   ui.submitButton.disabled = result.complete;
   ui.phraseInput.disabled = result.complete;
   ui.hintButton.disabled = result.complete || result.hints >= 3;

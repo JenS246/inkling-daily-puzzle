@@ -51,25 +51,27 @@
           </form>
 
           <aside class="found-ledger" aria-labelledby="found-heading">
-            <h2 id="found-heading">Found</h2>
+            <h2 id="found-heading">Found <span id="remaining-count"></span></h2>
             <ol id="phrase-ledger"></ol>
           </aside>
-        </div>
 
-        <section id="completion" class="completion" hidden aria-labelledby="completion-title">
-          <p class="completion-kicker" id="completion-kicker"></p>
-          <h2 id="completion-title">Complete.</h2>
-          <div class="connection-reveal">
-            <h3>Connection</h3>
-            <p id="connection"></p>
-            <p id="connection-note"></p>
-          </div>
-          <button id="share-button" class="ink-button" type="button">Share result</button>
-          <div id="share-fallback" class="share-fallback" hidden>
-            <label for="share-text">Copy your spoiler-free result</label>
-            <textarea id="share-text" rows="7" readonly></textarea>
-          </div>
-        </section>
+          <section id="completion" class="completion" hidden aria-labelledby="completion-title">
+            <div class="completion-heading">
+              <p class="completion-kicker" id="completion-kicker"></p>
+              <h2 id="completion-title">Complete.</h2>
+            </div>
+            <div class="connection-reveal">
+              <h3>Connection</h3>
+              <p id="connection"></p>
+              <p id="connection-note"></p>
+            </div>
+            <button id="share-button" class="ink-button" type="button">Share result</button>
+            <div id="share-fallback" class="share-fallback" hidden>
+              <label for="share-text">Copy your spoiler-free result</label>
+              <textarea id="share-text" rows="7" readonly></textarea>
+            </div>
+          </section>
+        </div>
       </section>
 
       <section id="archive-view" class="view archive-view" data-view="archive" hidden aria-labelledby="archive-heading">
