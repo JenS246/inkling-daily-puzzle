@@ -176,13 +176,18 @@ function submitAttempt(event) {
 function useHint() {
   const unsolvedIndex = puzzle.phrases.findIndex((_, index) => !progress().solved.includes(index));
   if (unsolvedIndex < 0) return;
-  const level = Math.min(progress().hints + 1, 3);
+  const currentLevel = progress().hints;
+  const level = Math.min(currentLevel + 1, 3);
   const target = puzzle.phrases[unsolvedIndex];
-  writeProgress({ ...progress(), hints: level });
-  state.stats.hintsUsed += 1;
-  saveState(state);
+  if (level > currentLevel) {
+    writeProgress({ ...progress(), hints: level });
+    state.stats.hintsUsed += 1;
+    saveState(state);
+  }
 
-  if (level === 1) ui.feedback.textContent = `A ${target.type}.`;
+  if (level === 1) {
+    ui.feedback.textContent = `Type: ${target.type}.`;
+  }
   if (level === 2) ui.feedback.textContent = `Starts with ${target.words[0].toLocaleUpperCase('en-US')}.`;
   if (level === 3) {
     activeHintWords = new Set(target.words);
@@ -207,8 +212,12 @@ function renderPuzzleState(newlyFoundIndex = -1) {
   ui.gameplayStage.classList.toggle('is-complete', result.complete);
   ui.submitButton.disabled = result.complete;
   ui.phraseInput.disabled = result.complete;
-  ui.hintButton.disabled = result.complete || result.hints >= 3;
-  ui.hintButton.textContent = result.hints >= 3 ? 'Hints used' : 'Hint';
+  ui.hintButton.disabled = result.complete;
+  ui.hintButton.textContent = result.complete
+    ? 'Puzzle complete'
+    : result.hints >= 3
+      ? 'Show final hint'
+      : `Use hint ${result.hints + 1} of 3`;
   renderCloud(foundWords);
   renderLedger(newlyFoundIndex);
   renderCompletion();

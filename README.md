@@ -11,6 +11,7 @@ The interface is intentionally closer to an inked typographic painting than a st
 - Unique cloud words, word frequencies, and shared-word relationships are derived automatically.
 - `src/game.js` renders the words in deterministic order. CSS packs them into a dense, responsive composition without using phrase membership.
 - Players type a complete phrase and press Enter or select Try it. Solved phrases join the Found list, which also shows how many remain; their cloud words receive an ink-settle animation.
+- Every puzzle offers three progressively stronger hints. The final outlined-word hint can be viewed again.
 - Progress, streaks, appearance, statistics, hints, and archive results live in browser `localStorage` only.
 - Archive completions do not affect the daily streak.
 - The app has no backend, account system, analytics, cookies, or external runtime dependencies.

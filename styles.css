@@ -167,11 +167,13 @@ summary:focus-visible {
 }
 
 .utility-menu summary {
+  position: relative;
   display: grid;
-  min-width: 50px;
+  min-width: 72px;
   min-height: 44px;
   place-items: center end;
-  font-size: .78rem;
+  padding-right: 1.8rem;
+  font-size: .86rem;
   font-weight: 800;
   letter-spacing: .08em;
   list-style: none;
@@ -183,26 +185,39 @@ summary:focus-visible {
   display: none;
 }
 
+.utility-menu summary::before,
 .utility-menu summary::after {
+  position: absolute;
+  top: 50%;
+  right: 0;
   width: 1.2rem;
-  margin-left: .55rem;
   border-top: 2px solid currentColor;
-  border-bottom: 2px solid currentColor;
   content: "";
-  height: .42rem;
+  transform-origin: center;
+}
+
+.utility-menu summary::before {
+  transform: translateY(-.24rem);
+}
+
+.utility-menu summary::after {
+  transform: translateY(.24rem);
+}
+
+.utility-menu[open] summary::before {
+  transform: rotate(45deg);
 }
 
 .utility-menu[open] summary::after {
-  border-bottom: 0;
-  transform: translateY(.18rem) rotate(-45deg);
+  transform: rotate(-45deg);
 }
 
 .utility-panel {
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
-  width: min(260px, calc(100vw - 1.5rem));
-  padding: .55rem .75rem .8rem;
+  width: min(292px, calc(100vw - 1.5rem));
+  padding: .65rem .85rem .9rem;
   border: 1px solid var(--ink);
   background: var(--paper);
 }
@@ -227,6 +242,7 @@ summary:focus-visible {
   border: 0;
   background: transparent;
   color: var(--ink);
+  font-size: 1.05rem;
   font-weight: 750;
   text-align: left;
   text-decoration: none;
@@ -525,10 +541,11 @@ main {
   grid-area: complete;
   display: grid;
   grid-template-areas:
-    "heading connection share"
-    "fallback fallback fallback";
-  grid-template-columns: minmax(190px, .7fr) minmax(280px, 1.3fr) auto;
-  gap: 1rem clamp(1.2rem, 4vw, 4rem);
+    "heading connection"
+    "share connection"
+    "fallback fallback";
+  grid-template-columns: minmax(220px, .65fr) minmax(0, 1.35fr);
+  gap: .75rem clamp(2rem, 6vw, 6rem);
   width: min(1120px, 100%);
   margin: 1rem auto 0;
   padding-top: 1rem;
@@ -541,7 +558,8 @@ main {
 
 .completion > .ink-button {
   grid-area: share;
-  align-self: end;
+  align-self: start;
+  justify-self: start;
   white-space: nowrap;
 }
 
@@ -564,6 +582,10 @@ main {
   letter-spacing: -.04em;
   line-height: .88;
   text-transform: uppercase;
+}
+
+.completion h2 {
+  font-size: clamp(2.8rem, 5.2vw, 4.6rem);
 }
 
 .connection-reveal {
@@ -713,10 +735,34 @@ main {
 
 .how-rules ol {
   display: grid;
-  gap: .8rem;
+  gap: 1rem;
   margin: 1.6rem 0;
   padding-left: 1.25rem;
+  font-size: clamp(1.18rem, 2vw, 1.48rem);
+  font-weight: 700;
   line-height: 1.35;
+}
+
+.how-rules li {
+  padding-left: .35rem;
+}
+
+.how-rules li::marker {
+  color: var(--accent);
+  font-family: var(--display);
+  font-weight: 900;
+}
+
+.hint-explainer {
+  max-width: 38ch;
+  margin: 0 0 1.6rem;
+  color: var(--ink-soft);
+  font-size: 1.05rem;
+  line-height: 1.45;
+}
+
+.hint-explainer strong {
+  color: var(--ink);
 }
 
 .type-example {
@@ -798,11 +844,13 @@ main {
 
   .utility-menu summary {
     min-width: 44px;
+    padding-right: 0;
     overflow: hidden;
     color: transparent;
     font-size: 0;
   }
 
+  .utility-menu summary::before,
   .utility-menu summary::after {
     margin: 0;
     color: var(--ink);
@@ -878,17 +926,18 @@ main {
 
   .completion {
     grid-template-areas:
-      "heading share"
-      "connection connection"
-      "fallback fallback";
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: .75rem 1rem;
+      "heading"
+      "connection"
+      "share"
+      "fallback";
+    grid-template-columns: minmax(0, 1fr);
+    gap: .65rem;
     margin-top: .85rem;
     padding-top: .8rem;
   }
 
   .completion h2 {
-    font-size: clamp(2.15rem, 9vw, 2.8rem);
+    font-size: clamp(2.25rem, 10vw, 3rem);
   }
 
   .completion-kicker {
@@ -904,7 +953,7 @@ main {
   }
 
   .gameplay-stage.is-complete .word-cloud {
-    min-height: clamp(230px, 37dvh, 330px);
+    min-height: clamp(190px, 30dvh, 265px);
   }
 
   .gameplay-stage.is-complete .found-ledger {
@@ -947,6 +996,78 @@ main {
 
   .phrase-form button {
     padding-inline: .75rem;
+  }
+}
+
+@media (max-width: 380px) and (max-height: 620px) {
+  .gameplay-stage.is-complete .word-cloud {
+    min-height: 145px;
+  }
+
+  .gameplay-stage.is-complete .cloud-word {
+    font-size: clamp(1.7rem, 8.8vw, 2.35rem);
+  }
+
+  .gameplay-stage.is-complete .cloud-word[data-frequency="2"] {
+    font-size: clamp(2.7rem, 13.5vw, 3.5rem);
+  }
+
+  .gameplay-stage.is-complete .cloud-word[data-frequency="3"] {
+    font-size: clamp(3.4rem, 17vw, 4.5rem);
+  }
+
+  .gameplay-stage.is-complete .cloud-word[data-frequency="4"] {
+    font-size: clamp(4.2rem, 22vw, 5.8rem);
+  }
+
+  .gameplay-stage.is-complete .found-ledger {
+    margin-top: .55rem;
+    padding-top: .55rem;
+  }
+
+  .gameplay-stage.is-complete .found-ledger h2 {
+    margin-bottom: .35rem;
+  }
+
+  .gameplay-stage.is-complete .found-ledger ol {
+    gap: .28rem .65rem;
+  }
+
+  .gameplay-stage.is-complete .found-ledger li {
+    font-size: 1rem;
+  }
+
+  .completion {
+    grid-template-areas:
+      "heading share"
+      "connection connection"
+      "fallback fallback";
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: .4rem .75rem;
+    margin-top: .55rem;
+    padding-top: .55rem;
+  }
+
+  .completion h2 {
+    font-size: 2rem;
+  }
+
+  .completion > .ink-button {
+    align-self: center;
+    min-height: 44px;
+    padding: .45rem .65rem;
+    font-size: .78rem;
+  }
+
+  .connection-reveal p:first-of-type {
+    margin-top: .18rem;
+    font-size: 1.15rem;
+  }
+
+  .connection-reveal p:last-child {
+    margin-top: .22rem;
+    font-size: .78rem;
+    line-height: 1.25;
   }
 }
 
