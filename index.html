@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#eeefe9" />
+    <meta name="description" content="INKLING is a daily hidden-phrase puzzle where every word matters." />
+    <meta property="og:title" content="INKLING - Daily hidden phrases" />
+    <meta property="og:description" content="Every word belongs somewhere. Bigger words appear more often." />
+    <meta property="og:type" content="website" />
+    <title>INKLING - Daily hidden phrases</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✣</text></svg>" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to puzzle</a>
+    <div class="paper-noise" aria-hidden="true"></div>
+    <header class="masthead">
+      <a class="wordmark" href="#today" aria-label="INKLING, today's puzzle">INKLING</a>
+      <p class="issue-line" id="issue-line"></p>
+      <nav class="primary-nav" aria-label="Primary navigation">
+        <a href="#today" data-route="today">Today</a>
+        <a href="#archive" data-route="archive">Archive</a>
+        <a href="#statistics" data-route="statistics">Statistics</a>
+        <a href="#how-to-play" data-route="how-to-play">How to play</a>
+      </nav>
+      <div class="appearance-tools" aria-label="Appearance">
+        <button class="text-button" id="contrast-toggle" type="button" aria-pressed="false">High contrast</button>
+        <button class="text-button" id="theme-toggle" type="button" aria-pressed="false">Dark ink</button>
+      </div>
+    </header>
+
+    <main id="main" tabindex="-1">
+      <section id="today-view" class="view" data-view="today" aria-labelledby="puzzle-heading">
+        <div class="puzzle-layout">
+          <div class="cloud-column">
+            <div class="puzzle-intro">
+              <p id="archive-notice" class="archive-notice" hidden>Archive puzzle. This will not affect your streak.</p>
+              <h1 id="puzzle-heading">Find <span id="phrase-count">4</span> hidden phrases.</h1>
+              <p>Bigger words appear more often.</p>
+            </div>
+            <div id="word-cloud" class="word-cloud" aria-label="Puzzle words" aria-describedby="cloud-description"></div>
+            <p id="cloud-description" class="sr-only">Choose words to build a phrase. Word size indicates how many hidden phrases contain that word. Color has no meaning.</p>
+          </div>
+
+          <aside class="phrase-desk" aria-label="Phrase desk">
+            <div id="phrase-ledger" class="phrase-ledger"></div>
+            <div class="composer" aria-labelledby="attempt-label">
+              <div class="composer-heading">
+                <h2 id="attempt-label">Your phrase</h2>
+                <span id="mistake-count">0 misses</span>
+              </div>
+              <div id="current-attempt" class="current-attempt" aria-live="polite"></div>
+              <div class="composer-actions">
+                <button id="undo-button" type="button">Undo</button>
+                <button id="clear-button" type="button">Clear</button>
+              </div>
+              <button id="submit-button" class="submit-button" type="button">Submit phrase</button>
+              <p id="feedback" class="feedback" aria-live="polite"></p>
+              <button id="hint-button" class="hint-button" type="button">Take a hint</button>
+              <p class="shortcut-note">Keyboard: Tab selects a word, Ctrl+Z undoes, Escape clears.</p>
+            </div>
+          </aside>
+        </div>
+
+        <section id="completion" class="completion" hidden aria-labelledby="completion-title">
+          <p class="completion-kicker" id="completion-kicker"></p>
+          <h2 id="completion-title">The whole cloud, read.</h2>
+          <div class="completion-summary" id="completion-summary"></div>
+          <div class="connection-reveal">
+            <h3>Today's connection</h3>
+            <p id="connection"></p>
+            <p id="connection-note"></p>
+          </div>
+          <button id="share-button" class="ink-button" type="button">Share result</button>
+          <div id="share-fallback" class="share-fallback" hidden>
+            <label for="share-text">Copy your spoiler-free result</label>
+            <textarea id="share-text" rows="7" readonly></textarea>
+          </div>
+        </section>
+      </section>
+
+      <section id="archive-view" class="view archive-view" data-view="archive" hidden aria-labelledby="archive-heading">
+        <div class="archive-lead">
+          <h1 id="archive-heading">Past inklings</h1>
+          <p>Archive puzzles do not affect your streak.</p>
+          <a href="#today" class="underlined-link">Play today's puzzle</a>
+        </div>
+        <div id="archive-list" class="archive-list"></div>
+      </section>
+
+      <section id="statistics-view" class="view statistics-view" data-view="statistics" hidden aria-labelledby="statistics-heading">
+        <div class="stats-heading">
+          <h1 id="statistics-heading">Your pencil marks</h1>
+          <p>Kept only in this browser.</p>
+        </div>
+        <dl id="statistics-list" class="statistics-list"></dl>
+      </section>
+
+      <section id="how-to-play-view" class="view how-view" data-view="how-to-play" hidden aria-labelledby="how-heading">
+        <div class="how-rules">
+          <h1 id="how-heading">How to play</h1>
+          <ol>
+            <li>Every word belongs somewhere.</li>
+            <li>Bigger words appear in more phrases.</li>
+            <li>Tap words to build an answer.</li>
+          </ol>
+          <a href="#today" class="underlined-link">Back to today's puzzle</a>
+        </div>
+        <div class="type-example" aria-label="Example showing that coffee appears in four phrases">
+          <p><strong>COFFEE</strong> BREAK</p>
+          <p><strong>COFFEE</strong> SHOP</p>
+          <p>ICED <strong>COFFEE</strong></p>
+          <p>BLACK <strong>COFFEE</strong></p>
+          <small>COFFEE is larger because it appears in every phrase.</small>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>Every word matters.</span>
+      <span>No account. No tracking. Just today's phrases.</span>
+    </footer>
+
+    <dialog id="welcome-dialog" class="welcome-dialog" aria-labelledby="welcome-title">
+      <form method="dialog">
+        <button class="dialog-close" aria-label="Close instructions">Close</button>
+        <h2 id="welcome-title">Find today's hidden phrases.</h2>
+        <p>Every word belongs somewhere.<br />Bigger words appear more often.<br />Tap words to build a phrase.</p>
+        <button class="ink-button" value="close">Read the cloud</button>
+      </form>
+    </dialog>
+
+    <script type="module" src="src/game.js"></script>
+  </body>
+</html>
+
