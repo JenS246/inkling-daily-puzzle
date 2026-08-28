@@ -10,8 +10,12 @@ The interface is intentionally closer to an inked typographic painting than a st
 - `src/puzzles.js` stores puzzle content separately from the application.
 - Unique cloud words, word frequencies, and shared-word relationships are derived automatically.
 - `src/game.js` renders the words in deterministic order. CSS packs them into a dense, responsive composition without using phrase membership.
-- Players type a complete phrase and press Enter or select Try it. Solved phrases join the Found list, which also shows how many remain; their cloud words receive an ink-settle animation.
-- Every puzzle offers three progressively stronger hints. The final outlined-word hint can be viewed again.
+- Players type a complete phrase and press Enter or select Try it. Solved phrases join the lunar Found ledger, which also shows how many remain; their cloud words receive an ink-settle animation.
+- A word fades only when every phrase that uses it has been found.
+- Every puzzle offers three progressively stronger hints from the top bar. The revealed hint stays clearly visible above the answer field.
+- First-time players see a one-time editorial How to Play sheet. The permanent `?` control opens the expanded instructions and illustrated coffee example.
+- Completed puzzles produce a spoiler-free Inkprint made from moon phases, splatters, and the day's ink palette.
+- The archive is a bounded calendar. Future dates cannot be opened, while moon states distinguish solved, in-progress, and unplayed puzzles.
 - Progress, streaks, appearance, statistics, hints, and archive results live in browser `localStorage` only.
 - Archive completions do not affect the daily streak.
 - The app has no backend, account system, analytics, cookies, or external runtime dependencies.

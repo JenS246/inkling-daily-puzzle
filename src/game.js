@@ -10,21 +10,33 @@ const ui = {
   phraseInput: document.querySelector('#phrase-input'),
   phraseLedger: document.querySelector('#phrase-ledger'),
   remainingCount: document.querySelector('#remaining-count'),
+  remainingLabel: document.querySelector('#remaining-label'),
+  phaseTrack: document.querySelector('#phase-track'),
   feedback: document.querySelector('#feedback'),
   submitButton: document.querySelector('#submit-button'),
   hintButton: document.querySelector('#hint-button'),
+  hintButtonLabel: document.querySelector('#hint-button-label'),
+  hintReveal: document.querySelector('#hint-reveal'),
   completion: document.querySelector('#completion'),
   completionKicker: document.querySelector('#completion-kicker'),
   connection: document.querySelector('#connection'),
   connectionNote: document.querySelector('#connection-note'),
+  inkprintPhases: document.querySelector('#inkprint-phases'),
+  inkprintSplatters: document.querySelector('#inkprint-splatters'),
+  todayInkDots: document.querySelectorAll('.today-ink i'),
   shareButton: document.querySelector('#share-button'),
   shareFallback: document.querySelector('#share-fallback'),
   shareText: document.querySelector('#share-text'),
   archiveList: document.querySelector('#archive-list'),
+  calendarMonth: document.querySelector('#calendar-month'),
+  calendarPrevious: document.querySelector('#calendar-previous'),
+  calendarNext: document.querySelector('#calendar-next'),
   statisticsList: document.querySelector('#statistics-list'),
   themeToggle: document.querySelector('#theme-toggle'),
   contrastToggle: document.querySelector('#contrast-toggle'),
-  utilityMenu: document.querySelector('#utility-menu')
+  utilityMenu: document.querySelector('#utility-menu'),
+  welcomeDialog: document.querySelector('#welcome-dialog'),
+  welcomeClose: document.querySelector('#welcome-close')
 };
 
 let state = loadState();
@@ -32,6 +44,7 @@ const dailyPuzzle = getDailyPuzzle();
 let puzzle = derivePuzzle(dailyPuzzle);
 let activeHintWords = new Set();
 let formTimer = 0;
+let archiveMonthKey = dailyPuzzle.date.slice(0, 7);
 
 function hashString(value) {
   let hash = 2166136261;
@@ -92,7 +105,8 @@ function renderCloud(newlyFoundWords = []) {
     word.style.setProperty('--word-color', colorForWord(entry.word));
     word.setAttribute('role', 'listitem');
     word.setAttribute('aria-label', `${entry.word}, appears in ${entry.frequency} ${entry.frequency === 1 ? 'phrase' : 'phrases'}`);
-    word.classList.toggle('is-used', marks > 0);
+    word.classList.toggle('is-used', marks >= entry.frequency);
+    word.classList.toggle('is-partly-used', marks > 0 && marks < entry.frequency);
     word.classList.toggle('is-hinted', activeHintWords.has(entry.word));
     word.classList.toggle('just-found', foundSet.has(entry.word));
     ui.wordCloud.append(word);
@@ -102,7 +116,17 @@ function renderCloud(newlyFoundWords = []) {
 function renderLedger(newlyFoundIndex = -1) {
   const solved = new Set(progress().solved);
   const remaining = puzzle.phrases.length - solved.size;
-  ui.remainingCount.textContent = remaining ? `${remaining} remaining` : 'All found';
+  ui.remainingCount.textContent = String(remaining);
+  ui.remainingLabel.textContent = 'remaining';
+  ui.phaseTrack.replaceChildren();
+  puzzle.phrases.forEach((_, index) => {
+    const phase = document.createElement('span');
+    phase.className = 'phase-mark';
+    phase.classList.toggle('is-solved', solved.has(index));
+    phase.setAttribute('aria-label', solved.has(index) ? `Phrase ${index + 1} found` : `Phrase ${index + 1} not found`);
+    ui.phaseTrack.append(phase);
+  });
+  ui.phaseTrack.setAttribute('aria-label', `${solved.size} of ${puzzle.phrases.length} phrases found`);
   ui.phraseLedger.replaceChildren();
   puzzle.phrases.forEach((phrase, index) => {
     if (!solved.has(index)) return;
@@ -111,6 +135,22 @@ function renderLedger(newlyFoundIndex = -1) {
     item.classList.toggle('just-found', index === newlyFoundIndex);
     ui.phraseLedger.append(item);
   });
+}
+
+function hintMessage(result = progress()) {
+  const unsolvedIndex = puzzle.phrases.findIndex((_, index) => !result.solved.includes(index));
+  if (!result.hints || unsolvedIndex < 0) return '';
+  const target = puzzle.phrases[unsolvedIndex];
+  if (result.hints === 1) return `Phrase type: ${target.type}`;
+  if (result.hints === 2) return `First word: ${target.words[0].toLocaleUpperCase('en-US')}`;
+  return 'Look for the outlined words in the cloud.';
+}
+
+function renderHintReveal() {
+  const message = hintMessage();
+  ui.hintReveal.hidden = !message;
+  ui.hintReveal.textContent = message;
+  if (message) ui.hintReveal.dataset.level = String(progress().hints);
 }
 
 function signalForm(className) {
@@ -152,12 +192,12 @@ function submitAttempt(event) {
       completedAt: complete ? new Date().toISOString() : null
     });
     state.stats.phrasesFound += 1;
-    if (complete && puzzle.date === utcDateKey()) {
+    if (complete && puzzle.date === dailyPuzzle.date) {
       state.stats = completeDailyStats(state.stats, puzzle.date);
     }
     saveState(state);
     activeHintWords.clear();
-    ui.feedback.textContent = complete ? 'Complete.' : 'Found.';
+    ui.feedback.textContent = complete ? 'Inkprint complete.' : 'Phase found.';
     ui.phraseInput.value = '';
     signalForm('is-correct');
     renderPuzzleState(match);
@@ -168,7 +208,7 @@ function submitAttempt(event) {
   writeProgress({ ...progress(), incorrect: progress().incorrect + 1 });
   state.stats.totalIncorrect += 1;
   saveState(state);
-  ui.feedback.textContent = 'Try again.';
+  ui.feedback.textContent = 'Splatter. Try again.';
   signalForm('is-wrong');
   ui.phraseInput.select();
 }
@@ -185,16 +225,15 @@ function useHint() {
     saveState(state);
   }
 
-  if (level === 1) {
-    ui.feedback.textContent = `Type: ${target.type}.`;
-  }
-  if (level === 2) ui.feedback.textContent = `Starts with ${target.words[0].toLocaleUpperCase('en-US')}.`;
   if (level === 3) {
     activeHintWords = new Set(target.words);
-    ui.feedback.textContent = 'The outlined words belong together.';
   }
+  ui.feedback.textContent = '';
   renderPuzzleState();
-  ui.utilityMenu.open = false;
+  ui.hintReveal.animate?.(
+    [{ transform: 'translateY(-5px)', opacity: .2 }, { transform: 'translateY(0)', opacity: 1 }],
+    { duration: 280, easing: 'ease-out' }
+  );
 }
 
 function renderCompletion() {
@@ -204,22 +243,35 @@ function renderCompletion() {
   ui.completionKicker.textContent = `INKLING #${puzzle.id}`;
   ui.connection.textContent = puzzle.connection;
   ui.connectionNote.textContent = puzzle.connectionNote;
+  const phases = ['🌒', '🌓', '🌔', '🌕'];
+  ui.inkprintPhases.textContent = puzzle.phrases.map((_, index) => phases[index % phases.length]).join(' ');
+  ui.inkprintSplatters.textContent = result.incorrect
+    ? `${'✣'.repeat(Math.min(result.incorrect, 8))}${result.incorrect > 8 ? ` +${result.incorrect - 8}` : ''} ${result.incorrect === 1 ? 'splatter' : 'splatters'}`
+    : 'No splatters';
+  const palette = PALETTES[puzzle.palette] || PALETTES.bottle;
+  ui.todayInkDots.forEach((dot, index) => dot.style.background = palette[index % palette.length]);
 }
 
 function renderPuzzleState(newlyFoundIndex = -1) {
   const result = progress();
   const foundWords = newlyFoundIndex >= 0 ? puzzle.phrases[newlyFoundIndex].words : [];
+  if (result.hints >= 3 && !result.complete) {
+    const unsolved = puzzle.phrases.find((_, index) => !result.solved.includes(index));
+    activeHintWords = new Set(unsolved?.words || []);
+  }
+  if (result.complete) activeHintWords.clear();
   ui.gameplayStage.classList.toggle('is-complete', result.complete);
   ui.submitButton.disabled = result.complete;
   ui.phraseInput.disabled = result.complete;
   ui.hintButton.disabled = result.complete;
-  ui.hintButton.textContent = result.complete
-    ? 'Puzzle complete'
+  ui.hintButtonLabel.textContent = result.complete
+    ? 'Complete'
     : result.hints >= 3
-      ? 'Show final hint'
-      : `Use hint ${result.hints + 1} of 3`;
+      ? 'Review hint 3/3'
+      : `Hint ${result.hints + 1}/3`;
   renderCloud(foundWords);
   renderLedger(newlyFoundIndex);
+  renderHintReveal();
   renderCompletion();
 }
 
@@ -232,7 +284,7 @@ function loadPuzzle(nextPuzzle) {
     if (unsolved) activeHintWords = new Set(unsolved.words);
   }
   ui.issueLine.textContent = formatDate(puzzle.date).toLocaleUpperCase('en-US');
-  ui.archiveNotice.hidden = puzzle.date === utcDateKey();
+  ui.archiveNotice.hidden = puzzle.date === dailyPuzzle.date;
   ui.feedback.textContent = '';
   ui.phraseInput.value = '';
   ui.shareFallback.hidden = true;
@@ -247,39 +299,58 @@ function archiveStatus(dateKey) {
 }
 
 function renderArchive() {
-  const groups = Map.groupBy
-    ? Map.groupBy(puzzles, (entry) => entry.date.slice(0, 7))
-    : puzzles.reduce((map, entry) => {
-        const key = entry.date.slice(0, 7);
-        if (!map.has(key)) map.set(key, []);
-        map.get(key).push(entry);
-        return map;
-      }, new Map());
-
+  const [year, month] = archiveMonthKey.split('-').map(Number);
+  const monthStart = new Date(Date.UTC(year, month - 1, 1));
+  const daysInMonth = new Date(Date.UTC(year, month, 0)).getUTCDate();
+  const leadingDays = monthStart.getUTCDay();
+  const today = utcDateKey();
+  const earliestMonth = [...puzzles].sort((a, b) => a.date.localeCompare(b.date))[0].date.slice(0, 7);
+  const currentMonth = today.slice(0, 7);
+  ui.calendarMonth.textContent = new Intl.DateTimeFormat('en-US', {
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'UTC'
+  }).format(monthStart);
+  ui.calendarPrevious.disabled = archiveMonthKey <= earliestMonth;
+  ui.calendarNext.disabled = archiveMonthKey >= currentMonth;
   ui.archiveList.replaceChildren();
-  for (const [monthKey, entries] of groups) {
-    const group = document.createElement('section');
-    group.className = 'archive-month';
-    const heading = document.createElement('h2');
-    heading.textContent = new Intl.DateTimeFormat('en-US', {
-      month: 'long',
-      year: 'numeric',
-      timeZone: 'UTC'
-    }).format(new Date(`${monthKey}-15T12:00:00Z`));
-    group.append(heading);
-    const list = document.createElement('ol');
-    for (const entry of entries) {
-      const item = document.createElement('li');
-      const link = document.createElement('a');
-      link.href = `#puzzle/${entry.date}`;
-      link.innerHTML = `<span>${formatDate(entry.date)}</span><span class="archive-dots" aria-hidden="true"></span><span>${archiveStatus(entry.date)}</span>`;
-      link.setAttribute('aria-label', `${formatDate(entry.date)}, puzzle ${entry.id}, ${archiveStatus(entry.date)}`);
-      item.append(link);
-      list.append(item);
-    }
-    group.append(list);
-    ui.archiveList.append(group);
+  for (let index = 0; index < leadingDays; index += 1) {
+    const blank = document.createElement('span');
+    blank.className = 'calendar-day is-blank';
+    ui.archiveList.append(blank);
   }
+  for (let day = 1; day <= daysInMonth; day += 1) {
+    const dateKey = `${archiveMonthKey}-${String(day).padStart(2, '0')}`;
+    const entry = puzzleByDate(dateKey);
+    const isFuture = dateKey > today;
+    const cell = document.createElement(entry && !isFuture ? 'a' : 'span');
+    cell.className = 'calendar-day';
+    cell.dataset.future = String(isFuture);
+    const number = document.createElement('span');
+    number.className = 'calendar-number';
+    number.textContent = String(day);
+    cell.append(number);
+    if (entry && !isFuture) {
+      const status = archiveStatus(dateKey);
+      const moon = document.createElement('i');
+      moon.className = `moon-status is-${status === 'Solved' ? 'complete' : status === 'In progress' ? 'progress' : 'unplayed'}`;
+      moon.setAttribute('aria-hidden', 'true');
+      cell.append(moon);
+      cell.href = `#puzzle/${dateKey}`;
+      cell.setAttribute('aria-label', `${formatDate(dateKey)}, puzzle ${entry.id}, ${status}`);
+    } else {
+      cell.classList.add(isFuture ? 'is-future' : 'is-empty');
+      if (isFuture) cell.setAttribute('aria-label', `${formatDate(dateKey)}, future date`);
+    }
+    ui.archiveList.append(cell);
+  }
+}
+
+function changeArchiveMonth(delta) {
+  const [year, month] = archiveMonthKey.split('-').map(Number);
+  const next = new Date(Date.UTC(year, month - 1 + delta, 1));
+  archiveMonthKey = `${next.getUTCFullYear()}-${String(next.getUTCMonth() + 1).padStart(2, '0')}`;
+  renderArchive();
 }
 
 function renderStatistics() {
@@ -288,7 +359,7 @@ function renderStatistics() {
     ['Longest streak', state.stats.longestStreak],
     ['Daily puzzles solved', state.stats.dailyPuzzlesSolved],
     ['Phrases found', state.stats.phrasesFound],
-    ['Misses', state.stats.totalIncorrect],
+    ['Splatters', state.stats.totalIncorrect],
     ['Hints used', state.stats.hintsUsed]
   ];
   ui.statisticsList.replaceChildren();
@@ -305,9 +376,11 @@ function renderStatistics() {
 
 function resultText() {
   const result = progress();
-  const marks = puzzle.phrases.map((_, index) => result.solved.includes(index) ? '●' : '○').join(' ');
-  const streak = puzzle.date === utcDateKey() ? `\nStreak: ${state.stats.currentStreak}` : '\nArchive puzzle';
-  return `INKLING #${puzzle.id}\n✣ ${result.solved.length}/${puzzle.phrases.length}\n${marks}\nMisses: ${result.incorrect}\nHints: ${result.hints}${streak}`;
+  const phases = ['🌒', '🌓', '🌔', '🌕'];
+  const marks = puzzle.phrases.map((_, index) => result.solved.includes(index) ? phases[index % phases.length] : '🌑').join(' ');
+  const splatters = result.incorrect ? '✣'.repeat(Math.min(result.incorrect, 8)) : 'none';
+  const streak = puzzle.date === dailyPuzzle.date ? `\nStreak: ${state.stats.currentStreak}` : '\nArchive puzzle';
+  return `INKLING #${puzzle.id}\nYour phrases, in phases...\n${marks}\nSplatters: ${splatters}\nHints: ${result.hints}/3\nToday's Ink${streak}\nhttps://jens246.github.io/inkling-daily-puzzle/`;
 }
 
 async function shareResult() {
@@ -319,7 +392,7 @@ async function shareResult() {
     }
     await navigator.clipboard.writeText(text);
     ui.shareButton.textContent = 'Copied';
-    window.setTimeout(() => { ui.shareButton.textContent = 'Share result'; }, 1600);
+    window.setTimeout(() => { ui.shareButton.textContent = 'Share your Inkprint'; }, 1600);
   } catch {
     ui.shareText.value = text;
     ui.shareFallback.hidden = false;
@@ -363,6 +436,9 @@ function showView(routeName) {
   });
   if (viewName === 'archive') renderArchive();
   if (viewName === 'statistics') renderStatistics();
+  document.body.dataset.activeView = viewName;
+  document.documentElement.dataset.activeView = viewName;
+  ui.hintButton.hidden = viewName !== 'today';
   ui.utilityMenu.open = false;
 }
 
@@ -393,6 +469,19 @@ ui.phraseInput.addEventListener('input', () => {
   ui.phraseForm.classList.remove('is-correct', 'is-wrong');
 });
 ui.hintButton.addEventListener('click', useHint);
+ui.welcomeClose.addEventListener('click', () => {
+  state.preferences.welcomed = true;
+  saveState(state);
+  ui.welcomeDialog.close();
+  if (document.body.dataset.activeView === 'today') ui.phraseInput.focus();
+  else location.hash = 'today';
+});
+ui.welcomeDialog.addEventListener('close', () => {
+  state.preferences.welcomed = true;
+  saveState(state);
+});
+ui.calendarPrevious.addEventListener('click', () => changeArchiveMonth(-1));
+ui.calendarNext.addEventListener('click', () => changeArchiveMonth(1));
 ui.shareButton.addEventListener('click', shareResult);
 ui.themeToggle.addEventListener('click', toggleTheme);
 ui.contrastToggle.addEventListener('click', toggleContrast);
@@ -400,3 +489,4 @@ window.addEventListener('hashchange', route);
 
 applyPreferences();
 route();
+if (!state.preferences.welcomed) ui.welcomeDialog.showModal();

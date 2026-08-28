@@ -9,14 +9,16 @@
     <meta property="og:description" content="Every word belongs somewhere. Bigger words appear more often." />
     <meta property="og:type" content="website" />
     <title>INKLING - Daily hidden phrases</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✣</text></svg>" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2242%22 fill=%22%2320231f%22/><circle cx=%2268%22 cy=%2238%22 r=%2238%22 fill=%22%23f0f0eb%22/></svg>" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to puzzle</a>
     <header class="masthead">
-      <a class="wordmark" href="#today" aria-label="INKLING, today's puzzle">INKLING</a>
+      <a class="wordmark" href="#today" aria-label="INKLING, today's puzzle"><span class="moon-mark" aria-hidden="true"></span><span>INKLING</span></a>
       <p class="issue-line" id="issue-line"></p>
+      <button class="header-action hint-action" id="hint-button" type="button"><span aria-hidden="true">◐</span><span id="hint-button-label">Hint 1/3</span></button>
+      <a class="header-action help-action" id="help-button" href="#how-to-play" aria-label="How to play">?</a>
       <details class="utility-menu" id="utility-menu">
         <summary>Menu</summary>
         <div class="utility-panel">
@@ -24,12 +26,10 @@
             <a href="#today" data-route="today">Today</a>
             <a href="#archive" data-route="archive">Archive</a>
             <a href="#statistics" data-route="statistics">Statistics</a>
-            <a href="#how-to-play" data-route="how-to-play">How to play</a>
           </nav>
           <div class="appearance-tools" aria-label="Appearance">
             <button class="text-button" id="contrast-toggle" type="button" aria-pressed="false">High contrast</button>
             <button class="text-button" id="theme-toggle" type="button" aria-pressed="false">Dark ink</button>
-            <button class="text-button" id="hint-button" type="button">Hint</button>
           </div>
         </div>
       </details>
@@ -43,29 +43,46 @@
           <div id="word-cloud" class="word-cloud" role="list" aria-label="Puzzle words" aria-describedby="cloud-description"></div>
           <p id="cloud-description" class="sr-only">Type phrases made from these words. Larger words appear in more hidden phrases. Color has no meaning.</p>
 
+          <div id="hint-reveal" class="hint-reveal" hidden aria-live="polite"></div>
+
           <form id="phrase-form" class="phrase-form">
-            <label for="phrase-input">Your phrase</label>
-            <input id="phrase-input" name="phrase" type="text" autocomplete="off" autocapitalize="words" spellcheck="false" enterkeyhint="done" />
+            <label class="sr-only" for="phrase-input">Enter your phrase guess</label>
+            <div class="phrase-input-wrap">
+              <input id="phrase-input" name="phrase" type="text" placeholder=" " autocomplete="off" autocapitalize="words" spellcheck="false" enterkeyhint="done" />
+              <span class="entry-prompt" aria-hidden="true">Enter your guess<span class="prompt-cursor"></span></span>
+            </div>
             <button id="submit-button" type="submit">Try it</button>
             <p id="feedback" class="feedback" aria-live="polite"></p>
           </form>
 
           <aside class="found-ledger" aria-labelledby="found-heading">
-            <h2 id="found-heading">Found <span id="remaining-count"></span></h2>
+            <div class="ledger-heading">
+              <h2 id="found-heading">Found</h2>
+              <p class="remaining-readout"><strong id="remaining-count"></strong><span id="remaining-label">remaining</span></p>
+            </div>
+            <div id="phase-track" class="phase-track" aria-label="Phrase progress"></div>
             <ol id="phrase-ledger"></ol>
           </aside>
 
           <section id="completion" class="completion" hidden aria-labelledby="completion-title">
             <div class="completion-heading">
               <p class="completion-kicker" id="completion-kicker"></p>
-              <h2 id="completion-title">Complete.</h2>
+              <h2 id="completion-title">Your Inkprint</h2>
+            </div>
+            <div class="inkprint-card" aria-label="Spoiler-free result card">
+              <p>Your phrases, in phases...</p>
+              <div id="inkprint-phases" class="inkprint-phases" aria-hidden="true"></div>
+              <div class="inkprint-details">
+                <span id="inkprint-splatters"></span>
+                <span class="today-ink">Today's Ink <i></i><i></i><i></i><i></i></span>
+              </div>
             </div>
             <div class="connection-reveal">
               <h3>Connection</h3>
               <p id="connection"></p>
               <p id="connection-note"></p>
             </div>
-            <button id="share-button" class="ink-button" type="button">Share result</button>
+            <button id="share-button" class="ink-button" type="button">Share your Inkprint</button>
             <div id="share-fallback" class="share-fallback" hidden>
               <label for="share-text">Copy your spoiler-free result</label>
               <textarea id="share-text" rows="7" readonly></textarea>
@@ -80,7 +97,16 @@
           <p>Archive puzzles do not affect your streak.</p>
           <a href="#today" class="underlined-link">Play today's puzzle</a>
         </div>
-        <div id="archive-list" class="archive-list"></div>
+        <div class="archive-calendar" aria-label="Puzzle archive calendar">
+          <div class="calendar-toolbar">
+            <button id="calendar-previous" type="button" aria-label="Previous month">←</button>
+            <h2 id="calendar-month"></h2>
+            <button id="calendar-next" type="button" aria-label="Next month">→</button>
+          </div>
+          <div class="calendar-weekdays" aria-hidden="true"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div>
+          <div id="archive-list" class="archive-list"></div>
+          <div class="calendar-key"><span><i class="moon-status is-complete"></i> solved</span><span><i class="moon-status is-progress"></i> in progress</span><span><i class="moon-status is-unplayed"></i> unplayed</span></div>
+        </div>
       </section>
 
       <section id="statistics-view" class="view statistics-view" data-view="statistics" hidden aria-labelledby="statistics-heading">
@@ -95,22 +121,41 @@
         <div class="how-rules">
           <h1 id="how-heading">How to play</h1>
           <ol>
-            <li>Every word belongs somewhere.</li>
-            <li>Bigger words appear in more phrases.</li>
-            <li>Type a complete phrase and press Enter.</li>
+            <li>Every word in the cloud belongs to at least one hidden phrase.</li>
+            <li>Bigger words appear in more phrases. A word fades only after every phrase using it is found.</li>
+            <li>Type a complete phrase and press Enter. Wrong guesses become splatters in your Inkprint, but they never end the game.</li>
           </ol>
-          <p class="hint-explainer"><strong>Three hints are available.</strong> Each reveals a little more, and the final hint can be viewed again.</p>
+          <p class="color-explainer"><strong>Color is Today's Ink.</strong> It changes the look of the puzzle only. Color never shows how many guesses you used and never affects play.</p>
+          <p class="hint-explainer"><strong>You have three hints.</strong> They reveal the phrase type, its first word, then outline its words in the cloud. The revealed hint appears above your guess box.</p>
           <a href="#today" class="underlined-link">Back to today's puzzle</a>
         </div>
-        <div class="type-example" aria-label="Example showing that coffee appears in four phrases">
-          <p><strong>COFFEE</strong> BREAK</p>
-          <p><strong>COFFEE</strong> SHOP</p>
-          <p>ICED <strong>COFFEE</strong></p>
-          <p>BLACK <strong>COFFEE</strong></p>
-          <small>COFFEE is larger because it appears in every phrase.</small>
+        <div class="type-example" aria-label="Example word cloud and phrases showing that coffee appears in four phrases">
+          <div class="sample-cloud" aria-hidden="true"><strong>COFFEE</strong><span>BREAK</span><span>ICED</span><span>SHOP</span><span>BLACK</span></div>
+          <div class="sample-phrases">
+            <p><strong>COFFEE</strong> BREAK</p>
+            <p><strong>COFFEE</strong> SHOP</p>
+            <p>ICED <strong>COFFEE</strong></p>
+            <p>BLACK <strong>COFFEE</strong></p>
+          </div>
+          <small>COFFEE is larger because it appears in every phrase. Its color is decorative, just like the other colors.</small>
         </div>
       </section>
     </main>
+
+    <dialog id="welcome-dialog" class="rules-dialog" aria-labelledby="welcome-title">
+      <div class="dialog-moon" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <div class="dialog-copy">
+        <p class="dialog-kicker">Before the first phrase</p>
+        <h2 id="welcome-title">Read the cloud.</h2>
+        <ol>
+          <li><strong>Find four familiar phrases.</strong> Every word belongs somewhere.</li>
+          <li><strong>Watch the scale.</strong> Bigger words are used in more phrases.</li>
+          <li><strong>Ignore the colors.</strong> Today's Ink is decorative. It never tracks guesses or changes play.</li>
+        </ol>
+        <p class="dialog-hint">Three hints reveal the phrase type, its first word, then its words in the cloud. Wrong guesses leave a splatter, but you can keep playing.</p>
+        <button id="welcome-close" class="ink-button" type="button">Begin today's puzzle</button>
+      </div>
+    </dialog>
 
     <script type="module" src="src/game.js"></script>
   </body>
