@@ -100,6 +100,7 @@ The original design studies and the two generated v2 gameplay references are pre
 ## Important URLs and services
 
 - Production site: https://jens246.github.io/inkling-daily-puzzle/
+- Admin game list: https://jens246.github.io/inkling-daily-puzzle/admin.html
 - Source repository: https://github.com/JenS246/inkling-daily-puzzle
 - Hosting: GitHub Pages
 - Backend services: none
