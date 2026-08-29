@@ -1,4 +1,5 @@
 const STORAGE_KEY = 'inkling-progress-v1';
+export const MAX_GUESSES = 10;
 
 export const emptyState = () => ({
   version: 1,
@@ -51,12 +52,31 @@ export function saveState(state, storage = globalThis.localStorage) {
 }
 
 export function getPuzzleProgress(state, puzzle) {
-  return state.puzzles[puzzle.date] || {
+  const saved = safeObject(state.puzzles[puzzle.date], {});
+  const solved = Array.isArray(saved.solved) ? saved.solved : [];
+  const incorrect = Number.isFinite(saved.incorrect) ? saved.incorrect : 0;
+  const legacyAttempts = [
+    ...solved.map((phrase) => ({ kind: 'solve', phrase })),
+    ...Array.from({ length: incorrect }, () => ({ kind: 'miss' }))
+  ].slice(0, MAX_GUESSES);
+  const attempts = Array.isArray(saved.attempts) ? saved.attempts.slice(0, MAX_GUESSES) : legacyAttempts;
+  const complete = Boolean(saved.complete);
+  return {
     solved: [],
     incorrect: 0,
     hints: 0,
     complete: false,
-    completedAt: null
+    failed: false,
+    completedAt: null,
+    startedAt: null,
+    endedAt: null,
+    attempts: [],
+    ...saved,
+    solved,
+    incorrect,
+    attempts,
+    complete,
+    failed: !complete && attempts.length >= MAX_GUESSES
   };
 }
 
@@ -80,4 +100,3 @@ export function completeDailyStats(stats, dateKey) {
 }
 
 export { STORAGE_KEY };
-

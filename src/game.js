@@ -1,5 +1,5 @@
 import { PALETTES, derivePuzzle, getDailyPuzzle, normalizeAnswer, puzzleByDate, puzzles, utcDateKey } from './puzzles.js';
-import { completeDailyStats, getPuzzleProgress, loadState, saveState } from './storage.js';
+import { MAX_GUESSES, completeDailyStats, getPuzzleProgress, loadState, saveState } from './storage.js';
 
 const ui = {
   issueLine: document.querySelector('#issue-line'),
@@ -12,19 +12,27 @@ const ui = {
   remainingCount: document.querySelector('#remaining-count'),
   remainingLabel: document.querySelector('#remaining-label'),
   phaseTrack: document.querySelector('#phase-track'),
+  guessesLeft: document.querySelector('#guesses-left'),
   feedback: document.querySelector('#feedback'),
   submitButton: document.querySelector('#submit-button'),
   hintButton: document.querySelector('#hint-button'),
   hintButtonLabel: document.querySelector('#hint-button-label'),
   hintReveal: document.querySelector('#hint-reveal'),
   completion: document.querySelector('#completion'),
-  completionKicker: document.querySelector('#completion-kicker'),
+  completionTitle: document.querySelector('#completion-title'),
   connection: document.querySelector('#connection'),
   connectionNote: document.querySelector('#connection-note'),
-  inkprintPhases: document.querySelector('#inkprint-phases'),
-  inkprintSplatters: document.querySelector('#inkprint-splatters'),
-  todayInkDots: document.querySelectorAll('.today-ink i'),
+  inkprintGrid: document.querySelector('#inkprint-grid'),
+  inkprintMetrics: document.querySelector('#inkprint-metrics'),
+  inkprintDate: document.querySelector('#inkprint-date'),
   shareButton: document.querySelector('#share-button'),
+  shareDialog: document.querySelector('#share-dialog'),
+  sharePreviewNumber: document.querySelector('#share-preview-number'),
+  sharePreviewGrid: document.querySelector('#share-preview-grid'),
+  sharePreviewMetrics: document.querySelector('#share-preview-metrics'),
+  sharePreviewDate: document.querySelector('#share-preview-date'),
+  shareClose: document.querySelector('#share-close'),
+  shareConfirm: document.querySelector('#share-confirm'),
   shareFallback: document.querySelector('#share-fallback'),
   shareText: document.querySelector('#share-text'),
   archiveList: document.querySelector('#archive-list'),
@@ -72,6 +80,62 @@ function writeProgress(nextProgress) {
   saveState(state);
 }
 
+function isOver(result = progress()) {
+  return result.complete || result.failed;
+}
+
+function compactDate(dateKey = puzzle.date) {
+  const [, month, day] = dateKey.split('-');
+  return `${Number(month)}${String(Number(day)).padStart(2, '0')}`;
+}
+
+function elapsedTime(result = progress()) {
+  if (!result.startedAt) return '--:--';
+  const end = result.endedAt || result.completedAt || new Date().toISOString();
+  const seconds = Math.max(0, Math.round((Date.parse(end) - Date.parse(result.startedAt)) / 1000));
+  const minutes = Math.floor(seconds / 60);
+  return `${minutes}:${String(seconds % 60).padStart(2, '0')}`;
+}
+
+function resultMetrics(result = progress()) {
+  return `${result.solved.length}/${puzzle.phrases.length} · ${result.attempts.length}/${MAX_GUESSES} · ${elapsedTime(result)} · 💡${result.hints}`;
+}
+
+function renderInkprintGrid(container, result = progress()) {
+  let solvedCount = 0;
+  container.replaceChildren();
+  for (let index = 0; index < MAX_GUESSES; index += 1) {
+    const attempt = result.attempts[index];
+    const cell = document.createElement('span');
+    cell.className = 'inkprint-cell';
+    if (!attempt) {
+      cell.classList.add('is-unused');
+      cell.setAttribute('aria-label', `Guess ${index + 1}, unused`);
+    } else if (attempt.kind === 'miss') {
+      cell.classList.add('is-miss');
+      cell.setAttribute('aria-label', `Guess ${index + 1}, inkblot`);
+    } else {
+      solvedCount += 1;
+      cell.classList.add('is-solve', `pattern-${Math.min(solvedCount, 4)}`);
+      cell.setAttribute('aria-label', `Guess ${index + 1}, phrase found`);
+    }
+    container.append(cell);
+  }
+}
+
+function inkprintSymbols(result = progress()) {
+  const shades = ['░', '▒', '▓', '█'];
+  let solvedCount = 0;
+  return Array.from({ length: MAX_GUESSES }, (_, index) => {
+    const attempt = result.attempts[index];
+    if (!attempt) return '·';
+    if (attempt.kind === 'miss') return '✣';
+    const symbol = shades[Math.min(solvedCount, shades.length - 1)];
+    solvedCount += 1;
+    return symbol;
+  });
+}
+
 function colorForWord(word) {
   const hash = hashString(`${puzzle.id}:${word}:ink`);
   if (hash % 10 < 6) return 'var(--ink)';
@@ -114,30 +178,32 @@ function renderCloud(newlyFoundWords = []) {
 }
 
 function renderLedger(newlyFoundIndex = -1) {
-  const solved = new Set(progress().solved);
+  const result = progress();
+  const solved = new Set(result.solved);
   const remaining = puzzle.phrases.length - solved.size;
   ui.remainingCount.textContent = String(remaining);
   ui.remainingLabel.textContent = 'remaining';
   ui.phaseTrack.replaceChildren();
-  puzzle.phrases.forEach((_, index) => {
-    const phase = document.createElement('span');
-    phase.className = 'phase-mark';
-    phase.classList.toggle('is-solved', solved.has(index));
-    phase.setAttribute('aria-label', solved.has(index) ? `Phrase ${index + 1} found` : `Phrase ${index + 1} not found`);
-    ui.phaseTrack.append(phase);
-  });
-  ui.phaseTrack.setAttribute('aria-label', `${solved.size} of ${puzzle.phrases.length} phrases found`);
+  renderInkprintGrid(ui.phaseTrack, result);
+  const guessesRemaining = MAX_GUESSES - result.attempts.length;
+  ui.guessesLeft.textContent = isOver(result)
+    ? `${result.attempts.length} of ${MAX_GUESSES} guesses`
+    : `${guessesRemaining} ${guessesRemaining === 1 ? 'guess' : 'guesses'} left`;
+  ui.phaseTrack.setAttribute('aria-label', `${result.attempts.length} of ${MAX_GUESSES} guesses used`);
+  const solvedOrder = result.attempts.filter((attempt) => attempt.kind === 'solve').map((attempt) => attempt.phrase);
   ui.phraseLedger.replaceChildren();
   puzzle.phrases.forEach((phrase, index) => {
     if (!solved.has(index)) return;
     const item = document.createElement('li');
     item.textContent = phrase.answer;
+    item.dataset.pattern = String(solvedOrder.indexOf(index) + 1);
     item.classList.toggle('just-found', index === newlyFoundIndex);
     ui.phraseLedger.append(item);
   });
 }
 
 function hintMessage(result = progress()) {
+  if (isOver(result)) return '';
   const unsolvedIndex = puzzle.phrases.findIndex((_, index) => !result.solved.includes(index));
   if (!result.hints || unsolvedIndex < 0) return '';
   const target = puzzle.phrases[unsolvedIndex];
@@ -162,14 +228,17 @@ function signalForm(className) {
 
 function submitAttempt(event) {
   event.preventDefault();
-  if (progress().complete) return;
+  if (isOver()) return;
   const submitted = normalizeAnswer(ui.phraseInput.value);
   if (!submitted) {
     ui.phraseInput.focus();
     return;
   }
 
-  const solved = new Set(progress().solved);
+  const current = progress();
+  const solved = new Set(current.solved);
+  const now = new Date().toISOString();
+  const startedAt = current.startedAt || now;
   const anyMatch = puzzle.phrases.findIndex((phrase) => normalizeAnswer(phrase.answer) === submitted);
   if (anyMatch >= 0 && solved.has(anyMatch)) {
     ui.feedback.textContent = 'Already found.';
@@ -183,13 +252,19 @@ function submitAttempt(event) {
   });
 
   if (match >= 0) {
-    const nextSolved = [...progress().solved, match];
+    const nextSolved = [...current.solved, match];
+    const attempts = [...current.attempts, { kind: 'solve', phrase: match }];
     const complete = nextSolved.length === puzzle.phrases.length;
+    const failed = !complete && attempts.length >= MAX_GUESSES;
     writeProgress({
-      ...progress(),
+      ...current,
       solved: nextSolved,
+      attempts,
+      startedAt,
       complete,
-      completedAt: complete ? new Date().toISOString() : null
+      failed,
+      completedAt: complete ? now : null,
+      endedAt: complete || failed ? now : null
     });
     state.stats.phrasesFound += 1;
     if (complete && puzzle.date === dailyPuzzle.date) {
@@ -197,23 +272,34 @@ function submitAttempt(event) {
     }
     saveState(state);
     activeHintWords.clear();
-    ui.feedback.textContent = complete ? 'Inkprint complete.' : 'Phase found.';
+    ui.feedback.textContent = complete ? 'Inkprint complete.' : failed ? 'Ink ran dry.' : 'Pattern found.';
     ui.phraseInput.value = '';
     signalForm('is-correct');
     renderPuzzleState(match);
-    ui.phraseInput.focus();
+    if (!complete && !failed) ui.phraseInput.focus();
     return;
   }
 
-  writeProgress({ ...progress(), incorrect: progress().incorrect + 1 });
+  const attempts = [...current.attempts, { kind: 'miss' }];
+  const failed = attempts.length >= MAX_GUESSES;
+  writeProgress({
+    ...current,
+    incorrect: current.incorrect + 1,
+    attempts,
+    startedAt,
+    failed,
+    endedAt: failed ? now : null
+  });
   state.stats.totalIncorrect += 1;
   saveState(state);
-  ui.feedback.textContent = 'Splatter. Try again.';
+  ui.feedback.textContent = failed ? 'Ink ran dry.' : 'Inkblot. Try again.';
   signalForm('is-wrong');
-  ui.phraseInput.select();
+  renderPuzzleState();
+  if (!failed) ui.phraseInput.select();
 }
 
 function useHint() {
+  if (isOver()) return;
   const unsolvedIndex = puzzle.phrases.findIndex((_, index) => !progress().solved.includes(index));
   if (unsolvedIndex < 0) return;
   const currentLevel = progress().hints;
@@ -238,34 +324,32 @@ function useHint() {
 
 function renderCompletion() {
   const result = progress();
-  ui.completion.hidden = !result.complete;
-  if (!result.complete) return;
-  ui.completionKicker.textContent = `INKLING #${puzzle.id}`;
+  ui.completion.hidden = !isOver(result);
+  if (!isOver(result)) return;
+  ui.completionTitle.textContent = `INKPRINT #${puzzle.id}`;
+  ui.completion.classList.toggle('is-failed', result.failed);
   ui.connection.textContent = puzzle.connection;
   ui.connectionNote.textContent = puzzle.connectionNote;
-  const phases = ['🌒', '🌓', '🌔', '🌕'];
-  ui.inkprintPhases.textContent = puzzle.phrases.map((_, index) => phases[index % phases.length]).join(' ');
-  ui.inkprintSplatters.textContent = result.incorrect
-    ? `${'✣'.repeat(Math.min(result.incorrect, 8))}${result.incorrect > 8 ? ` +${result.incorrect - 8}` : ''} ${result.incorrect === 1 ? 'splatter' : 'splatters'}`
-    : 'No splatters';
-  const palette = PALETTES[puzzle.palette] || PALETTES.bottle;
-  ui.todayInkDots.forEach((dot, index) => dot.style.background = palette[index % palette.length]);
+  renderInkprintGrid(ui.inkprintGrid, result);
+  ui.inkprintMetrics.textContent = resultMetrics(result);
+  ui.inkprintDate.textContent = compactDate();
 }
 
 function renderPuzzleState(newlyFoundIndex = -1) {
   const result = progress();
   const foundWords = newlyFoundIndex >= 0 ? puzzle.phrases[newlyFoundIndex].words : [];
-  if (result.hints >= 3 && !result.complete) {
+  if (result.hints >= 3 && !isOver(result)) {
     const unsolved = puzzle.phrases.find((_, index) => !result.solved.includes(index));
     activeHintWords = new Set(unsolved?.words || []);
   }
-  if (result.complete) activeHintWords.clear();
-  ui.gameplayStage.classList.toggle('is-complete', result.complete);
-  ui.submitButton.disabled = result.complete;
-  ui.phraseInput.disabled = result.complete;
-  ui.hintButton.disabled = result.complete;
-  ui.hintButtonLabel.textContent = result.complete
-    ? 'Complete'
+  if (isOver(result)) activeHintWords.clear();
+  ui.gameplayStage.classList.toggle('is-complete', isOver(result));
+  ui.gameplayStage.classList.toggle('is-failed', result.failed);
+  ui.submitButton.disabled = isOver(result);
+  ui.phraseInput.disabled = isOver(result);
+  ui.hintButton.disabled = isOver(result);
+  ui.hintButtonLabel.textContent = isOver(result)
+    ? result.complete ? 'Complete' : 'Ink ran dry'
     : result.hints >= 3
       ? 'Review hint 3/3'
       : `Hint ${result.hints + 1}/3`;
@@ -283,18 +367,23 @@ function loadPuzzle(nextPuzzle) {
     const unsolved = puzzle.phrases.find((_, index) => !result.solved.includes(index));
     if (unsolved) activeHintWords = new Set(unsolved.words);
   }
-  ui.issueLine.textContent = formatDate(puzzle.date).toLocaleUpperCase('en-US');
+  ui.issueLine.textContent = formatDate(puzzle.date);
   ui.archiveNotice.hidden = puzzle.date === dailyPuzzle.date;
   ui.feedback.textContent = '';
   ui.phraseInput.value = '';
   ui.shareFallback.hidden = true;
+  if (ui.shareDialog.open) ui.shareDialog.close();
   renderPuzzleState();
 }
 
 function archiveStatus(dateKey) {
   const result = state.puzzles[dateKey];
   if (result?.complete) return 'Solved';
-  if (result && (result.solved.length || result.incorrect || result.hints)) return 'In progress';
+  const attempts = Array.isArray(result?.attempts)
+    ? result.attempts.length
+    : (result?.solved?.length || 0) + (result?.incorrect || 0);
+  if (result?.failed || attempts >= MAX_GUESSES) return 'Inkblotted';
+  if (result && (result.solved?.length || result.incorrect || result.hints)) return 'In progress';
   return 'Unplayed';
 }
 
@@ -333,7 +422,14 @@ function renderArchive() {
     if (entry && !isFuture) {
       const status = archiveStatus(dateKey);
       const moon = document.createElement('i');
-      moon.className = `moon-status is-${status === 'Solved' ? 'complete' : status === 'In progress' ? 'progress' : 'unplayed'}`;
+      const statusClass = status === 'Solved'
+        ? 'complete'
+        : status === 'Inkblotted'
+          ? 'failed'
+          : status === 'In progress'
+            ? 'progress'
+            : 'unplayed';
+      moon.className = `moon-status is-${statusClass}`;
       moon.setAttribute('aria-hidden', 'true');
       cell.append(moon);
       cell.href = `#puzzle/${dateKey}`;
@@ -376,24 +472,33 @@ function renderStatistics() {
 
 function resultText() {
   const result = progress();
-  const phases = ['🌒', '🌓', '🌔', '🌕'];
-  const marks = puzzle.phrases.map((_, index) => result.solved.includes(index) ? phases[index % phases.length] : '🌑').join(' ');
-  const splatters = result.incorrect ? '✣'.repeat(Math.min(result.incorrect, 8)) : 'none';
-  const streak = puzzle.date === dailyPuzzle.date ? `\nStreak: ${state.stats.currentStreak}` : '\nArchive puzzle';
-  return `INKLING #${puzzle.id}\nYour phrases, in phases...\n${marks}\nSplatters: ${splatters}\nHints: ${result.hints}/3\nToday's Ink${streak}\nhttps://jens246.github.io/inkling-daily-puzzle/`;
+  const symbols = inkprintSymbols(result);
+  return `INKPRINT #${puzzle.id}\n\n${symbols.slice(0, 5).join(' ')}\n${symbols.slice(5).join(' ')}\n\n${resultMetrics(result)}\n${compactDate()}\n\nhttps://jens246.github.io/inkling-daily-puzzle/`;
+}
+
+function openSharePreview() {
+  const result = progress();
+  ui.sharePreviewNumber.textContent = `#${puzzle.id}`;
+  renderInkprintGrid(ui.sharePreviewGrid, result);
+  ui.sharePreviewMetrics.textContent = resultMetrics(result);
+  ui.sharePreviewDate.textContent = compactDate();
+  ui.shareFallback.hidden = true;
+  ui.shareConfirm.textContent = 'Share Inkprint';
+  ui.shareDialog.showModal();
 }
 
 async function shareResult() {
   const text = resultText();
   try {
     if (navigator.share) {
-      await navigator.share({ title: `INKLING #${puzzle.id}`, text });
+      await navigator.share({ title: `INKPRINT #${puzzle.id}`, text });
       return;
     }
     await navigator.clipboard.writeText(text);
-    ui.shareButton.textContent = 'Copied';
-    window.setTimeout(() => { ui.shareButton.textContent = 'Share your Inkprint'; }, 1600);
-  } catch {
+    ui.shareConfirm.textContent = 'Copied';
+    window.setTimeout(() => ui.shareDialog.close(), 900);
+  } catch (error) {
+    if (error?.name === 'AbortError') return;
     ui.shareText.value = text;
     ui.shareFallback.hidden = false;
     ui.shareText.focus();
@@ -465,6 +570,10 @@ ui.phraseInput.addEventListener('keydown', (event) => {
   ui.phraseForm.requestSubmit();
 });
 ui.phraseInput.addEventListener('input', () => {
+  const current = progress();
+  if (!current.startedAt && ui.phraseInput.value.trim()) {
+    writeProgress({ ...current, startedAt: new Date().toISOString() });
+  }
   ui.feedback.textContent = '';
   ui.phraseForm.classList.remove('is-correct', 'is-wrong');
 });
@@ -482,7 +591,9 @@ ui.welcomeDialog.addEventListener('close', () => {
 });
 ui.calendarPrevious.addEventListener('click', () => changeArchiveMonth(-1));
 ui.calendarNext.addEventListener('click', () => changeArchiveMonth(1));
-ui.shareButton.addEventListener('click', shareResult);
+ui.shareButton.addEventListener('click', openSharePreview);
+ui.shareClose.addEventListener('click', () => ui.shareDialog.close());
+ui.shareConfirm.addEventListener('click', shareResult);
 ui.themeToggle.addEventListener('click', toggleTheme);
 ui.contrastToggle.addEventListener('click', toggleContrast);
 window.addEventListener('hashchange', route);

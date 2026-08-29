@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { derivePuzzle, normalizeAnswer, puzzles } from '../src/puzzles.js';
-import { completeDailyStats, emptyState, getPuzzleProgress, loadState } from '../src/storage.js';
+import { MAX_GUESSES, completeDailyStats, emptyState, getPuzzleProgress, loadState } from '../src/storage.js';
 
 test('every cloud word is derived from at least one phrase', () => {
   for (const puzzle of puzzles) {
@@ -43,4 +43,38 @@ test('invalid local data falls back safely', () => {
   const storage = { getItem: () => '{broken' };
   assert.deepEqual(loadState(storage), emptyState());
   assert.equal(getPuzzleProgress(emptyState(), puzzles[0]).complete, false);
+});
+
+test('legacy progress migrates into the ten-guess Inkprint', () => {
+  const state = emptyState();
+  state.puzzles[puzzles[0].date] = {
+    solved: [0, 1],
+    incorrect: 8,
+    hints: 1,
+    complete: false,
+    completedAt: null
+  };
+  const progress = getPuzzleProgress(state, puzzles[0]);
+  assert.equal(progress.attempts.length, MAX_GUESSES);
+  assert.deepEqual(progress.attempts.slice(0, 3), [
+    { kind: 'solve', phrase: 0 },
+    { kind: 'solve', phrase: 1 },
+    { kind: 'miss' }
+  ]);
+  assert.equal(progress.failed, true);
+});
+
+test('a completed puzzle never migrates as failed', () => {
+  const state = emptyState();
+  state.puzzles[puzzles[0].date] = {
+    solved: [0, 1, 2, 3],
+    incorrect: 6,
+    complete: true,
+    attempts: Array.from({ length: MAX_GUESSES }, (_, index) => index < 4
+      ? { kind: 'solve', phrase: index }
+      : { kind: 'miss' })
+  };
+  const progress = getPuzzleProgress(state, puzzles[0]);
+  assert.equal(progress.complete, true);
+  assert.equal(progress.failed, false);
 });
