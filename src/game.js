@@ -578,6 +578,14 @@ function toggleContrast() {
   applyPreferences();
 }
 
+function syncVisibleViewport() {
+  const viewportHeight = Math.round(window.visualViewport?.height || window.innerHeight);
+  const inputActive = document.activeElement === ui.phraseInput;
+  const keyboardOpen = inputActive && viewportHeight < window.innerHeight - 100;
+  document.documentElement.style.setProperty('--visible-viewport-height', `${viewportHeight}px`);
+  document.body.dataset.keyboardOpen = String(keyboardOpen);
+}
+
 function showView(routeName) {
   const viewName = routeName === 'puzzle' ? 'today' : routeName;
   document.querySelectorAll('.view').forEach((view) => {
@@ -635,6 +643,8 @@ ui.phraseInput.addEventListener('input', () => {
   ui.feedback.textContent = '';
   ui.phraseForm.classList.remove('is-correct', 'is-wrong');
 });
+ui.phraseInput.addEventListener('focus', syncVisibleViewport);
+ui.phraseInput.addEventListener('blur', syncVisibleViewport);
 ui.hintButton.addEventListener('click', useHint);
 ui.welcomeClose.addEventListener('click', () => {
   state.preferences.welcomed = true;
@@ -659,7 +669,10 @@ document.addEventListener('pointerdown', (event) => {
   if (ui.utilityMenu.open && !ui.utilityMenu.contains(event.target)) ui.utilityMenu.open = false;
 });
 window.addEventListener('hashchange', route);
+window.addEventListener('resize', syncVisibleViewport);
+window.visualViewport?.addEventListener('resize', syncVisibleViewport);
 
 applyPreferences();
 route();
+syncVisibleViewport();
 if (!state.preferences.welcomed) ui.welcomeDialog.showModal();
