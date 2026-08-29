@@ -3477,10 +3477,23 @@ a.calendar-day.is-unplayed {
   cursor: pointer;
 }
 
+.hint-call {
+  color: var(--miss);
+}
+
+.hint-count {
+  color: var(--accent);
+}
+
 .puzzle-hint:hover,
 .puzzle-hint:focus-visible {
   color: var(--date-ink);
   border-bottom-color: var(--date-ink);
+}
+
+.puzzle-hint:hover .hint-count,
+.puzzle-hint:focus-visible .hint-count {
+  color: var(--date-ink);
 }
 
 .puzzle-hint:focus-visible {
@@ -3492,6 +3505,11 @@ a.calendar-day.is-unplayed {
   color: var(--rule);
   border-bottom-color: var(--rule);
   cursor: default;
+}
+
+.puzzle-hint:disabled .hint-call,
+.puzzle-hint:disabled .hint-count {
+  color: var(--rule);
 }
 
 .word-cloud {
@@ -3533,20 +3551,26 @@ a.calendar-day.is-unplayed {
 
 .archive-view::before {
   position: absolute;
-  top: -3.8rem;
-  left: -8rem;
+  top: -12rem;
+  left: -6rem;
   z-index: 0;
-  width: min(72vw, 670px);
-  height: clamp(190px, 27vw, 290px);
-  border-radius: 47% 53% 61% 39% / 42% 57% 43% 58%;
-  background:
-    radial-gradient(ellipse at 28% 53%, color-mix(in srgb, var(--archive-blue) 22%, transparent) 0 31%, transparent 33%),
-    radial-gradient(ellipse at 55% 43%, color-mix(in srgb, var(--archive-green) 18%, transparent) 0 36%, transparent 38%),
-    radial-gradient(ellipse at 78% 62%, color-mix(in srgb, var(--archive-gold) 17%, transparent) 0 27%, transparent 29%),
-    radial-gradient(circle at 91% 29%, color-mix(in srgb, var(--miss) 13%, transparent) 0 10%, transparent 12%);
+  width: clamp(340px, 42vw, 460px);
+  aspect-ratio: 1;
+  background: color-mix(in srgb, var(--miss) 10%, transparent);
   content: "";
-  opacity: .72;
-  transform: rotate(-4deg);
+  -webkit-mask:
+    radial-gradient(circle at 48% 52%, #000 0 34%, transparent 34.8%),
+    radial-gradient(circle at 20% 27%, #000 0 9%, transparent 9.8%),
+    radial-gradient(circle at 79% 31%, #000 0 11%, transparent 11.8%),
+    radial-gradient(circle at 78% 77%, #000 0 7%, transparent 7.8%),
+    radial-gradient(circle at 21% 78%, #000 0 5%, transparent 5.8%);
+  mask:
+    radial-gradient(circle at 48% 52%, #000 0 34%, transparent 34.8%),
+    radial-gradient(circle at 20% 27%, #000 0 9%, transparent 9.8%),
+    radial-gradient(circle at 79% 31%, #000 0 11%, transparent 11.8%),
+    radial-gradient(circle at 78% 77%, #000 0 7%, transparent 7.8%),
+    radial-gradient(circle at 21% 78%, #000 0 5%, transparent 5.8%);
+  transform: rotate(-11deg);
   pointer-events: none;
 }
 
@@ -3633,6 +3657,7 @@ body[data-active-view="how-to-play"] {
 }
 
 .how-rules h1 {
+  color: var(--date-ink);
   font-size: clamp(2.8rem, 6vw, 4.6rem);
 }
 
@@ -3710,11 +3735,9 @@ body[data-active-view="how-to-play"] {
   }
 
   .archive-view::before {
-    top: -3.2rem;
-    left: -6.5rem;
-    width: 125vw;
-    height: 180px;
-    opacity: .62;
+    top: -7.2rem;
+    left: -19vw;
+    width: min(92vw, 350px);
   }
 
   .archive-lead {
@@ -3851,5 +3874,15 @@ body[data-active-view="how-to-play"] {
   .type-example {
     grid-template-columns: minmax(0, 1fr) 128px;
     gap: .4rem;
+  }
+}
+
+@media (max-width: 340px) {
+  #hint-button-label {
+    font-size: .76rem;
+  }
+
+  #hint-button-label::after {
+    content: none;
   }
 }

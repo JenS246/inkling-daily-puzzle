@@ -1,6 +1,6 @@
 import { PALETTES, derivePuzzle, getDailyPuzzle, normalizeAnswer, puzzleByDate, puzzles, utcDateKey } from './puzzles.js';
 import { MAX_GUESSES, MAX_HINTS, completeDailyStats, getPuzzleProgress, loadState, remainingHints, saveState } from './storage.js?v=20260829e';
-import { hintSequenceForPuzzle } from './hints.js?v=20260829j';
+import { hintSequenceForPuzzle, phraseTypeHint } from './hints.js?v=20260829k';
 
 const ui = {
   issueLine: document.querySelector('#issue-line'),
@@ -17,7 +17,7 @@ const ui = {
   feedback: document.querySelector('#feedback'),
   submitButton: document.querySelector('#submit-button'),
   hintButton: document.querySelector('#hint-button'),
-  hintButtonLabel: document.querySelector('#hint-button-label'),
+  hintCount: document.querySelector('#hint-count'),
   hintReveal: document.querySelector('#hint-reveal'),
   completion: document.querySelector('#completion'),
   completionTitle: document.querySelector('#completion-title'),
@@ -189,11 +189,13 @@ function inkprintSymbols(result = progress()) {
   });
 }
 
-function colorForWord(word) {
-  const hash = hashString(`${puzzle.id}:${word}:ink`);
-  if (hash % 10 < 6) return 'var(--ink)';
+function colorForWord(word, index) {
   const palette = PALETTES[puzzle.palette] || PALETTES.bottle;
-  return palette[hash % palette.length];
+  const paletteOffset = hashString(`${puzzle.id}:palette`) % palette.length;
+  if (index < palette.length) return palette[(index + paletteOffset) % palette.length];
+  const hash = hashString(`${puzzle.id}:${word}:ink`);
+  if (hash % 10 < 3) return 'var(--ink)';
+  return palette[(hash + index + paletteOffset) % palette.length];
 }
 
 function usedCount(word) {
@@ -210,7 +212,7 @@ function renderCloud(newlyFoundWords = []) {
   });
 
   ui.wordCloud.replaceChildren();
-  for (const entry of shuffled) {
+  shuffled.forEach((entry, index) => {
     const word = document.createElement('span');
     word.className = 'cloud-word';
     word.textContent = entry.word.toLocaleUpperCase('en-US');
@@ -219,7 +221,7 @@ function renderCloud(newlyFoundWords = []) {
     word.dataset.length = entry.word.length >= 10 ? 'very-long' : entry.word.length >= 8 ? 'long' : 'standard';
     const marks = usedCount(entry.word);
     word.dataset.useMark = marks ? '/'.repeat(marks) : '';
-    word.style.setProperty('--word-color', colorForWord(entry.word));
+    word.style.setProperty('--word-color', colorForWord(entry.word, index));
     word.setAttribute('role', 'listitem');
     word.setAttribute('aria-label', `${entry.word}, appears in ${entry.frequency} ${entry.frequency === 1 ? 'phrase' : 'phrases'}`);
     word.classList.toggle('is-used', marks >= entry.frequency);
@@ -227,7 +229,7 @@ function renderCloud(newlyFoundWords = []) {
     word.classList.toggle('is-hinted', activeHintWords.has(entry.word));
     word.classList.toggle('just-found', foundSet.has(entry.word));
     ui.wordCloud.append(word);
-  }
+  });
 }
 
 function renderLedger(newlyFoundIndex = -1) {
@@ -261,7 +263,9 @@ function hintMessage(result = progress()) {
   if (!lastHint || result.solved.includes(lastHint.phrase)) return '';
   const target = puzzle.phrases[lastHint.phrase];
   if (!target) return '';
-  if (lastHint.kind === 'type') return `Phrase type: ${target.type}`;
+  if (lastHint.kind === 'type') {
+    return phraseTypeHint(target.type);
+  }
   if (lastHint.kind === 'first') return `First word: ${target.words[0].toLocaleUpperCase('en-US')}`;
   if (lastHint.kind === 'last') return `Last word: ${target.words.at(-1).toLocaleUpperCase('en-US')}`;
   if (lastHint.kind === 'outline' && activeHintWords.size) return 'Outlined words belong together.';
@@ -407,7 +411,7 @@ function renderPuzzleState(newlyFoundIndex = -1) {
   const hintsLeft = remainingHints(result.hints);
   const hintLabel = hintsLeft === 0 ? 'No hints remaining' : `${hintsLeft} ${hintsLeft === 1 ? 'hint' : 'hints'} remaining`;
   ui.hintButton.disabled = isOver(result) || hintsLeft === 0;
-  ui.hintButtonLabel.textContent = hintsLeft === 0 ? 'HINTS USED' : `HINT? ${hintsLeft} REMAINING`;
+  ui.hintCount.textContent = `${hintsLeft} REMAINING`;
   ui.hintButton.setAttribute('aria-label', hintLabel);
   renderCloud(foundWords);
   renderLedger(newlyFoundIndex);

@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { derivePuzzle, getDailyPuzzle, normalizeAnswer, puzzleByDate, puzzles } from '../src/puzzles.js';
+import { PALETTES, derivePuzzle, getDailyPuzzle, normalizeAnswer, puzzleByDate, puzzles } from '../src/puzzles.js';
 import { MAX_GUESSES, MAX_HINTS, completeDailyStats, emptyState, getPuzzleProgress, loadState, remainingHints } from '../src/storage.js';
-import { hintSequenceForPuzzle } from '../src/hints.js';
+import { hintSequenceForPuzzle, phraseTypeHint } from '../src/hints.js';
 
 test('every cloud word is derived from at least one phrase', () => {
   for (const puzzle of puzzles) {
@@ -26,6 +26,15 @@ test('the curated daily bank has four distinct phrases and a strong repeated wor
     assert.equal(ids.has(puzzle.id), false, `${puzzle.id}: duplicate id`);
     dates.add(puzzle.date);
     ids.add(puzzle.id);
+  }
+});
+
+test('every puzzle has enough words for a complete themed color set', () => {
+  for (const puzzle of puzzles) {
+    const palette = PALETTES[puzzle.palette];
+    assert.ok(palette, `${puzzle.date}: unknown palette`);
+    assert.equal(new Set(palette).size, palette.length, `${puzzle.date}: palette colors must be distinct`);
+    assert.ok(derivePuzzle(puzzle).words.length >= palette.length, `${puzzle.date}: not enough words to show the full palette`);
   }
 });
 
@@ -110,6 +119,12 @@ test('hint types vary by puzzle while every puzzle keeps three distinct hints', 
     assert.ok(sequence.includes('outline'));
   }
   assert.ok(new Set(sequences.map((sequence) => sequence.join('|'))).size > 1);
+});
+
+test('expression hints read naturally without a type label', () => {
+  assert.equal(phraseTypeHint('expression'), 'An expression');
+  assert.equal(phraseTypeHint('common expression'), 'An expression');
+  assert.equal(phraseTypeHint('idiom'), 'Phrase type: idiom');
 });
 
 test('legacy progress migrates into the ten-guess Inkprint', () => {

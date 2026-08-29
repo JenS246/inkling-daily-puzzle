@@ -12,3 +12,8 @@ export function hintSequenceForPuzzle(puzzleId) {
   const index = Number.isFinite(numericId) ? Math.abs(numericId) % HINT_SEQUENCES.length : 0;
   return [...HINT_SEQUENCES[index]];
 }
+
+export function phraseTypeHint(type = '') {
+  if (/expression/i.test(type)) return 'An expression';
+  return `Phrase type: ${type}`;
+}
