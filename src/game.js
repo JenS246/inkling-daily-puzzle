@@ -662,6 +662,9 @@ ui.calendarNext.addEventListener('click', () => changeArchiveMonth(1));
 ui.inkprintCard.addEventListener('click', openSharePreview);
 ui.shareButton.addEventListener('click', () => shareResult(ui.shareButton));
 ui.shareClose.addEventListener('click', () => ui.shareDialog.close());
+ui.shareDialog.addEventListener('click', (event) => {
+  if (event.target === ui.shareDialog) ui.shareDialog.close();
+});
 ui.shareConfirm.addEventListener('click', () => shareResult(ui.shareConfirm));
 ui.themeToggle.addEventListener('click', toggleTheme);
 ui.contrastToggle.addEventListener('click', toggleContrast);
