@@ -3028,3 +3028,54 @@ a.calendar-day:hover {
     min-height: 46dvh;
   }
 }
+
+/* Let the completed Inkprint breathe as one piece on phones. */
+@media (max-width: 600px) {
+  .gameplay-stage.is-complete .completion {
+    grid-template-areas:
+      "heading"
+      "inkprint"
+      "connection"
+      "share"
+      "fallback";
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+  }
+
+  .gameplay-stage.is-complete .inkprint-card {
+    width: 100%;
+  }
+
+  .gameplay-stage.is-complete .inkprint-grid {
+    width: min(100%, 290px);
+  }
+
+  .gameplay-stage.is-complete .inkprint-details {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: .45rem;
+    margin-top: .8rem;
+  }
+
+  .gameplay-stage.is-complete .inkprint-details span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .gameplay-stage.is-complete .inkprint-details span:last-child {
+    justify-self: start;
+    white-space: nowrap;
+  }
+
+  .gameplay-stage.is-complete .connection-reveal {
+    margin-top: .35rem;
+  }
+
+  .gameplay-stage.is-complete .completion > .ink-button {
+    width: auto;
+  }
+
+  .share-details {
+    margin-top: 1.1rem;
+  }
+}
