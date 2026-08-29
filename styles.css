@@ -3450,3 +3450,406 @@ a.calendar-day.is-unplayed {
     content: none;
   }
 }
+
+/* Compact puzzle controls and full-viewport secondary pages */
+.masthead {
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+}
+
+.puzzle-hint {
+  grid-area: cloud;
+  z-index: 2;
+  align-self: start;
+  justify-self: end;
+  min-height: 44px;
+  margin: .55rem .65rem 0 0;
+  padding: .35rem .18rem .18rem;
+  border: 0;
+  border-bottom: 3px solid var(--accent);
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  color: var(--accent);
+  font-family: var(--poster);
+  font-size: clamp(1.05rem, 1.8vw, 1.35rem);
+  font-weight: 950;
+  letter-spacing: -.025em;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.puzzle-hint:hover,
+.puzzle-hint:focus-visible {
+  color: var(--date-ink);
+  border-bottom-color: var(--date-ink);
+}
+
+.puzzle-hint:focus-visible {
+  outline: 0;
+  box-shadow: 0 4px 0 color-mix(in srgb, var(--date-ink) 22%, transparent);
+}
+
+.puzzle-hint:disabled {
+  color: var(--rule);
+  border-bottom-color: var(--rule);
+  cursor: default;
+}
+
+.word-cloud {
+  padding-top: 2.5rem;
+}
+
+.hint-reveal {
+  margin-top: .1rem;
+  margin-bottom: .2rem;
+  padding: .38rem .75rem .42rem;
+  border-left-width: 5px;
+  background: transparent;
+  color: var(--accent);
+  font-family: var(--poster);
+  font-size: clamp(1.18rem, 2vw, 1.5rem);
+  font-weight: 950;
+  letter-spacing: -.025em;
+  line-height: 1.08;
+}
+
+.found-ledger ol {
+  margin-top: 1.25rem;
+}
+
+.archive-view {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  width: auto;
+  height: calc(100dvh - 62px);
+  max-width: 980px;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: .35rem;
+  padding-top: clamp(.7rem, 1.8dvh, 1.25rem);
+  padding-bottom: clamp(.5rem, 1.2dvh, .9rem);
+  overflow: hidden;
+}
+
+.archive-view::before {
+  position: absolute;
+  top: -3.8rem;
+  left: -8rem;
+  z-index: 0;
+  width: min(72vw, 670px);
+  height: clamp(190px, 27vw, 290px);
+  border-radius: 47% 53% 61% 39% / 42% 57% 43% 58%;
+  background:
+    radial-gradient(ellipse at 28% 53%, color-mix(in srgb, var(--archive-blue) 22%, transparent) 0 31%, transparent 33%),
+    radial-gradient(ellipse at 55% 43%, color-mix(in srgb, var(--archive-green) 18%, transparent) 0 36%, transparent 38%),
+    radial-gradient(ellipse at 78% 62%, color-mix(in srgb, var(--archive-gold) 17%, transparent) 0 27%, transparent 29%),
+    radial-gradient(circle at 91% 29%, color-mix(in srgb, var(--miss) 13%, transparent) 0 10%, transparent 12%);
+  content: "";
+  opacity: .72;
+  transform: rotate(-4deg);
+  pointer-events: none;
+}
+
+.archive-lead,
+.archive-calendar {
+  position: relative;
+  z-index: 1;
+}
+
+.archive-lead {
+  margin-bottom: 0;
+}
+
+.archive-lead h1 {
+  font-size: clamp(3rem, 5.2vw, 4rem);
+}
+
+.archive-calendar {
+  display: flex;
+  width: min(780px, 100%);
+  min-height: 0;
+  flex-direction: column;
+  justify-self: center;
+  overflow: visible;
+}
+
+.archive-calendar::before {
+  content: none;
+}
+
+.calendar-toolbar {
+  min-height: 44px;
+  margin-bottom: 0;
+}
+
+.calendar-toolbar h2 {
+  font-size: clamp(1.35rem, 2.4vw, 1.9rem);
+}
+
+.calendar-weekdays {
+  padding: .3rem .15rem .22rem;
+  font-size: clamp(.82rem, 1.25vw, .98rem);
+}
+
+.archive-list {
+  gap: clamp(2px, .35vw, 4px);
+}
+
+.calendar-day,
+a.calendar-day {
+  height: clamp(30px, 5.6dvh, 54px);
+  aspect-ratio: auto;
+}
+
+.calendar-number {
+  font-size: clamp(.92rem, 1.55vw, 1.18rem);
+}
+
+.calendar-key {
+  gap: .4rem 1.1rem;
+  padding-top: .5rem;
+  font-size: .9rem;
+}
+
+.calendar-swatch {
+  width: .85rem;
+}
+
+html[data-active-view="archive"],
+body[data-active-view="archive"],
+html[data-active-view="how-to-play"],
+body[data-active-view="how-to-play"] {
+  overflow-y: hidden;
+}
+
+.how-view {
+  width: auto;
+  height: calc(100dvh - 62px);
+  padding-top: clamp(.65rem, 1.8dvh, 1.2rem);
+  padding-bottom: clamp(.5rem, 1.2dvh, .9rem);
+  align-items: center;
+  gap: clamp(1.25rem, 4vw, 4rem);
+  overflow: hidden;
+}
+
+.how-rules h1 {
+  font-size: clamp(2.8rem, 6vw, 4.6rem);
+}
+
+.how-rules ol {
+  gap: clamp(.45rem, 1.2dvh, .85rem);
+  margin: clamp(.65rem, 1.6dvh, 1.15rem) 0;
+  font-size: clamp(1.05rem, 1.7vw, 1.32rem);
+  line-height: 1.25;
+}
+
+.hint-explainer,
+.color-explainer {
+  margin-bottom: clamp(.45rem, 1.1dvh, .8rem);
+  font-size: clamp(1rem, 1.65vw, 1.22rem);
+  line-height: 1.2;
+}
+
+.how-rules .underlined-link {
+  color: var(--miss);
+}
+
+.type-example {
+  min-height: 0;
+}
+
+.sample-cloud {
+  min-height: clamp(150px, 27dvh, 220px);
+}
+
+.sample-phrases {
+  gap: .22rem .8rem;
+  margin-top: .55rem;
+  font-size: clamp(1rem, 2.2vw, 1.65rem);
+}
+
+@media (max-width: 760px) {
+  html[data-active-view="today"],
+  body[data-active-view="today"] {
+    overflow-y: hidden;
+  }
+
+  .masthead {
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+  }
+
+  .gameplay-stage {
+    grid-template-areas:
+      "notice"
+      "cloud"
+      "hint"
+      "form"
+      "found"
+      "complete";
+  }
+
+  .puzzle-hint {
+    margin: .35rem .3rem 0 0;
+    font-size: clamp(.96rem, 4vw, 1.12rem);
+  }
+
+  .word-cloud {
+    min-height: clamp(290px, 44dvh, 390px);
+    padding-top: 2.35rem;
+  }
+
+  .found-ledger ol {
+    margin-top: 1.05rem;
+  }
+
+  .archive-view {
+    height: calc(100dvh - 56px);
+    gap: .2rem;
+    padding-top: .45rem;
+    padding-bottom: .35rem;
+  }
+
+  .archive-view::before {
+    top: -3.2rem;
+    left: -6.5rem;
+    width: 125vw;
+    height: 180px;
+    opacity: .62;
+  }
+
+  .archive-lead {
+    display: block;
+  }
+
+  .archive-lead h1 {
+    font-size: clamp(2.3rem, 11vw, 3rem);
+    white-space: nowrap;
+  }
+
+  .archive-lead .underlined-link {
+    display: inline-block;
+    margin: .15rem 0 0;
+    font-size: clamp(.88rem, 3.4vw, 1.05rem);
+    white-space: nowrap;
+  }
+
+  .archive-calendar {
+    width: 100%;
+  }
+
+  .calendar-toolbar {
+    min-height: 40px;
+  }
+
+  .calendar-toolbar h2 {
+    font-size: 1.35rem;
+  }
+
+  .calendar-weekdays {
+    padding-block: .18rem;
+    font-size: clamp(.72rem, 3vw, .86rem);
+  }
+
+  .calendar-day,
+  a.calendar-day {
+    height: clamp(28px, 5.15dvh, 42px);
+  }
+
+  .calendar-number {
+    font-size: clamp(.78rem, 3.3vw, .96rem);
+  }
+
+  .calendar-key {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .28rem .7rem;
+    padding-top: .38rem;
+    font-size: clamp(.78rem, 3.1vw, .9rem);
+  }
+
+  .how-view {
+    height: calc(100dvh - 56px);
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    align-content: start;
+    gap: .5rem;
+    padding-top: .4rem;
+    padding-bottom: .35rem;
+  }
+
+  .how-rules h1 {
+    font-size: clamp(2.25rem, 11vw, 3rem);
+  }
+
+  .how-rules ol {
+    gap: .3rem;
+    margin: .45rem 0;
+    padding-left: 1.05rem;
+    font-size: clamp(.94rem, 3.8vw, 1.08rem);
+    line-height: 1.18;
+  }
+
+  .hint-explainer,
+  .color-explainer {
+    margin-bottom: .32rem;
+    font-size: clamp(.92rem, 3.5vw, 1.04rem);
+    line-height: 1.08;
+  }
+
+  .how-rules .underlined-link {
+    font-size: clamp(.96rem, 3.6vw, 1.06rem);
+  }
+
+  .type-example {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(130px, .9fr);
+    gap: .55rem;
+    align-items: center;
+  }
+
+  .sample-cloud {
+    min-height: clamp(120px, 22dvh, 170px);
+    padding: .35rem .2rem;
+  }
+
+  .sample-cloud > .sample-cloud-word {
+    font-size: clamp(1.15rem, 5.7vw, 2rem);
+    line-height: .82;
+  }
+
+  .sample-cloud > .sample-cloud-word[data-frequency="2"] {
+    font-size: clamp(1.8rem, 8.5vw, 3rem);
+  }
+
+  .sample-cloud > .sample-cloud-word[data-frequency="4"] {
+    font-size: clamp(3rem, 15vw, 5.1rem);
+    line-height: .72;
+  }
+
+  .sample-phrases {
+    grid-template-columns: minmax(0, 1fr);
+    gap: .24rem;
+    margin: 0;
+    font-size: clamp(.82rem, 3vw, 1rem);
+    line-height: 1.06;
+  }
+
+  .sample-phrases p {
+    margin: 0;
+  }
+}
+
+@media (max-width: 390px) {
+  .archive-lead h1 {
+    font-size: clamp(2.05rem, 10.5vw, 2.55rem);
+  }
+
+  .archive-lead .underlined-link {
+    font-size: .82rem;
+  }
+
+  .type-example {
+    grid-template-columns: minmax(0, 1fr) 128px;
+    gap: .4rem;
+  }
+}

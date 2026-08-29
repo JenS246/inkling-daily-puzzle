@@ -19,6 +19,7 @@ The interface is intentionally closer to an inked typographic painting than a st
 - First-time players see a one-time editorial How to Play sheet. The permanent `?` control opens the expanded instructions and a puzzle-like LIGHT example.
 - Finished puzzles open a spoiler-free Inkprint dialog with score, guesses, elapsed time, and hints. The Share action copies a compact text Inkprint directly.
 - The archive is a bounded calendar. Future dates cannot be opened; filled, shaded, slashed, and blank dates distinguish solved, in-progress, failed, and unplayed puzzles.
+- Twelve hand-built archive puzzles cover August 16-27, 2026, before the rotating daily schedule begins.
 - Progress, streaks, appearance, statistics, hints, and archive results live in browser `localStorage` only.
 - Archive completions do not affect the daily streak.
 - The app has no backend, account system, analytics, cookies, or external runtime dependencies.

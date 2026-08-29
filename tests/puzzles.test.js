@@ -38,7 +38,8 @@ test('the daily schedule advances its date and continues beyond the first bank c
     getDailyPuzzle('2026-08-28').phrases.map(({ answer }) => answer),
     getDailyPuzzle('2026-09-29').phrases.map(({ answer }) => answer)
   );
-  assert.equal(puzzleByDate('2026-08-22'), undefined);
+  assert.equal(puzzleByDate('2026-08-16')?.id, 173);
+  assert.equal(puzzleByDate('2026-08-15'), undefined);
 });
 
 test('the 480-edition rotation stays unique and puzzle-safe', () => {

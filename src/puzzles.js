@@ -71,6 +71,97 @@ const LEGACY_PUZZLES = [
     connection: 'What waits between waking and sleep',
     connectionNote: 'Printed lines give way to sand, folklore, and a famous song.',
     palette: 'plum'
+  },
+  {
+    id: 179,
+    date: '2026-08-22',
+    phrases: [
+      { answer: 'out of the blue', type: 'idiom', note: '' },
+      { answer: 'once in a blue moon', type: 'idiom', note: '' },
+      { answer: 'blue blood', type: 'expression', note: '' },
+      { answer: 'blue ribbon', type: 'award', note: '' }
+    ],
+    connection: 'Blue phrases',
+    connectionNote: '',
+    palette: 'harbor'
+  },
+  {
+    id: 178,
+    date: '2026-08-21',
+    phrases: [
+      { answer: 'draw the line', type: 'idiom', note: '' },
+      { answer: 'walk the line', type: 'expression', note: '' },
+      { answer: 'line of duty', type: 'expression', note: '' },
+      { answer: 'punch line', type: 'comedy', note: '' }
+    ],
+    connection: 'Line phrases',
+    connectionNote: '',
+    palette: 'press'
+  },
+  {
+    id: 177,
+    date: '2026-08-20',
+    phrases: [
+      { answer: 'upper hand', type: 'idiom', note: '' },
+      { answer: 'second hand', type: 'timekeeping', note: '' },
+      { answer: 'lend a hand', type: 'expression', note: '' },
+      { answer: 'hand in glove', type: 'idiom', note: '' }
+    ],
+    connection: 'Hand phrases',
+    connectionNote: '',
+    palette: 'orchard'
+  },
+  {
+    id: 176,
+    date: '2026-08-19',
+    phrases: [
+      { answer: 'head over heels', type: 'idiom', note: '' },
+      { answer: 'keep your head', type: 'expression', note: '' },
+      { answer: 'head in the clouds', type: 'idiom', note: '' },
+      { answer: 'off the top of my head', type: 'expression', note: '' }
+    ],
+    connection: 'Head phrases',
+    connectionNote: '',
+    palette: 'plum'
+  },
+  {
+    id: 175,
+    date: '2026-08-18',
+    phrases: [
+      { answer: 'cold shoulder', type: 'idiom', note: '' },
+      { answer: 'cold feet', type: 'idiom', note: '' },
+      { answer: 'cold comfort', type: 'expression', note: '' },
+      { answer: 'in cold blood', type: 'idiom', note: '' }
+    ],
+    connection: 'Cold phrases',
+    connectionNote: '',
+    palette: 'bottle'
+  },
+  {
+    id: 174,
+    date: '2026-08-17',
+    phrases: [
+      { answer: 'point of view', type: 'expression', note: '' },
+      { answer: 'beside the point', type: 'idiom', note: '' },
+      { answer: 'point blank', type: 'expression', note: '' },
+      { answer: 'breaking point', type: 'idiom', note: '' }
+    ],
+    connection: 'Point phrases',
+    connectionNote: '',
+    palette: 'press'
+  },
+  {
+    id: 173,
+    date: '2026-08-16',
+    phrases: [
+      { answer: 'open secret', type: 'expression', note: '' },
+      { answer: 'open mind', type: 'expression', note: '' },
+      { answer: 'open book', type: 'idiom', note: '' },
+      { answer: 'open season', type: 'expression', note: '' }
+    ],
+    connection: 'Open phrases',
+    connectionNote: '',
+    palette: 'orchard'
   }
 ];
 

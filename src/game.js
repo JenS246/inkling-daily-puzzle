@@ -405,9 +405,9 @@ function renderPuzzleState(newlyFoundIndex = -1) {
   ui.submitButton.disabled = isOver(result);
   ui.phraseInput.disabled = isOver(result);
   const hintsLeft = remainingHints(result.hints);
-  const hintLabel = hintsLeft === 0 ? 'No hints left' : `${hintsLeft} ${hintsLeft === 1 ? 'hint' : 'hints'} left`;
+  const hintLabel = hintsLeft === 0 ? 'No hints remaining' : `${hintsLeft} ${hintsLeft === 1 ? 'hint' : 'hints'} remaining`;
   ui.hintButton.disabled = isOver(result) || hintsLeft === 0;
-  ui.hintButtonLabel.textContent = `${hintsLeft} left`;
+  ui.hintButtonLabel.textContent = hintsLeft === 0 ? 'HINTS USED' : `HINT? ${hintsLeft} REMAINING`;
   ui.hintButton.setAttribute('aria-label', hintLabel);
   renderCloud(foundWords);
   renderLedger(newlyFoundIndex);
