@@ -57,8 +57,13 @@ export function saveState(state, storage = globalThis.localStorage) {
   }
 }
 
+export function puzzleSignature(puzzle) {
+  return puzzle.phrases.map(({ answer }) => String(answer).toLocaleLowerCase('en-US').trim()).join('|');
+}
+
 export function getPuzzleProgress(state, puzzle) {
-  const saved = safeObject(state.puzzles[puzzle.date], {});
+  const candidate = safeObject(state.puzzles[puzzle.date], {});
+  const saved = candidate.signature === puzzleSignature(puzzle) ? candidate : {};
   const solved = Array.isArray(saved.solved) ? saved.solved : [];
   const incorrect = Number.isFinite(saved.incorrect) ? saved.incorrect : 0;
   const legacyAttempts = [

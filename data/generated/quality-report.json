@@ -1,0 +1,34 @@
+{
+  "rawCandidates": 7888,
+  "cleanUniquePhrases": 7326,
+  "wordsPerPhrase": {
+    "3": 3167,
+    "4": 2058,
+    "5": 1046,
+    "6": 661,
+    "7": 394
+  },
+  "phrasesBySource": {
+    "idiomash": 735,
+    "cstafie idioms": 3878,
+    "proverbs gist": 1521,
+    "Goodbooks 10k": 955,
+    "IMDb ranked movies": 532,
+    "Rolling Stone songs": 191
+  },
+  "games": 365,
+  "phraseSlots": 1460,
+  "uniquePhrasesUsed": 1032,
+  "phraseReuseRate": 0.2932,
+  "maximumPhraseUses": 2,
+  "gamesWithFourWayHub": 365,
+  "phraseTypesUsed": {
+    "book title": 533,
+    "song title": 198,
+    "movie title": 317,
+    "idiom": 407,
+    "proverb": 5
+  },
+  "firstDate": "2026-08-30",
+  "lastDate": "2027-08-29"
+}

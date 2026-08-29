@@ -1,5 +1,5 @@
 import { PALETTES, derivePuzzle, getDailyPuzzle, normalizeAnswer, puzzleByDate, puzzles, utcDateKey } from './puzzles.js';
-import { MAX_GUESSES, MAX_HINTS, completeDailyStats, getPuzzleProgress, loadState, remainingHints, saveState } from './storage.js?v=20260829e';
+import { MAX_GUESSES, MAX_HINTS, completeDailyStats, getPuzzleProgress, loadState, puzzleSignature, remainingHints, saveState } from './storage.js?v=20260829f';
 import { hintSequenceForPuzzle, phraseTypeHint } from './hints.js?v=20260829k';
 
 const ui = {
@@ -78,7 +78,7 @@ function progress() {
 }
 
 function writeProgress(nextProgress) {
-  state.puzzles[puzzle.date] = nextProgress;
+  state.puzzles[puzzle.date] = { ...nextProgress, signature: puzzleSignature(puzzle) };
   saveState(state);
 }
 
@@ -435,13 +435,15 @@ function loadPuzzle(nextPuzzle) {
 }
 
 function archiveStatus(dateKey) {
-  const result = state.puzzles[dateKey];
+  const target = puzzleByDate(dateKey);
+  if (!target) return 'Unplayed';
+  const result = getPuzzleProgress(state, target);
   if (result?.complete) return 'Solved';
   const attempts = Array.isArray(result?.attempts)
     ? result.attempts.length
     : (result?.solved?.length || 0) + (result?.incorrect || 0);
   if (result?.failed || attempts >= MAX_GUESSES) return 'Inkblotted';
-  if (result && (result.solved?.length || result.incorrect || result.hints)) return 'In progress';
+  if (result.solved.length || result.incorrect || result.hints) return 'In progress';
   return 'Unplayed';
 }
 

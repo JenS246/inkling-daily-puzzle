@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { PALETTES, derivePuzzle, getDailyPuzzle, normalizeAnswer, puzzleByDate, puzzles } from '../src/puzzles.js';
-import { MAX_GUESSES, MAX_HINTS, completeDailyStats, emptyState, getPuzzleProgress, loadState, remainingHints } from '../src/storage.js';
+import { MAX_GUESSES, MAX_HINTS, completeDailyStats, emptyState, getPuzzleProgress, loadState, puzzleSignature, remainingHints } from '../src/storage.js';
 import { hintSequenceForPuzzle, phraseTypeHint } from '../src/hints.js';
 
 test('every cloud word is derived from at least one phrase', () => {
@@ -19,7 +19,7 @@ test('the curated daily bank has four distinct phrases and a strong repeated wor
   for (const puzzle of puzzles) {
     assert.equal(puzzle.phrases.length, 4, `${puzzle.date}: expected four phrases`);
     assert.equal(new Set(puzzle.phrases.map(({ answer }) => normalizeAnswer(answer))).size, 4, `${puzzle.date}: answers must be distinct`);
-    if (puzzle.date >= '2026-08-28') {
+    if (puzzle.date >= '2026-08-30') {
       assert.ok(Math.max(...derivePuzzle(puzzle).words.map(({ frequency }) => frequency)) >= 3, `${puzzle.date}: cloud needs a strong repeated word`);
     }
     assert.equal(dates.has(puzzle.date), false, `${puzzle.date}: duplicate date`);
@@ -39,33 +39,41 @@ test('every puzzle has enough words for a complete themed color set', () => {
 });
 
 test('the daily schedule advances its date and continues beyond the first bank cycle', () => {
-  assert.equal(getDailyPuzzle('2026-08-29').date, '2026-08-29');
-  assert.equal(getDailyPuzzle('2026-08-29').id, 186);
+  assert.equal(getDailyPuzzle('2026-08-30').date, '2026-08-30');
+  assert.equal(getDailyPuzzle('2026-08-30').id, 187);
   assert.equal(getDailyPuzzle('2026-10-15').date, '2026-10-15');
   assert.notEqual(getDailyPuzzle('2026-10-15').id, getDailyPuzzle('2026-08-29').id);
   assert.notDeepEqual(
-    getDailyPuzzle('2026-08-28').phrases.map(({ answer }) => answer),
-    getDailyPuzzle('2026-09-29').phrases.map(({ answer }) => answer)
+    getDailyPuzzle('2026-08-30').phrases.map(({ answer }) => answer),
+    getDailyPuzzle('2026-09-30').phrases.map(({ answer }) => answer)
   );
   assert.equal(puzzleByDate('2026-08-16')?.id, 173);
   assert.equal(puzzleByDate('2026-08-15'), undefined);
 });
 
-test('the 480-edition rotation stays unique and puzzle-safe', () => {
+test('the 365-edition annual bank stays unique and puzzle-safe', () => {
   const editions = new Set();
-  const start = Date.parse('2026-08-28T00:00:00Z');
-  for (let offset = 0; offset < 480; offset += 1) {
+  const phraseUses = new Map();
+  const start = Date.parse('2026-08-30T00:00:00Z');
+  for (let offset = 0; offset < 365; offset += 1) {
     const date = new Date(start + offset * 86_400_000).toISOString().slice(0, 10);
     const puzzle = puzzleByDate(date);
     const derived = derivePuzzle(puzzle);
     const edition = puzzle.phrases.map(({ answer }) => normalizeAnswer(answer)).sort().join('|');
     assert.equal(puzzle.phrases.length, 4, `${date}: expected four phrases`);
     assert.equal(new Set(puzzle.phrases.map(({ answer }) => normalizeAnswer(answer))).size, 4, `${date}: answers must be distinct`);
-    assert.ok(Math.max(...derived.words.map(({ frequency }) => frequency)) >= 3, `${date}: cloud needs a strong repeated word`);
+    assert.equal(Math.max(...derived.words.map(({ frequency }) => frequency)), 4, `${date}: cloud needs a four-way hub word`);
     for (const phrase of derived.phrases) assert.equal(new Set(phrase.words).size, phrase.words.length, `${date}: phrase repeats a cloud word`);
+    for (const phrase of puzzle.phrases) {
+      assert.match(phrase.answer, /^[a-z ]+$/, `${date}: answer must contain letters and spaces only`);
+      assert.ok(phrase.answer.split(' ').length >= 3 && phrase.answer.split(' ').length <= 7, `${date}: answer must contain 3–7 words`);
+      phraseUses.set(phrase.answer, (phraseUses.get(phrase.answer) || 0) + 1);
+    }
     assert.equal(editions.has(edition), false, `${date}: repeated edition`);
     editions.add(edition);
   }
+  assert.ok(phraseUses.size >= 1000, 'bank should use the source material efficiently');
+  assert.ok(Math.max(...phraseUses.values()) <= 2, 'no answer should appear more than twice');
 });
 
 test('frequency counts phrase membership rather than repeated spelling', () => {
@@ -107,7 +115,7 @@ test('hint availability counts down clearly and never exceeds three hints', () =
   assert.equal(remainingHints(4), 0);
 
   const state = emptyState();
-  state.puzzles[puzzles[0].date] = { hints: 9 };
+  state.puzzles[puzzles[0].date] = { signature: puzzleSignature(puzzles[0]), hints: 9 };
   assert.equal(getPuzzleProgress(state, puzzles[0]).hints, MAX_HINTS);
 });
 
@@ -130,6 +138,7 @@ test('expression hints read naturally without a type label', () => {
 test('legacy progress migrates into the ten-guess Inkprint', () => {
   const state = emptyState();
   state.puzzles[puzzles[0].date] = {
+    signature: puzzleSignature(puzzles[0]),
     solved: [0, 1],
     incorrect: 8,
     hints: 1,
@@ -149,6 +158,7 @@ test('legacy progress migrates into the ten-guess Inkprint', () => {
 test('a completed puzzle never migrates as failed', () => {
   const state = emptyState();
   state.puzzles[puzzles[0].date] = {
+    signature: puzzleSignature(puzzles[0]),
     solved: [0, 1, 2, 3],
     incorrect: 6,
     complete: true,
@@ -159,4 +169,15 @@ test('a completed puzzle never migrates as failed', () => {
   const progress = getPuzzleProgress(state, puzzles[0]);
   assert.equal(progress.complete, true);
   assert.equal(progress.failed, false);
+});
+
+test('progress resets when a date receives different phrase content', () => {
+  const state = emptyState();
+  state.puzzles[puzzles[0].date] = {
+    signature: 'an old phrase bank',
+    solved: [0, 1, 2, 3],
+    complete: true
+  };
+  assert.deepEqual(getPuzzleProgress(state, puzzles[0]).solved, []);
+  assert.equal(getPuzzleProgress(state, puzzles[0]).complete, false);
 });

@@ -6,8 +6,10 @@ The interface is intentionally closer to an inked typographic painting than a st
 
 ## How it works
 
-- One official puzzle is selected by its UTC calendar date. Thirty-two hand-built themes and rotating phrase pools create 480 unique numbered daily editions before any set can repeat.
-- `src/puzzles.js` stores puzzle content separately from the application.
+- One official puzzle is selected by its UTC calendar date. The generated bank is queued entirely in the future: 365 distinct numbered editions from August 30, 2026 through August 29, 2027. Already-issued puzzles remain unchanged.
+- `src/generated-puzzles.js` stores the reproducible game bank separately from application logic.
+- Every game has exactly four answers and a meaningful hub word present in all four, so the largest cloud word always participates in every answer.
+- The bank uses 1,032 distinct phrases across 1,460 slots; no phrase appears more than twice.
 - `src/hints.js` gives each numbered puzzle a stable, varied sequence of three hint types.
 - Unique cloud words, word frequencies, and shared-word relationships are derived automatically.
 - `src/game.js` renders the words in deterministic order. CSS packs them into a dense, responsive composition without using phrase membership.
@@ -41,11 +43,30 @@ npm test
 npm run check
 ```
 
-The tests cover puzzle derivation, phrase word uniqueness, hint rotation, answer normalization, corrupted local data, and UTC streak behavior.
+The tests cover the 365-game bank, four-way word overlap, phrase reuse limits,
+answer cleanliness, puzzle derivation, hint rotation, answer normalization,
+corrupted local data, and UTC streak behavior.
 
-## Add a puzzle
+## Refresh the source lists
 
-Add a recipe to `DAILY_RECIPES` in `src/puzzles.js`:
+The checked-in raw inputs and generated outputs make the content pipeline
+auditable and reproducible:
+
+```bash
+npm run data:download
+npm run data:build
+```
+
+The build combines public idiom, proverb, popular-book, ranked-movie, and
+Rolling Stone song-title lists. It converts dashes to spaces, keeps only 3–7
+word answers made of letters and spaces, removes placeholders and
+family-unsafe terms, deduplicates entries, and ranks more recognizable sources
+first. See `data/SOURCES.md` for source URLs and
+`data/generated/quality-report.json` for exact build statistics.
+
+## Add a legacy puzzle
+
+Add a dated object to `LEGACY_PUZZLES` in `src/puzzles.js`:
 
 ```js
 {
