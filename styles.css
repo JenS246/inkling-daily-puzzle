@@ -3088,3 +3088,287 @@ a.calendar-day:hover {
     margin-top: 1.1rem;
   }
 }
+
+/* Results, archive, and control refinements */
+.masthead {
+  position: relative;
+  z-index: 20;
+}
+
+.utility-menu {
+  z-index: 30;
+}
+
+.utility-menu summary {
+  min-width: 88px;
+  padding: 0 1.8rem 0 .65rem;
+}
+
+.utility-panel {
+  z-index: 40;
+}
+
+.primary-nav a,
+.text-button {
+  width: 100%;
+}
+
+.ledger-heading {
+  justify-content: flex-start;
+  margin-bottom: .9rem;
+}
+
+.remaining-readout {
+  justify-items: start;
+}
+
+.found-ledger ol {
+  margin-top: .85rem;
+}
+
+.completion {
+  grid-template-areas:
+    "heading inkprint"
+    "share inkprint";
+  grid-template-columns: minmax(180px, .42fr) minmax(280px, .58fr);
+  width: min(720px, 100%);
+}
+
+button.inkprint-card {
+  width: 100%;
+  appearance: none;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+button.inkprint-card:hover,
+button.inkprint-card:focus-visible {
+  background: color-mix(in srgb, var(--accent) 13%, var(--paper-raised));
+}
+
+.share-details {
+  margin-top: clamp(1.25rem, 4vw, 2rem);
+}
+
+.share-connection {
+  margin: clamp(1.15rem, 3vw, 1.6rem) 0 0;
+  color: #445e61;
+  font-family: var(--playful);
+  font-size: clamp(1.1rem, 3vw, 1.35rem);
+  font-weight: 850;
+  line-height: 1.15;
+}
+
+.color-explainer span,
+.hint-explainer span,
+.dialog-hint span {
+  color: var(--ink-soft);
+  font-weight: 700;
+}
+
+.dialog-hint {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem 1.25rem;
+}
+
+.dialog-hint p {
+  margin: 0;
+}
+
+.dialog-hint strong {
+  color: var(--ink);
+}
+
+.archive-view {
+  display: block;
+  max-width: 1180px;
+  padding-top: clamp(2rem, 5vw, 4.5rem);
+}
+
+.archive-lead {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: clamp(1rem, 2.5vw, 2rem);
+}
+
+.archive-lead .underlined-link {
+  margin: 0 0 .35rem;
+}
+
+.archive-calendar {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  background: transparent;
+}
+
+.archive-calendar::before {
+  position: absolute;
+  top: 12%;
+  left: 58%;
+  z-index: -1;
+  width: min(36vw, 380px);
+  aspect-ratio: 1.2;
+  border-radius: 58% 42% 64% 36% / 43% 61% 39% 57%;
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  box-shadow:
+    -8rem 6rem 0 -5rem color-mix(in srgb, var(--accent) 5%, transparent),
+    7rem 8rem 0 -6rem color-mix(in srgb, var(--miss) 5%, transparent);
+  content: "";
+  transform: rotate(-8deg);
+  pointer-events: none;
+}
+
+.calendar-toolbar,
+.calendar-weekdays,
+.archive-list,
+.calendar-key {
+  position: relative;
+  z-index: 1;
+}
+
+.calendar-toolbar {
+  margin-bottom: .45rem;
+}
+
+.calendar-weekdays {
+  padding-inline: .2rem;
+  font-size: clamp(.95rem, 1.5vw, 1.15rem);
+}
+
+.archive-list {
+  gap: clamp(3px, .55vw, 7px);
+}
+
+.calendar-day,
+a.calendar-day {
+  aspect-ratio: 1.12;
+  outline: 0;
+  background: transparent;
+}
+
+a.calendar-day:hover {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+}
+
+.calendar-number {
+  position: static;
+  color: inherit;
+  font-size: clamp(1.05rem, 2.2vw, 1.55rem);
+}
+
+a.calendar-day.is-complete {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+a.calendar-day.is-progress {
+  background: color-mix(in srgb, var(--accent) 23%, transparent);
+  color: var(--ink);
+}
+
+a.calendar-day.is-failed {
+  background: repeating-linear-gradient(135deg, color-mix(in srgb, var(--miss) 60%, transparent) 0 4px, transparent 4px 9px);
+  color: var(--ink);
+}
+
+a.calendar-day.is-unplayed {
+  background: transparent;
+  color: var(--ink);
+}
+
+.calendar-key {
+  display: flex;
+  gap: .75rem 1.4rem;
+  padding-top: 1.25rem;
+  font-size: 1rem;
+}
+
+.calendar-swatch {
+  display: inline-block;
+  width: 1rem;
+  aspect-ratio: 1;
+}
+
+.calendar-swatch.is-complete {
+  background: var(--ink);
+}
+
+.calendar-swatch.is-progress {
+  background: color-mix(in srgb, var(--accent) 23%, transparent);
+}
+
+.calendar-swatch.is-failed {
+  background: repeating-linear-gradient(135deg, var(--miss) 0 2px, transparent 2px 4px);
+}
+
+.calendar-swatch.is-unplayed {
+  outline: 1px solid var(--rule);
+  outline-offset: -1px;
+}
+
+@media (max-width: 600px) {
+  .gameplay-stage.is-complete .completion {
+    grid-template-areas:
+      "heading"
+      "inkprint"
+      "share";
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .archive-lead {
+    display: block;
+  }
+
+  .archive-lead .underlined-link {
+    margin-top: .9rem;
+  }
+
+  .calendar-day,
+  a.calendar-day {
+    aspect-ratio: 1;
+  }
+
+  .calendar-key {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .65rem;
+  }
+
+  .share-details {
+    margin-top: 1.4rem;
+  }
+}
+
+@media (max-width: 340px) {
+  .utility-menu summary {
+    width: 44px;
+    min-width: 44px;
+    padding: 0;
+    overflow: hidden;
+    color: transparent;
+    font-size: 0;
+  }
+
+  .utility-menu summary::before,
+  .utility-menu summary::after {
+    right: 0;
+    width: 1rem;
+    color: var(--ink);
+  }
+
+  .utility-panel {
+    width: calc(100vw - .75rem);
+  }
+}

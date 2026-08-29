@@ -16,8 +16,8 @@ The interface is intentionally closer to an inked typographic painting than a st
 - A word fades only when every phrase that uses it has been found.
 - Every puzzle offers three progressively stronger hints from the top bar. The revealed hint stays clearly visible above the answer field.
 - First-time players see a one-time editorial How to Play sheet. The permanent `?` control opens the expanded instructions and a puzzle-like LIGHT example.
-- Finished puzzles produce a spoiler-free Inkprint with score, guesses, elapsed time, and hints. A visual preview appears before sharing.
-- The archive is a bounded calendar. Future dates cannot be opened, while phases and inkblots distinguish solved, failed, in-progress, and unplayed puzzles.
+- Finished puzzles open a spoiler-free Inkprint dialog with score, guesses, elapsed time, and hints. The Share action copies a compact text Inkprint directly.
+- The archive is a bounded calendar. Future dates cannot be opened; filled, shaded, slashed, and blank dates distinguish solved, in-progress, failed, and unplayed puzzles.
 - Progress, streaks, appearance, statistics, hints, and archive results live in browser `localStorage` only.
 - Archive completions do not affect the daily streak.
 - The app has no backend, account system, analytics, cookies, or external runtime dependencies.

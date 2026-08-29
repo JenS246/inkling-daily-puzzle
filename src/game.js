@@ -20,8 +20,8 @@ const ui = {
   hintReveal: document.querySelector('#hint-reveal'),
   completion: document.querySelector('#completion'),
   completionTitle: document.querySelector('#completion-title'),
+  inkprintCard: document.querySelector('#inkprint-card'),
   connection: document.querySelector('#connection'),
-  connectionNote: document.querySelector('#connection-note'),
   inkprintGrid: document.querySelector('#inkprint-grid'),
   inkprintMetrics: document.querySelector('#inkprint-metrics'),
   inkprintDate: document.querySelector('#inkprint-date'),
@@ -148,6 +148,14 @@ function renderShareMetrics(result = progress()) {
     return item;
   }));
   ui.sharePreviewMetrics.setAttribute('aria-label', shareMetrics(result));
+}
+
+function puzzleTakeaway() {
+  const entry = [...puzzle.words].sort((a, b) => b.frequency - a.frequency)[0];
+  if (!entry || entry.frequency < 2) return 'Each word appears once.';
+  const word = entry.word.toLocaleUpperCase('en-US');
+  if (entry.frequency === puzzle.phrases.length) return `${word} links all four.`;
+  return `${word} appears in ${entry.frequency} phrases.`;
 }
 
 function renderInkprintGrid(container, result = progress()) {
@@ -329,6 +337,7 @@ function submitAttempt(event) {
     ui.phraseInput.value = '';
     signalForm('is-correct');
     renderPuzzleState(match);
+    if (complete || failed) window.setTimeout(openSharePreview, 360);
     if (!complete && !failed) ui.phraseInput.focus();
     return;
   }
@@ -348,6 +357,7 @@ function submitAttempt(event) {
   ui.feedback.textContent = failed ? 'Ink ran dry.' : 'Inkblot. Try again.';
   signalForm('is-wrong');
   renderPuzzleState();
+  if (failed) window.setTimeout(openSharePreview, 360);
   if (!failed) ui.phraseInput.select();
 }
 
@@ -381,8 +391,6 @@ function renderCompletion() {
   if (!isOver(result)) return;
   ui.completionTitle.textContent = `INKPRINT #${puzzle.id}`;
   ui.completion.classList.toggle('is-failed', result.failed);
-  ui.connection.textContent = puzzle.connection;
-  ui.connectionNote.textContent = puzzle.connectionNote;
   renderInkprintGrid(ui.inkprintGrid, result);
   renderResultMetrics(result);
   ui.inkprintDate.textContent = compactDate();
@@ -478,7 +486,6 @@ function renderArchive() {
     cell.append(number);
     if (entry && !isFuture) {
       const status = archiveStatus(dateKey);
-      const moon = document.createElement('i');
       const statusClass = status === 'Solved'
         ? 'complete'
         : status === 'Inkblotted'
@@ -486,9 +493,7 @@ function renderArchive() {
           : status === 'In progress'
             ? 'progress'
             : 'unplayed';
-      moon.className = `moon-status ink-status is-${statusClass}`;
-      moon.setAttribute('aria-hidden', 'true');
-      cell.append(moon);
+      cell.classList.add(`is-${statusClass}`);
       cell.href = `#puzzle/${dateKey}`;
       cell.setAttribute('aria-label', `${formatDate(dateKey)}, puzzle ${entry.id}, ${status}`);
     } else {
@@ -530,7 +535,7 @@ function renderStatistics() {
 function resultText() {
   const result = progress();
   const symbols = inkprintSymbols(result);
-  return `INKPRINT #${puzzle.id}\n${symbols.slice(0, 5).join('')}\n${symbols.slice(5).join('')}\n▧▦▩■ phrase  ✺ inkblot  □ unused\n${shareMetrics(result)} | ${shareDate()}\n\nhttps://jens246.github.io/inkling-daily-puzzle/`;
+  return `INKPRINT #${puzzle.id}\n${symbols.slice(0, 5).join('')}\n${symbols.slice(5).join('')}\n\n${shareMetrics(result)} | ${shareDate()}\n\nhttps://jens246.github.io/inkling-daily-puzzle/`;
 }
 
 function openSharePreview() {
@@ -539,23 +544,21 @@ function openSharePreview() {
   renderInkprintGrid(ui.sharePreviewGrid, result);
   renderShareMetrics(result);
   ui.sharePreviewDate.textContent = shareDate();
+  ui.connection.textContent = puzzleTakeaway();
   ui.shareFallback.hidden = true;
-  ui.shareConfirm.textContent = 'Share Inkprint';
-  ui.shareDialog.showModal();
+  ui.shareConfirm.textContent = 'Copy Inkprint';
+  if (!ui.shareDialog.open) ui.shareDialog.showModal();
 }
 
-async function shareResult() {
+async function shareResult(button = ui.shareButton) {
   const text = resultText();
   try {
-    if (navigator.share) {
-      await navigator.share({ title: `INKPRINT #${puzzle.id}`, text });
-      return;
-    }
     await navigator.clipboard.writeText(text);
-    ui.shareConfirm.textContent = 'Copied';
-    window.setTimeout(() => ui.shareDialog.close(), 900);
-  } catch (error) {
-    if (error?.name === 'AbortError') return;
+    const original = button === ui.shareConfirm ? 'Copy Inkprint' : 'Share Your Inkprint';
+    button.textContent = 'Copied';
+    window.setTimeout(() => { button.textContent = original; }, 1200);
+  } catch {
+    openSharePreview();
     ui.shareText.value = text;
     ui.shareFallback.hidden = false;
     ui.shareText.focus();
@@ -650,9 +653,10 @@ ui.welcomeDialog.addEventListener('close', () => {
 });
 ui.calendarPrevious.addEventListener('click', () => changeArchiveMonth(-1));
 ui.calendarNext.addEventListener('click', () => changeArchiveMonth(1));
-ui.shareButton.addEventListener('click', openSharePreview);
+ui.inkprintCard.addEventListener('click', openSharePreview);
+ui.shareButton.addEventListener('click', () => shareResult(ui.shareButton));
 ui.shareClose.addEventListener('click', () => ui.shareDialog.close());
-ui.shareConfirm.addEventListener('click', shareResult);
+ui.shareConfirm.addEventListener('click', () => shareResult(ui.shareConfirm));
 ui.themeToggle.addEventListener('click', toggleTheme);
 ui.contrastToggle.addEventListener('click', toggleContrast);
 window.addEventListener('hashchange', route);

@@ -10,7 +10,7 @@
     <meta property="og:type" content="website" />
     <title>INKLING - Daily hidden phrases</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><g fill=%22%238b4051%22><circle cx=%2248%22 cy=%2252%22 r=%2234%22/><circle cx=%2220%22 cy=%2227%22 r=%229%22/><circle cx=%2279%22 cy=%2231%22 r=%2211%22/><circle cx=%2278%22 cy=%2277%22 r=%227%22/><circle cx=%2221%22 cy=%2278%22 r=%225%22/></g></svg>" />
-    <link rel="stylesheet" href="styles.css?v=20260829f" />
+    <link rel="stylesheet" href="styles.css?v=20260829i" />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to puzzle</a>
@@ -57,7 +57,7 @@
 
           <aside class="found-ledger" aria-labelledby="found-heading">
             <div class="ledger-heading">
-              <h2 id="found-heading">Found</h2>
+              <h2 id="found-heading" class="sr-only">Found phrases</h2>
               <p class="remaining-readout"><strong id="remaining-count"></strong><span id="remaining-label">remaining</span></p>
             </div>
             <div id="phase-track" class="attempt-track" aria-label="Guess progress"></div>
@@ -69,17 +69,13 @@
             <div class="completion-heading">
               <h2 id="completion-title">INKPRINT</h2>
             </div>
-            <div class="inkprint-card" aria-label="Spoiler-free result card">
+            <button id="inkprint-card" class="inkprint-card" type="button" aria-label="Open your Inkprint">
               <div id="inkprint-grid" class="inkprint-grid" aria-hidden="true"></div>
               <div class="inkprint-details">
                 <span id="inkprint-metrics"></span>
                 <span id="inkprint-date"></span>
               </div>
-            </div>
-            <div class="connection-reveal">
-              <p id="connection"></p>
-              <p id="connection-note"></p>
-            </div>
+            </button>
             <button id="share-button" class="ink-button" type="button">Share Your Inkprint</button>
           </section>
         </div>
@@ -98,7 +94,7 @@
           </div>
           <div class="calendar-weekdays" aria-hidden="true"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div>
           <div id="archive-list" class="archive-list"></div>
-          <div class="calendar-key"><span><i class="moon-status ink-status is-complete"></i> solved</span><span><i class="moon-status ink-status is-failed"></i> inkblotted</span><span><i class="moon-status ink-status is-progress"></i> in progress</span><span><i class="moon-status ink-status is-unplayed"></i> unplayed</span></div>
+          <div class="calendar-key"><span><i class="calendar-swatch is-complete"></i> solved</span><span><i class="calendar-swatch is-failed"></i> inkblotted</span><span><i class="calendar-swatch is-progress"></i> in progress</span><span><i class="calendar-swatch is-unplayed"></i> unplayed</span></div>
         </div>
       </section>
 
@@ -115,10 +111,10 @@
           <ol>
             <li>Find four familiar phrases. Every word belongs somewhere.</li>
             <li>Bigger words return in more than one phrase.</li>
-            <li>Ten guesses. A miss leaves an inkblot.</li>
+            <li>Ten guesses.</li>
           </ol>
-          <p class="color-explainer"><strong>The colors?</strong> Just today's ink.</p>
-          <p class="hint-explainer"><strong>Need a nudge?</strong> <span>Three available hints.</span></p>
+          <p class="color-explainer"><strong>Colors?</strong> <span>Today's Ink.</span></p>
+          <p class="hint-explainer"><strong>Stuck?</strong> <span>Three hints.</span></p>
           <a href="#today" class="underlined-link">Back to today's puzzle</a>
         </div>
         <div class="type-example" aria-label="Example word cloud and phrases showing that light appears in four phrases">
@@ -153,9 +149,9 @@
         <ol>
           <li><strong>Find four familiar phrases.</strong> Every word belongs somewhere.</li>
           <li><strong>Watch the scale.</strong> Bigger words are used in more phrases.</li>
-          <li><strong>Ten guesses.</strong> A miss leaves an inkblot.</li>
+          <li><strong>Ten guesses.</strong></li>
         </ol>
-        <p class="dialog-hint">Three available hints. The colors are just today's ink.</p>
+        <div class="dialog-hint"><p><strong>Colors?</strong> <span>Today's Ink.</span></p><p><strong>Stuck?</strong> <span>Three hints.</span></p></div>
         <button id="welcome-close" class="ink-button" type="button">Begin today's puzzle</button>
       </div>
     </dialog>
@@ -165,14 +161,14 @@
         <h2 id="share-preview-title">INKPRINT <span id="share-preview-number"></span></h2>
         <div id="share-preview-grid" class="inkprint-grid is-preview" aria-label="Your ten guess Inkprint"></div>
         <div class="share-details">
-          <div class="share-legend" aria-label="Inkprint key"><span><i class="is-phrase"></i>phrase</span><span><i class="is-blot"></i>inkblot</span><span><i class="is-open"></i>unused</span></div>
           <div id="share-preview-metrics" class="share-preview-metrics"></div>
           <p id="share-preview-date" class="share-preview-date"></p>
         </div>
+        <p id="connection" class="share-connection"></p>
       </div>
       <div class="share-actions">
-        <button id="share-close" class="plain-button" type="button">Not yet</button>
-        <button id="share-confirm" class="ink-button" type="button">Share Inkprint</button>
+        <button id="share-close" class="plain-button" type="button">Close</button>
+        <button id="share-confirm" class="ink-button" type="button">Copy Inkprint</button>
       </div>
       <div id="share-fallback" class="share-fallback" hidden>
         <label for="share-text">Copy your Inkprint</label>
@@ -180,6 +176,6 @@
       </div>
     </dialog>
 
-    <script type="module" src="src/game.js?v=20260829f"></script>
+    <script type="module" src="src/game.js?v=20260829i"></script>
   </body>
 </html>
