@@ -4283,3 +4283,16 @@ body[data-active-view="how-to-play"] {
     display: none;
   }
 }
+
+/* Unused preview cells echo the faint, dashed state shown during play. */
+.share-preview .inkprint-cell.is-unused {
+  border: 2px dashed color-mix(in srgb, var(--cell-ink) 24%, transparent);
+  background: color-mix(in srgb, var(--cell-paper) 97%, var(--cell-ink));
+  opacity: 1;
+}
+
+.share-preview .inkprint-cell.is-unused::after {
+  border-color: color-mix(in srgb, var(--cell-ink) 18%, transparent);
+  background: transparent;
+  color: color-mix(in srgb, var(--cell-ink) 30%, var(--cell-paper));
+}
