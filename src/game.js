@@ -336,7 +336,7 @@ function submitAttempt(event) {
       state.stats = completeDailyStats(state.stats, puzzle.date);
     }
     saveState(state);
-    ui.feedback.textContent = complete ? 'Inkprint complete.' : failed ? 'Ink ran dry.' : 'Pattern found.';
+    ui.feedback.textContent = complete ? 'Inkprint complete.' : failed ? 'Ink ran dry.' : '';
     ui.phraseInput.value = '';
     signalForm('is-correct');
     renderPuzzleState(match);
