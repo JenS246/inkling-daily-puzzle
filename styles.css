@@ -72,6 +72,7 @@ body {
   min-height: 100dvh;
   margin: 0;
   overflow-x: hidden;
+  overscroll-behavior-y: none;
   background: var(--paper);
 }
 
@@ -2091,10 +2092,10 @@ a.calendar-day:hover {
   gap: .25rem;
   padding: .7rem 0 .45rem;
   color: var(--ink-soft);
-  font-family: var(--typewriter);
-  font-size: clamp(.72rem, 1.3vw, .88rem);
+  font-family: var(--playful);
+  font-size: clamp(.82rem, 1.5vw, 1.05rem);
   font-weight: 900;
-  letter-spacing: -.03em;
+  letter-spacing: -.045em;
   text-transform: none;
 }
 
@@ -2129,8 +2130,14 @@ a.calendar-day:hover {
 }
 
 .moon-status {
-  width: clamp(1.4rem, 3.4vw, 2.15rem);
+  width: clamp(1.25rem, 2.4vw, 1.75rem);
   border: 2px solid var(--accent);
+}
+
+.calendar-day .moon-status {
+  position: absolute;
+  right: .35rem;
+  bottom: .3rem;
 }
 
 .moon-status.is-complete {
@@ -2165,6 +2172,8 @@ a.calendar-day:hover {
 }
 
 .calendar-key {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: .75rem 1rem;
   padding-top: 1rem;
   color: var(--ink-soft);
@@ -2194,7 +2203,7 @@ a.calendar-day:hover {
 .statistics-list dt {
   color: var(--ink-soft);
   font-family: var(--playful);
-  font-size: 1rem;
+  font-size: 1.08rem;
   letter-spacing: -.02em;
   text-transform: none;
 }
@@ -2228,7 +2237,7 @@ a.calendar-day:hover {
 .sample-cloud {
   position: relative;
   display: block;
-  min-height: 270px;
+  min-height: clamp(180px, 22vw, 220px);
   padding: 0;
   overflow: hidden;
   border: 0;
@@ -2246,20 +2255,22 @@ a.calendar-day:hover {
   top: 50%;
   left: 50%;
   color: #315f55;
-  font-size: clamp(4.8rem, 9vw, 8rem);
-  line-height: .7;
+  font-size: clamp(4.8rem, 8vw, 7.4rem);
+  letter-spacing: -.055em;
+  line-height: .76;
   transform: translate(-50%, -48%);
 }
 
 .sample-cloud span {
-  font-size: clamp(1.65rem, 3.2vw, 2.8rem);
-  line-height: .78;
+  font-size: clamp(1.65rem, 3vw, 2.55rem);
+  letter-spacing: -.045em;
+  line-height: .82;
 }
 
-.sample-cloud span:nth-of-type(1) { top: 16%; left: 4%; color: #8b4051; }
-.sample-cloud span:nth-of-type(2) { top: 18%; right: 6%; color: #8b6c24; }
-.sample-cloud span:nth-of-type(3) { bottom: 14%; left: 11%; color: #31556f; }
-.sample-cloud span:nth-of-type(4) { right: 5%; bottom: 13%; color: var(--ink); }
+.sample-cloud span:nth-of-type(1) { top: 22%; left: 14%; color: #8b4051; }
+.sample-cloud span:nth-of-type(2) { top: 23%; right: 15%; color: #8b6c24; }
+.sample-cloud span:nth-of-type(3) { bottom: 18%; left: 18%; color: #31556f; }
+.sample-cloud span:nth-of-type(4) { right: 13%; bottom: 17%; color: var(--ink); }
 
 .sample-phrases {
   display: grid;
@@ -2306,7 +2317,7 @@ a.calendar-day:hover {
   }
 
   .found-ledger {
-    margin-top: .65rem;
+    margin-top: .35rem;
     padding: .8rem;
     border: 0;
   }
@@ -2362,6 +2373,7 @@ a.calendar-day:hover {
     grid-template-columns: 1fr;
     gap: 2.1rem;
     padding-top: 1.8rem;
+    padding-bottom: 1.25rem;
   }
 
   .archive-lead p,
@@ -2374,7 +2386,7 @@ a.calendar-day:hover {
   }
 
   .calendar-weekdays {
-    font-size: .7rem;
+    font-size: .86rem;
   }
 
   .calendar-number {
@@ -2386,7 +2398,28 @@ a.calendar-day:hover {
   }
 
   .sample-cloud {
-    min-height: 220px;
+    min-height: 164px;
+  }
+
+  .word-cloud {
+    column-gap: clamp(.14rem, 1vw, .32rem);
+    row-gap: .12rem;
+    padding: .4rem .35rem;
+  }
+
+  .cloud-word {
+    letter-spacing: -.035em;
+    line-height: .84;
+  }
+
+  .gameplay-stage.is-complete .word-cloud {
+    row-gap: 0;
+    padding-block: .12rem;
+  }
+
+  .gameplay-stage.is-complete .cloud-word {
+    letter-spacing: -.045em;
+    line-height: .79;
   }
 }
 
@@ -2405,7 +2438,7 @@ a.calendar-day:hover {
   }
 
   .calendar-weekdays {
-    font-size: .62rem;
+    font-size: .82rem;
   }
 
   .calendar-number {
@@ -2414,6 +2447,12 @@ a.calendar-day:hover {
 
   .sample-cloud strong {
     font-size: clamp(4.3rem, 23vw, 5.5rem);
+  }
+
+  .calendar-day .moon-status {
+    right: .14rem;
+    bottom: .12rem;
+    width: .92rem;
   }
 }
 
@@ -2586,6 +2625,29 @@ a.calendar-day:hover {
   font-size: clamp(.9rem, 1.8vw, 1.2rem);
 }
 
+.archive-lead .underlined-link {
+  display: inline-block;
+  margin-top: 1.25rem;
+}
+
+.remaining-readout span {
+  font-size: 1.08rem;
+}
+
+.completion h2 {
+  max-width: 100%;
+  padding-right: .08em;
+  overflow: visible;
+  font-size: clamp(2.2rem, 3.4vw, 2.9rem);
+  letter-spacing: -.05em;
+}
+
+@media (max-width: 900px) {
+  .archive-view {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 @media (max-width: 760px) {
   .archive-view {
     grid-template-columns: 1fr;
@@ -2597,6 +2659,20 @@ a.calendar-day:hover {
 
   .calendar-day {
     aspect-ratio: 1.05;
+  }
+
+  .calendar-key {
+    gap: .65rem .8rem;
+  }
+
+  .remaining-readout span {
+    font-size: 1.02rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .calendar-day {
+    aspect-ratio: .9;
   }
 }
 
