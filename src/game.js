@@ -109,6 +109,25 @@ function resultMetrics(result = progress()) {
   return `${result.solved.length}/${puzzle.phrases.length} · ${result.attempts.length}/${MAX_GUESSES} · ${elapsedTime(result)} · 💡${result.hints}`;
 }
 
+function renderResultMetrics(result = progress()) {
+  const values = [
+    `${result.solved.length}/${puzzle.phrases.length}`,
+    `${result.attempts.length}/${MAX_GUESSES}`,
+    elapsedTime(result),
+    `💡${result.hints}`
+  ];
+  const fragments = [];
+  values.forEach((value, index) => {
+    if (index) fragments.push(document.createTextNode(' · '));
+    const token = document.createElement('span');
+    token.className = 'inkprint-metric';
+    token.textContent = value;
+    fragments.push(token);
+  });
+  ui.inkprintMetrics.replaceChildren(...fragments);
+  ui.inkprintMetrics.setAttribute('aria-label', resultMetrics(result));
+}
+
 function shareMetrics(result = progress()) {
   const phrases = `${result.solved.length} ${result.solved.length === 1 ? 'phrase' : 'phrases'}`;
   const guesses = `${result.attempts.length} ${result.attempts.length === 1 ? 'guess' : 'guesses'}`;
@@ -365,7 +384,7 @@ function renderCompletion() {
   ui.connection.textContent = puzzle.connection;
   ui.connectionNote.textContent = puzzle.connectionNote;
   renderInkprintGrid(ui.inkprintGrid, result);
-  ui.inkprintMetrics.textContent = resultMetrics(result);
+  renderResultMetrics(result);
   ui.inkprintDate.textContent = compactDate();
 }
 

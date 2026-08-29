@@ -1734,9 +1734,10 @@ a.calendar-day:hover {
 }
 
 .archive-notice {
-  font-family: var(--typewriter);
-  font-size: .9rem;
-  letter-spacing: .02em;
+  font-family: var(--playful);
+  font-size: clamp(1.02rem, 1.5vw, 1.18rem);
+  font-weight: 850;
+  letter-spacing: -.01em;
   text-transform: none;
 }
 
@@ -1930,10 +1931,17 @@ a.calendar-day:hover {
   font-weight: 800;
 }
 
-.inkprint-details span:last-child {
+.inkprint-details > span:last-child {
   color: var(--accent);
   font-family: var(--poster);
   font-size: 1.4rem;
+}
+
+.inkprint-details .inkprint-metric {
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  white-space: nowrap;
 }
 
 .connection-reveal h3 {
@@ -3063,7 +3071,7 @@ a.calendar-day:hover {
     overflow-wrap: anywhere;
   }
 
-  .gameplay-stage.is-complete .inkprint-details span:last-child {
+  .gameplay-stage.is-complete .inkprint-details > span:last-child {
     justify-self: start;
     white-space: nowrap;
   }
