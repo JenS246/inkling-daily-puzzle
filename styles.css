@@ -1824,11 +1824,9 @@ a.calendar-day:hover {
 }
 
 .inkprint-cell.pattern-4 {
-  background: repeating-conic-gradient(
-    from 45deg,
-    var(--cell-ink) 0 12.5%,
-    var(--cell-paper) 12.5% 25%
-  );
+  background:
+    repeating-linear-gradient(45deg, transparent 0 2px, var(--cell-ink) 2px 5px),
+    repeating-linear-gradient(135deg, var(--cell-paper) 0 2px, var(--cell-ink) 2px 4px);
 }
 
 .inkprint-cell.is-miss {
@@ -1885,7 +1883,9 @@ a.calendar-day:hover {
 .found-ledger li[data-pattern="2"]::before { background: conic-gradient(var(--ink) 25%, var(--paper) 0 50%, var(--ink) 0 75%, var(--paper) 0) 0 0 / 4px 4px; }
 .found-ledger li[data-pattern="3"]::before { background: repeating-linear-gradient(45deg, var(--ink) 0 2px, var(--paper) 2px 3px); }
 .found-ledger li[data-pattern="4"]::before {
-  background: repeating-conic-gradient(from 45deg, var(--ink) 0 12.5%, var(--paper) 12.5% 25%);
+  background:
+    repeating-linear-gradient(45deg, transparent 0 1px, var(--ink) 1px 3px),
+    repeating-linear-gradient(135deg, var(--paper) 0 1px, var(--ink) 1px 2px);
 }
 
 .phrase-form input {
@@ -4152,5 +4152,116 @@ body[data-active-view="how-to-play"] {
     grid-template-columns: minmax(0, 1fr) auto;
     gap: .3rem .65rem;
     margin-top: .35rem;
+  }
+}
+
+/* Mobile browser chrome and device cutouts change the visible canvas while
+   the page is open. Size every mobile view from the live visual viewport. */
+@media (max-width: 760px) {
+  :root {
+    --mobile-header-height: 52px;
+  }
+
+  html,
+  body {
+    height: var(--visible-viewport-height, 100dvh);
+    min-height: var(--visible-viewport-height, 100dvh);
+  }
+
+  .masthead {
+    min-height: calc(var(--mobile-header-height) + env(safe-area-inset-top));
+    margin-left: max(.7rem, env(safe-area-inset-left));
+    margin-right: max(.7rem, env(safe-area-inset-right));
+    padding-top: env(safe-area-inset-top);
+  }
+
+  main {
+    height: calc(
+      var(--visible-viewport-height, 100dvh)
+      - var(--mobile-header-height)
+      - env(safe-area-inset-top)
+    );
+    min-height: 0;
+  }
+
+  .view[data-view="today"] {
+    height: 100%;
+    margin-left: max(.6rem, env(safe-area-inset-left));
+    margin-right: max(.6rem, env(safe-area-inset-right));
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .gameplay-stage {
+    height: 100%;
+    min-height: 0;
+    grid-template-rows: auto minmax(0, 1fr) auto auto auto auto;
+    row-gap: 0;
+  }
+
+  .gameplay-stage .word-cloud {
+    height: 100%;
+    min-height: 0;
+    padding-top: 2rem;
+  }
+
+  .gameplay-stage.is-complete .completion {
+    align-self: start;
+    align-content: start;
+    grid-auto-rows: max-content;
+  }
+
+  .phrase-form {
+    margin-top: 0;
+  }
+
+  .feedback {
+    margin-top: .18rem;
+  }
+
+  .found-ledger {
+    margin-top: .35rem;
+  }
+
+  .archive-view,
+  .statistics-view,
+  .how-view {
+    width: 100%;
+    height: 100%;
+    margin-inline: 0;
+    padding-left: max(1.1rem, env(safe-area-inset-left));
+    padding-right: max(1.1rem, env(safe-area-inset-right));
+    padding-bottom: max(.75rem, env(safe-area-inset-bottom));
+  }
+
+  .archive-view {
+    gap: .35rem;
+  }
+
+  .archive-calendar {
+    width: 100%;
+  }
+
+  .statistics-view {
+    align-content: start;
+    gap: 1.35rem;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .statistics-list {
+    gap: .65rem;
+  }
+
+  .statistics-list div {
+    padding: 1rem .85rem;
+  }
+
+  body[data-keyboard-open="true"] main,
+  body[data-keyboard-open="true"] .gameplay-stage {
+    height: calc(
+      var(--visible-viewport-height, 100dvh)
+      - var(--mobile-header-height)
+      - env(safe-area-inset-top)
+    );
   }
 }

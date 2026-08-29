@@ -579,10 +579,12 @@ function toggleContrast() {
 }
 
 function syncVisibleViewport() {
-  const viewportHeight = Math.round(window.visualViewport?.height || window.innerHeight);
+  const viewport = window.visualViewport;
+  const viewportHeight = Math.round(viewport?.height || window.innerHeight);
   const inputActive = document.activeElement === ui.phraseInput;
   const keyboardOpen = inputActive && viewportHeight < window.innerHeight - 100;
   document.documentElement.style.setProperty('--visible-viewport-height', `${viewportHeight}px`);
+  document.documentElement.style.setProperty('--visible-viewport-top', `${Math.round(viewport?.offsetTop || 0)}px`);
   document.body.dataset.keyboardOpen = String(keyboardOpen);
 }
 
@@ -673,7 +675,10 @@ document.addEventListener('pointerdown', (event) => {
 });
 window.addEventListener('hashchange', route);
 window.addEventListener('resize', syncVisibleViewport);
+window.addEventListener('pageshow', syncVisibleViewport);
+window.addEventListener('orientationchange', syncVisibleViewport);
 window.visualViewport?.addEventListener('resize', syncVisibleViewport);
+window.visualViewport?.addEventListener('scroll', syncVisibleViewport);
 
 applyPreferences();
 route();
