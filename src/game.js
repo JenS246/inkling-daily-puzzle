@@ -1,5 +1,6 @@
 import { PALETTES, derivePuzzle, getDailyPuzzle, normalizeAnswer, puzzleByDate, puzzles, utcDateKey } from './puzzles.js';
 import { MAX_GUESSES, MAX_HINTS, completeDailyStats, getPuzzleProgress, loadState, remainingHints, saveState } from './storage.js?v=20260829e';
+import { hintSequenceForPuzzle } from './hints.js?v=20260829j';
 
 const ui = {
   issueLine: document.querySelector('#issue-line'),
@@ -21,7 +22,6 @@ const ui = {
   completion: document.querySelector('#completion'),
   completionTitle: document.querySelector('#completion-title'),
   inkprintCard: document.querySelector('#inkprint-card'),
-  connection: document.querySelector('#connection'),
   inkprintGrid: document.querySelector('#inkprint-grid'),
   inkprintMetrics: document.querySelector('#inkprint-metrics'),
   inkprintDate: document.querySelector('#inkprint-date'),
@@ -150,14 +150,6 @@ function renderShareMetrics(result = progress()) {
   ui.sharePreviewMetrics.setAttribute('aria-label', shareMetrics(result));
 }
 
-function puzzleTakeaway() {
-  const entry = [...puzzle.words].sort((a, b) => b.frequency - a.frequency)[0];
-  if (!entry || entry.frequency < 2) return 'Each word appears once.';
-  const word = entry.word.toLocaleUpperCase('en-US');
-  if (entry.frequency === puzzle.phrases.length) return `${word} links all four.`;
-  return `${word} appears in ${entry.frequency} phrases.`;
-}
-
 function renderInkprintGrid(container, result = progress()) {
   let solvedCount = 0;
   container.replaceChildren();
@@ -265,12 +257,15 @@ function renderLedger(newlyFoundIndex = -1) {
 
 function hintMessage(result = progress()) {
   if (isOver(result)) return '';
-  const unsolvedIndex = puzzle.phrases.findIndex((_, index) => !result.solved.includes(index));
-  if (!result.hints || unsolvedIndex < 0) return '';
-  const target = puzzle.phrases[unsolvedIndex];
-  if (result.hints === 1) return `Phrase type: ${target.type}`;
-  if (result.hints === 2) return `First word: ${target.words[0].toLocaleUpperCase('en-US')}`;
-  return 'Look for the outlined words in the cloud.';
+  const lastHint = result.lastHint;
+  if (!lastHint || result.solved.includes(lastHint.phrase)) return '';
+  const target = puzzle.phrases[lastHint.phrase];
+  if (!target) return '';
+  if (lastHint.kind === 'type') return `Phrase type: ${target.type}`;
+  if (lastHint.kind === 'first') return `First word: ${target.words[0].toLocaleUpperCase('en-US')}`;
+  if (lastHint.kind === 'last') return `Last word: ${target.words.at(-1).toLocaleUpperCase('en-US')}`;
+  if (lastHint.kind === 'outline' && activeHintWords.size) return 'Outlined words belong together.';
+  return '';
 }
 
 function renderHintReveal() {
@@ -308,6 +303,9 @@ function submitAttempt(event) {
     return;
   }
 
+  // An outline is a one-guess nudge, whether the guess is right or wrong.
+  activeHintWords.clear();
+
   const match = puzzle.phrases.findIndex((phrase, index) => {
     return !solved.has(index) && normalizeAnswer(phrase.answer) === submitted;
   });
@@ -332,7 +330,6 @@ function submitAttempt(event) {
       state.stats = completeDailyStats(state.stats, puzzle.date);
     }
     saveState(state);
-    activeHintWords.clear();
     ui.feedback.textContent = complete ? 'Inkprint complete.' : failed ? 'Ink ran dry.' : 'Pattern found.';
     ui.phraseInput.value = '';
     signalForm('is-correct');
@@ -368,14 +365,17 @@ function useHint() {
   const currentLevel = progress().hints;
   const level = Math.min(currentLevel + 1, MAX_HINTS);
   const target = puzzle.phrases[unsolvedIndex];
+  const kind = hintSequenceForPuzzle(puzzle.id)[level - 1];
   if (level > currentLevel) {
-    writeProgress({ ...progress(), hints: level });
+    writeProgress({ ...progress(), hints: level, lastHint: { kind, phrase: unsolvedIndex } });
     state.stats.hintsUsed += 1;
     saveState(state);
   }
 
-  if (level === MAX_HINTS) {
+  if (kind === 'outline') {
     activeHintWords = new Set(target.words);
+  } else {
+    activeHintWords.clear();
   }
   ui.feedback.textContent = '';
   renderPuzzleState();
@@ -399,40 +399,27 @@ function renderCompletion() {
 function renderPuzzleState(newlyFoundIndex = -1) {
   const result = progress();
   const foundWords = newlyFoundIndex >= 0 ? puzzle.phrases[newlyFoundIndex].words : [];
-  if (result.hints >= MAX_HINTS && !isOver(result)) {
-    const unsolved = puzzle.phrases.find((_, index) => !result.solved.includes(index));
-    activeHintWords = new Set(unsolved?.words || []);
-  }
   if (isOver(result)) activeHintWords.clear();
   ui.gameplayStage.classList.toggle('is-complete', isOver(result));
   ui.gameplayStage.classList.toggle('is-failed', result.failed);
   ui.submitButton.disabled = isOver(result);
   ui.phraseInput.disabled = isOver(result);
   const hintsLeft = remainingHints(result.hints);
-  const hintLabel = isOver(result)
-    ? result.complete ? 'Complete' : 'Ink ran dry'
-    : hintsLeft === 0
-      ? 'No hints left'
-      : `${hintsLeft} ${hintsLeft === 1 ? 'hint' : 'hints'} left`;
+  const hintLabel = hintsLeft === 0 ? 'No hints left' : `${hintsLeft} ${hintsLeft === 1 ? 'hint' : 'hints'} left`;
   ui.hintButton.disabled = isOver(result) || hintsLeft === 0;
-  ui.hintButtonLabel.textContent = hintLabel;
-  ui.hintButtonLabel.dataset.shortLabel = isOver(result) ? hintLabel : hintsLeft === 0 ? 'None left' : `${hintsLeft} left`;
+  ui.hintButtonLabel.textContent = `${hintsLeft} left`;
   ui.hintButton.setAttribute('aria-label', hintLabel);
   renderCloud(foundWords);
   renderLedger(newlyFoundIndex);
   renderHintReveal();
   renderCompletion();
+  syncHeaderControls();
 }
 
 function loadPuzzle(nextPuzzle) {
   puzzle = derivePuzzle(nextPuzzle);
   activeHintWords = new Set();
-  const result = progress();
-  if (result.hints >= MAX_HINTS) {
-    const unsolved = puzzle.phrases.find((_, index) => !result.solved.includes(index));
-    if (unsolved) activeHintWords = new Set(unsolved.words);
-  }
-  ui.issueLine.textContent = formatDate(puzzle.date);
+  ui.issueLine.textContent = formatDate(puzzle.date).toLocaleUpperCase('en-US');
   ui.archiveNotice.hidden = puzzle.date === dailyPuzzle.date;
   ui.feedback.textContent = '';
   ui.phraseInput.value = '';
@@ -544,7 +531,6 @@ function openSharePreview() {
   renderInkprintGrid(ui.sharePreviewGrid, result);
   renderShareMetrics(result);
   ui.sharePreviewDate.textContent = shareDate();
-  ui.connection.textContent = puzzleTakeaway();
   ui.shareFallback.hidden = true;
   ui.shareConfirm.textContent = 'Copy Inkprint';
   if (!ui.shareDialog.open) ui.shareDialog.showModal();
@@ -603,8 +589,14 @@ function showView(routeName) {
   if (viewName === 'statistics') renderStatistics();
   document.body.dataset.activeView = viewName;
   document.documentElement.dataset.activeView = viewName;
-  ui.hintButton.hidden = viewName !== 'today';
+  syncHeaderControls(viewName);
   ui.utilityMenu.open = false;
+}
+
+function syncHeaderControls(viewName = document.body.dataset.activeView || 'today') {
+  const isGameView = viewName === 'today';
+  ui.hintButton.hidden = !isGameView || isOver();
+  ui.issueLine.hidden = !isGameView || puzzle.date !== dailyPuzzle.date;
 }
 
 function route() {
@@ -659,6 +651,9 @@ ui.shareClose.addEventListener('click', () => ui.shareDialog.close());
 ui.shareConfirm.addEventListener('click', () => shareResult(ui.shareConfirm));
 ui.themeToggle.addEventListener('click', toggleTheme);
 ui.contrastToggle.addEventListener('click', toggleContrast);
+document.addEventListener('pointerdown', (event) => {
+  if (ui.utilityMenu.open && !ui.utilityMenu.contains(event.target)) ui.utilityMenu.open = false;
+});
 window.addEventListener('hashchange', route);
 
 applyPreferences();

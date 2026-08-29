@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { derivePuzzle, getDailyPuzzle, normalizeAnswer, puzzleByDate, puzzles } from '../src/puzzles.js';
 import { MAX_GUESSES, MAX_HINTS, completeDailyStats, emptyState, getPuzzleProgress, loadState, remainingHints } from '../src/storage.js';
+import { hintSequenceForPuzzle } from '../src/hints.js';
 
 test('every cloud word is derived from at least one phrase', () => {
   for (const puzzle of puzzles) {
@@ -98,6 +99,16 @@ test('hint availability counts down clearly and never exceeds three hints', () =
   const state = emptyState();
   state.puzzles[puzzles[0].date] = { hints: 9 };
   assert.equal(getPuzzleProgress(state, puzzles[0]).hints, MAX_HINTS);
+});
+
+test('hint types vary by puzzle while every puzzle keeps three distinct hints', () => {
+  const sequences = Array.from({ length: 12 }, (_, index) => hintSequenceForPuzzle(180 + index));
+  for (const sequence of sequences) {
+    assert.equal(sequence.length, MAX_HINTS);
+    assert.equal(new Set(sequence).size, MAX_HINTS);
+    assert.ok(sequence.includes('outline'));
+  }
+  assert.ok(new Set(sequences.map((sequence) => sequence.join('|'))).size > 1);
 });
 
 test('legacy progress migrates into the ten-guess Inkprint', () => {

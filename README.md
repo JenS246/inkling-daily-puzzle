@@ -8,13 +8,14 @@ The interface is intentionally closer to an inked typographic painting than a st
 
 - One official puzzle is selected by its UTC calendar date. Thirty-two hand-built themes and rotating phrase pools create 480 unique numbered daily editions before any set can repeat.
 - `src/puzzles.js` stores puzzle content separately from the application.
+- `src/hints.js` gives each numbered puzzle a stable, varied sequence of three hint types.
 - Unique cloud words, word frequencies, and shared-word relationships are derived automatically.
 - `src/game.js` renders the words in deterministic order. CSS packs them into a dense, responsive composition without using phrase membership.
 - Players type a complete phrase and press Enter or select Try it. They have ten guesses to find all four phrases.
 - Every attempt fills one cell in a 5-by-2 Inkprint: four increasing patterns for solved phrases, inkblots for misses, and faint cells for unused guesses.
 - Solved phrases join the Found ledger, which also shows how many remain; their cloud words receive an ink-settle animation.
 - A word fades only when every phrase that uses it has been found.
-- Every puzzle offers three progressively stronger hints from the top bar. The revealed hint stays clearly visible above the answer field.
+- Every puzzle offers three hints from the top bar. Hint types and order vary by puzzle; an outlined-word hint lasts for one guess.
 - First-time players see a one-time editorial How to Play sheet. The permanent `?` control opens the expanded instructions and a puzzle-like LIGHT example.
 - Finished puzzles open a spoiler-free Inkprint dialog with score, guesses, elapsed time, and hints. The Share action copies a compact text Inkprint directly.
 - The archive is a bounded calendar. Future dates cannot be opened; filled, shaded, slashed, and blank dates distinguish solved, in-progress, failed, and unplayed puzzles.
@@ -39,7 +40,7 @@ npm test
 npm run check
 ```
 
-The tests cover puzzle derivation, phrase word uniqueness, answer normalization, corrupted local data, and UTC streak behavior.
+The tests cover puzzle derivation, phrase word uniqueness, hint rotation, answer normalization, corrupted local data, and UTC streak behavior.
 
 ## Add a puzzle
 

@@ -62,8 +62,9 @@
 }
 
 html {
-  min-width: 320px;
+  min-width: 0;
   min-height: 100%;
+  overflow-x: hidden;
   background: var(--paper);
   scroll-behavior: smooth;
 }
@@ -653,7 +654,7 @@ main {
   grid-area: hint;
   width: min(610px, 100%);
   margin: 0 auto .15rem;
-  padding: .55rem .7rem .52rem 2.7rem;
+  padding: .55rem .75rem .52rem;
   border-left: 4px solid var(--accent);
   background: color-mix(in srgb, var(--accent) 11%, transparent);
   color: var(--ink);
@@ -663,11 +664,7 @@ main {
 }
 
 .hint-reveal::before {
-  margin-left: -2rem;
-  margin-right: .75rem;
-  color: var(--accent);
-  content: "◐";
-  font-size: 1.25em;
+  content: none;
 }
 
 .phrase-form input:focus {
@@ -1654,6 +1651,11 @@ a.calendar-day:hover {
   --rule: #91a097;
   --accent: #315f55;
   --miss: #8b4051;
+  --date-ink: #31556f;
+  --aside-ink: #71898b;
+  --archive-blue: #31556f;
+  --archive-gold: #8b6c24;
+  --archive-green: #315f55;
   --poster: "Arial Black", "Avenir Next Heavy", "Trebuchet MS", sans-serif;
   --playful: ui-rounded, "Arial Rounded MT Bold", "Trebuchet MS", sans-serif;
   --typewriter: "American Typewriter", "Courier New", monospace;
@@ -1668,6 +1670,11 @@ a.calendar-day:hover {
   --rule: #667c70;
   --accent: #9cc9b1;
   --miss: #e396a5;
+  --date-ink: #91b7c7;
+  --aside-ink: #bbcdc5;
+  --archive-blue: #7199aa;
+  --archive-gold: #b39b62;
+  --archive-green: #78a791;
 }
 
 .masthead {
@@ -1685,12 +1692,12 @@ a.calendar-day:hover {
 }
 
 .issue-line {
-  color: var(--accent);
-  font-family: var(--typewriter);
-  font-size: clamp(.88rem, 1.4vw, 1.05rem);
-  font-weight: 800;
-  letter-spacing: .025em;
-  text-transform: none;
+  color: var(--date-ink);
+  font-family: var(--poster);
+  font-size: clamp(.92rem, 1.35vw, 1.08rem);
+  font-weight: 900;
+  letter-spacing: .045em;
+  text-transform: uppercase;
 }
 
 .header-action,
@@ -3153,20 +3160,16 @@ button.inkprint-card:focus-visible {
   margin-top: clamp(1.25rem, 4vw, 2rem);
 }
 
-.share-connection {
-  margin: clamp(1.15rem, 3vw, 1.6rem) 0 0;
-  color: #445e61;
-  font-family: var(--playful);
-  font-size: clamp(1.1rem, 3vw, 1.35rem);
-  font-weight: 850;
-  line-height: 1.15;
-}
-
 .color-explainer span,
 .hint-explainer span,
 .dialog-hint span {
-  color: var(--ink-soft);
+  color: var(--aside-ink);
   font-weight: 700;
+}
+
+.color-explainer span,
+.hint-explainer span {
+  display: block;
 }
 
 .dialog-hint {
@@ -3213,18 +3216,19 @@ button.inkprint-card:focus-visible {
 
 .archive-calendar::before {
   position: absolute;
-  top: 12%;
-  left: 58%;
-  z-index: -1;
-  width: min(36vw, 380px);
-  aspect-ratio: 1.2;
-  border-radius: 58% 42% 64% 36% / 43% 61% 39% 57%;
-  background: color-mix(in srgb, var(--accent) 8%, transparent);
-  box-shadow:
-    -8rem 6rem 0 -5rem color-mix(in srgb, var(--accent) 5%, transparent),
-    7rem 8rem 0 -6rem color-mix(in srgb, var(--miss) 5%, transparent);
+  top: .35rem;
+  right: 5%;
+  z-index: 0;
+  width: min(48vw, 470px);
+  height: clamp(90px, 13vw, 145px);
+  background:
+    radial-gradient(ellipse at 18% 58%, color-mix(in srgb, var(--archive-blue) 18%, transparent) 0 23%, transparent 25%),
+    radial-gradient(ellipse at 47% 42%, color-mix(in srgb, var(--archive-green) 14%, transparent) 0 32%, transparent 34%),
+    radial-gradient(ellipse at 76% 61%, color-mix(in srgb, var(--archive-gold) 14%, transparent) 0 25%, transparent 27%),
+    radial-gradient(circle at 94% 35%, color-mix(in srgb, var(--miss) 11%, transparent) 0 9%, transparent 11%);
   content: "";
-  transform: rotate(-8deg);
+  opacity: .72;
+  transform: rotate(-3deg);
   pointer-events: none;
 }
 
@@ -3269,12 +3273,12 @@ a.calendar-day:hover {
 }
 
 a.calendar-day.is-complete {
-  background: var(--ink);
+  background: var(--archive-blue);
   color: var(--paper);
 }
 
 a.calendar-day.is-progress {
-  background: color-mix(in srgb, var(--accent) 23%, transparent);
+  background: color-mix(in srgb, var(--archive-green) 27%, transparent);
   color: var(--ink);
 }
 
@@ -3302,11 +3306,11 @@ a.calendar-day.is-unplayed {
 }
 
 .calendar-swatch.is-complete {
-  background: var(--ink);
+  background: var(--archive-blue);
 }
 
 .calendar-swatch.is-progress {
-  background: color-mix(in srgb, var(--accent) 23%, transparent);
+  background: color-mix(in srgb, var(--archive-green) 27%, transparent);
 }
 
 .calendar-swatch.is-failed {
@@ -3370,5 +3374,79 @@ a.calendar-day.is-unplayed {
 
   .utility-panel {
     width: calc(100vw - .75rem);
+  }
+}
+
+/* Responsive metadata and header cleanup */
+.hint-action > span:first-child {
+  font-size: inherit;
+}
+
+.inkprint-details {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: .5rem 1rem;
+  min-width: 0;
+}
+
+#inkprint-metrics {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  gap: 0 .15rem;
+}
+
+#inkprint-date {
+  align-self: end;
+  white-space: nowrap;
+}
+
+.share-details {
+  grid-template-columns: minmax(0, 1fr);
+  gap: .7rem;
+  min-width: 0;
+}
+
+.share-preview-metrics,
+.share-preview-date {
+  min-width: 0;
+}
+
+.share-preview-date {
+  justify-self: start;
+  text-align: left;
+}
+
+@media (max-width: 600px) {
+  .share-preview-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+    gap: .5rem .8rem;
+  }
+
+  .share-preview-metrics span {
+    white-space: normal;
+  }
+
+  .gameplay-stage.is-complete .inkprint-details {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .archive-calendar::before {
+    top: 1.15rem;
+    right: -8%;
+    width: 72vw;
+    height: 88px;
+    opacity: .55;
+  }
+}
+
+@media (max-width: 340px) {
+  #hint-button-label {
+    font-size: .76rem;
+  }
+
+  #hint-button-label::after {
+    content: none;
   }
 }
