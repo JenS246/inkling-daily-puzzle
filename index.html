@@ -10,7 +10,7 @@
     <meta property="og:type" content="website" />
     <title>INKLING - Daily hidden phrases</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><g fill=%22%238b4051%22><circle cx=%2248%22 cy=%2252%22 r=%2234%22/><circle cx=%2220%22 cy=%2227%22 r=%229%22/><circle cx=%2279%22 cy=%2231%22 r=%2211%22/><circle cx=%2278%22 cy=%2277%22 r=%227%22/><circle cx=%2221%22 cy=%2278%22 r=%225%22/></g></svg>" />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css?v=20260829c" />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to puzzle</a>
@@ -77,7 +77,6 @@
               </div>
             </div>
             <div class="connection-reveal">
-              <h3>The connection</h3>
               <p id="connection"></p>
               <p id="connection-note"></p>
             </div>
@@ -119,7 +118,7 @@
             <li>Ten guesses. A miss leaves an inkblot.</li>
           </ol>
           <p class="color-explainer"><strong>The colors?</strong> Just today's ink.</p>
-          <p class="hint-explainer"><strong>Need a nudge?</strong> Three available hints.</p>
+          <p class="hint-explainer"><strong>Need a nudge?</strong> <span>Three available hints.</span></p>
           <a href="#today" class="underlined-link">Back to today's puzzle</a>
         </div>
         <div class="type-example" aria-label="Example word cloud and phrases showing that light appears in four phrases">
@@ -165,9 +164,11 @@
       <div class="share-preview">
         <h2 id="share-preview-title">INKPRINT <span id="share-preview-number"></span></h2>
         <div id="share-preview-grid" class="inkprint-grid is-preview" aria-label="Your ten guess Inkprint"></div>
-        <div class="share-legend" aria-label="Inkprint key"><span><i class="is-phrase"></i>phrase</span><span><i class="is-blot"></i>inkblot</span><span><i class="is-open"></i>unused</span></div>
-        <p id="share-preview-metrics" class="share-preview-metrics"></p>
-        <p id="share-preview-date" class="share-preview-date"></p>
+        <div class="share-details">
+          <div class="share-legend" aria-label="Inkprint key"><span><i class="is-phrase"></i>phrase</span><span><i class="is-blot"></i>inkblot</span><span><i class="is-open"></i>unused</span></div>
+          <div id="share-preview-metrics" class="share-preview-metrics"></div>
+          <p id="share-preview-date" class="share-preview-date"></p>
+        </div>
       </div>
       <div class="share-actions">
         <button id="share-close" class="plain-button" type="button">Not yet</button>
@@ -179,6 +180,6 @@
       </div>
     </dialog>
 
-    <script type="module" src="src/game.js"></script>
+    <script type="module" src="src/game.js?v=20260829c"></script>
   </body>
 </html>

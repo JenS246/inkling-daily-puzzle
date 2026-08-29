@@ -116,6 +116,21 @@ function shareMetrics(result = progress()) {
   return `${phrases} | ${guesses} | ${hints} | ${elapsedTime(result)}`;
 }
 
+function renderShareMetrics(result = progress()) {
+  const values = [
+    `${result.solved.length} ${result.solved.length === 1 ? 'phrase' : 'phrases'}`,
+    `${result.attempts.length} ${result.attempts.length === 1 ? 'guess' : 'guesses'}`,
+    `${result.hints} ${result.hints === 1 ? 'hint' : 'hints'}`,
+    elapsedTime(result)
+  ];
+  ui.sharePreviewMetrics.replaceChildren(...values.map((value) => {
+    const item = document.createElement('span');
+    item.textContent = value;
+    return item;
+  }));
+  ui.sharePreviewMetrics.setAttribute('aria-label', shareMetrics(result));
+}
+
 function renderInkprintGrid(container, result = progress()) {
   let solvedCount = 0;
   container.replaceChildren();
@@ -492,14 +507,14 @@ function renderStatistics() {
 function resultText() {
   const result = progress();
   const symbols = inkprintSymbols(result);
-  return `INKPRINT #${puzzle.id}\n\n${symbols.slice(0, 5).join(' ')}\n${symbols.slice(5).join(' ')}\n\n▧▦▩■ phrase  ✺ inkblot  □ unused\n${shareMetrics(result)} | ${shareDate()}\n\nhttps://jens246.github.io/inkling-daily-puzzle/`;
+  return `INKPRINT #${puzzle.id}\n${symbols.slice(0, 5).join('')}\n${symbols.slice(5).join('')}\n▧▦▩■ phrase  ✺ inkblot  □ unused\n${shareMetrics(result)} | ${shareDate()}\n\nhttps://jens246.github.io/inkling-daily-puzzle/`;
 }
 
 function openSharePreview() {
   const result = progress();
   ui.sharePreviewNumber.textContent = `#${puzzle.id}`;
   renderInkprintGrid(ui.sharePreviewGrid, result);
-  ui.sharePreviewMetrics.textContent = shareMetrics(result);
+  renderShareMetrics(result);
   ui.sharePreviewDate.textContent = shareDate();
   ui.shareFallback.hidden = true;
   ui.shareConfirm.textContent = 'Share Inkprint';
