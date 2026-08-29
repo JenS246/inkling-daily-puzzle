@@ -53,6 +53,7 @@ let puzzle = derivePuzzle(dailyPuzzle);
 let activeHintWords = new Set();
 let formTimer = 0;
 let viewportSettleTimers = [];
+let touchSubmitLock = false;
 let archiveMonthKey = dailyPuzzle.date.slice(0, 7);
 
 function hashString(value) {
@@ -639,10 +640,29 @@ function route() {
 }
 
 ui.phraseForm.addEventListener('submit', submitAttempt);
+ui.submitButton.addEventListener('touchend', (event) => {
+  if (touchSubmitLock || !ui.phraseInput.value.trim()) return;
+
+  // Submit before Chrome dismisses its native keyboard and shifts the viewport.
+  event.preventDefault();
+  touchSubmitLock = true;
+  ui.phraseForm.requestSubmit(ui.submitButton);
+  ui.phraseInput.blur();
+  settleVisibleViewport();
+  window.setTimeout(() => {
+    touchSubmitLock = false;
+  }, 500);
+}, { passive: false });
+ui.submitButton.addEventListener('click', (event) => {
+  // Some mobile browsers synthesize a click after touchend. The guess is already sent.
+  if (touchSubmitLock) event.preventDefault();
+});
 ui.phraseInput.addEventListener('keydown', (event) => {
   if (event.key !== 'Enter' || event.isComposing) return;
   event.preventDefault();
+  const hasPhrase = Boolean(ui.phraseInput.value.trim());
   ui.phraseForm.requestSubmit();
+  if (hasPhrase) ui.phraseInput.blur();
 });
 ui.phraseInput.addEventListener('input', () => {
   const current = progress();
