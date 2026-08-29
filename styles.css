@@ -4164,8 +4164,8 @@ body[data-active-view="how-to-play"] {
 
   html,
   body {
-    height: var(--visible-viewport-height, 100dvh);
-    min-height: var(--visible-viewport-height, 100dvh);
+    height: calc(var(--visible-viewport-height, 100dvh) + var(--visible-viewport-top, 0px));
+    min-height: calc(var(--visible-viewport-height, 100dvh) + var(--visible-viewport-top, 0px));
   }
 
   .masthead {
@@ -4173,6 +4173,7 @@ body[data-active-view="how-to-play"] {
     margin-left: max(.7rem, env(safe-area-inset-left));
     margin-right: max(.7rem, env(safe-area-inset-right));
     padding-top: env(safe-area-inset-top);
+    translate: 0 var(--visible-viewport-top, 0px);
   }
 
   main {
@@ -4182,6 +4183,7 @@ body[data-active-view="how-to-play"] {
       - env(safe-area-inset-top)
     );
     min-height: 0;
+    translate: 0 var(--visible-viewport-top, 0px);
   }
 
   .view[data-view="today"] {

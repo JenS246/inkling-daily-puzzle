@@ -52,6 +52,7 @@ const dailyPuzzle = getDailyPuzzle();
 let puzzle = derivePuzzle(dailyPuzzle);
 let activeHintWords = new Set();
 let formTimer = 0;
+let viewportSettleTimers = [];
 let archiveMonthKey = dailyPuzzle.date.slice(0, 7);
 
 function hashString(value) {
@@ -588,6 +589,12 @@ function syncVisibleViewport() {
   document.body.dataset.keyboardOpen = String(keyboardOpen);
 }
 
+function settleVisibleViewport() {
+  syncVisibleViewport();
+  viewportSettleTimers.forEach((timer) => window.clearTimeout(timer));
+  viewportSettleTimers = [60, 240, 700].map((delay) => window.setTimeout(syncVisibleViewport, delay));
+}
+
 function showView(routeName) {
   const viewName = routeName === 'puzzle' ? 'today' : routeName;
   document.querySelectorAll('.view').forEach((view) => {
@@ -645,8 +652,8 @@ ui.phraseInput.addEventListener('input', () => {
   ui.feedback.textContent = '';
   ui.phraseForm.classList.remove('is-correct', 'is-wrong');
 });
-ui.phraseInput.addEventListener('focus', syncVisibleViewport);
-ui.phraseInput.addEventListener('blur', syncVisibleViewport);
+ui.phraseInput.addEventListener('focus', settleVisibleViewport);
+ui.phraseInput.addEventListener('blur', settleVisibleViewport);
 ui.hintButton.addEventListener('click', useHint);
 ui.welcomeClose.addEventListener('click', () => {
   state.preferences.welcomed = true;
@@ -675,12 +682,16 @@ document.addEventListener('pointerdown', (event) => {
 });
 window.addEventListener('hashchange', route);
 window.addEventListener('resize', syncVisibleViewport);
-window.addEventListener('pageshow', syncVisibleViewport);
-window.addEventListener('orientationchange', syncVisibleViewport);
+window.addEventListener('load', settleVisibleViewport);
+window.addEventListener('pageshow', settleVisibleViewport);
+window.addEventListener('orientationchange', settleVisibleViewport);
 window.visualViewport?.addEventListener('resize', syncVisibleViewport);
 window.visualViewport?.addEventListener('scroll', syncVisibleViewport);
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') settleVisibleViewport();
+});
 
 applyPreferences();
 route();
-syncVisibleViewport();
+settleVisibleViewport();
 if (!state.preferences.welcomed) ui.welcomeDialog.showModal();
