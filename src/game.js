@@ -587,6 +587,7 @@ function syncVisibleViewport() {
   const keyboardOpen = inputActive && viewportHeight < window.innerHeight - 100;
   document.documentElement.style.setProperty('--visible-viewport-height', `${viewportHeight}px`);
   document.documentElement.style.setProperty('--visible-viewport-top', `${Math.round(viewport?.offsetTop || 0)}px`);
+  document.body.dataset.inputActive = String(inputActive);
   document.body.dataset.keyboardOpen = String(keyboardOpen);
 }
 

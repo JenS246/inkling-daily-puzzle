@@ -4266,4 +4266,20 @@ body[data-active-view="how-to-play"] {
       - env(safe-area-inset-top)
     );
   }
+
+  /* Keep the native-keyboard state focused on the puzzle itself. Input focus
+     is more reliable than viewport-height heuristics in mobile Chrome. */
+  body[data-input-active="true"] .gameplay-stage:not(.is-complete) {
+    grid-template-areas:
+      "notice"
+      "cloud"
+      "form";
+    grid-template-rows: auto minmax(0, 1fr) auto;
+  }
+
+  body[data-input-active="true"] .gameplay-stage:not(.is-complete) .puzzle-hint,
+  body[data-input-active="true"] .gameplay-stage:not(.is-complete) .hint-reveal,
+  body[data-input-active="true"] .gameplay-stage:not(.is-complete) .found-ledger {
+    display: none;
+  }
 }
