@@ -549,6 +549,7 @@ function showView(routeName) {
 
 function route() {
   const hash = location.hash.slice(1) || 'today';
+  const standardViews = ['today', 'archive', 'statistics', 'how-to-play'];
   if (hash.startsWith('puzzle/')) {
     const archived = puzzleByDate(hash.split('/')[1]);
     if (archived) {
@@ -558,8 +559,9 @@ function route() {
       return;
     }
   }
-  if (hash === 'today') loadPuzzle(dailyPuzzle);
-  showView(['today', 'archive', 'statistics', 'how-to-play'].includes(hash) ? hash : 'today');
+  const view = standardViews.includes(hash) ? hash : 'today';
+  if (view === 'today') loadPuzzle(dailyPuzzle);
+  showView(view);
   window.scrollTo(0, 0);
 }
 
