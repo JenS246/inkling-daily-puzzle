@@ -6,7 +6,7 @@ The interface is intentionally closer to an inked typographic painting than a st
 
 ## How it works
 
-- One official puzzle is selected by its UTC calendar date.
+- One official puzzle is selected by its UTC calendar date. Thirty-two hand-built themes and rotating phrase pools create 480 unique numbered daily editions before any set can repeat.
 - `src/puzzles.js` stores puzzle content separately from the application.
 - Unique cloud words, word frequencies, and shared-word relationships are derived automatically.
 - `src/game.js` renders the words in deterministic order. CSS packs them into a dense, responsive composition without using phrase membership.
@@ -15,7 +15,7 @@ The interface is intentionally closer to an inked typographic painting than a st
 - Solved phrases join the Found ledger, which also shows how many remain; their cloud words receive an ink-settle animation.
 - A word fades only when every phrase that uses it has been found.
 - Every puzzle offers three progressively stronger hints from the top bar. The revealed hint stays clearly visible above the answer field.
-- First-time players see a one-time editorial How to Play sheet. The permanent `?` control opens the expanded instructions and illustrated coffee example.
+- First-time players see a one-time editorial How to Play sheet. The permanent `?` control opens the expanded instructions and a puzzle-like LIGHT example.
 - Finished puzzles produce a spoiler-free Inkprint with score, guesses, elapsed time, and hints. A visual preview appears before sharing.
 - The archive is a bounded calendar. Future dates cannot be opened, while phases and inkblots distinguish solved, failed, in-progress, and unplayed puzzles.
 - Progress, streaks, appearance, statistics, hints, and archive results live in browser `localStorage` only.
@@ -43,7 +43,7 @@ The tests cover puzzle derivation, phrase word uniqueness, answer normalization,
 
 ## Add a puzzle
 
-Add a record to the `puzzles` array in `src/puzzles.js`:
+Add a recipe to `DAILY_RECIPES` in `src/puzzles.js`:
 
 ```js
 {

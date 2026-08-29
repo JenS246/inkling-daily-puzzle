@@ -89,6 +89,14 @@ function compactDate(dateKey = puzzle.date) {
   return `${Number(month)}${String(Number(day)).padStart(2, '0')}`;
 }
 
+function shareDate(dateKey = puzzle.date) {
+  return new Intl.DateTimeFormat('en-US', {
+    month: 'short',
+    day: 'numeric',
+    timeZone: 'UTC'
+  }).format(new Date(`${dateKey}T12:00:00Z`)).toUpperCase();
+}
+
 function elapsedTime(result = progress()) {
   if (!result.startedAt) return '--:--';
   const end = result.endedAt || result.completedAt || new Date().toISOString();
@@ -101,6 +109,13 @@ function resultMetrics(result = progress()) {
   return `${result.solved.length}/${puzzle.phrases.length} · ${result.attempts.length}/${MAX_GUESSES} · ${elapsedTime(result)} · 💡${result.hints}`;
 }
 
+function shareMetrics(result = progress()) {
+  const phrases = `${result.solved.length} ${result.solved.length === 1 ? 'phrase' : 'phrases'}`;
+  const guesses = `${result.attempts.length} ${result.attempts.length === 1 ? 'guess' : 'guesses'}`;
+  const hints = `${result.hints} ${result.hints === 1 ? 'hint' : 'hints'}`;
+  return `${phrases} | ${guesses} | ${hints} | ${elapsedTime(result)}`;
+}
+
 function renderInkprintGrid(container, result = progress()) {
   let solvedCount = 0;
   container.replaceChildren();
@@ -108,15 +123,19 @@ function renderInkprintGrid(container, result = progress()) {
     const attempt = result.attempts[index];
     const cell = document.createElement('span');
     cell.className = 'inkprint-cell';
+    cell.dataset.guess = String(index + 1);
     if (!attempt) {
       cell.classList.add('is-unused');
+      cell.dataset.state = 'unused';
       cell.setAttribute('aria-label', `Guess ${index + 1}, unused`);
     } else if (attempt.kind === 'miss') {
       cell.classList.add('is-miss');
+      cell.dataset.state = 'inkblot';
       cell.setAttribute('aria-label', `Guess ${index + 1}, inkblot`);
     } else {
       solvedCount += 1;
       cell.classList.add('is-solve', `pattern-${Math.min(solvedCount, 4)}`);
+      cell.dataset.state = 'phrase';
       cell.setAttribute('aria-label', `Guess ${index + 1}, phrase found`);
     }
     container.append(cell);
@@ -124,12 +143,12 @@ function renderInkprintGrid(container, result = progress()) {
 }
 
 function inkprintSymbols(result = progress()) {
-  const shades = ['░', '▒', '▓', '█'];
+  const shades = ['▧', '▦', '▩', '■'];
   let solvedCount = 0;
   return Array.from({ length: MAX_GUESSES }, (_, index) => {
     const attempt = result.attempts[index];
-    if (!attempt) return '·';
-    if (attempt.kind === 'miss') return '✣';
+    if (!attempt) return '□';
+    if (attempt.kind === 'miss') return '✺';
     const symbol = shades[Math.min(solvedCount, shades.length - 1)];
     solvedCount += 1;
     return symbol;
@@ -429,7 +448,7 @@ function renderArchive() {
           : status === 'In progress'
             ? 'progress'
             : 'unplayed';
-      moon.className = `moon-status is-${statusClass}`;
+      moon.className = `moon-status ink-status is-${statusClass}`;
       moon.setAttribute('aria-hidden', 'true');
       cell.append(moon);
       cell.href = `#puzzle/${dateKey}`;
@@ -473,15 +492,15 @@ function renderStatistics() {
 function resultText() {
   const result = progress();
   const symbols = inkprintSymbols(result);
-  return `INKPRINT #${puzzle.id}\n\n${symbols.slice(0, 5).join(' ')}\n${symbols.slice(5).join(' ')}\n\n${resultMetrics(result)}\n${compactDate()}\n\nhttps://jens246.github.io/inkling-daily-puzzle/`;
+  return `INKPRINT #${puzzle.id}\n\n${symbols.slice(0, 5).join(' ')}\n${symbols.slice(5).join(' ')}\n\n▧▦▩■ phrase  ✺ inkblot  □ unused\n${shareMetrics(result)} | ${shareDate()}\n\nhttps://jens246.github.io/inkling-daily-puzzle/`;
 }
 
 function openSharePreview() {
   const result = progress();
   ui.sharePreviewNumber.textContent = `#${puzzle.id}`;
   renderInkprintGrid(ui.sharePreviewGrid, result);
-  ui.sharePreviewMetrics.textContent = resultMetrics(result);
-  ui.sharePreviewDate.textContent = compactDate();
+  ui.sharePreviewMetrics.textContent = shareMetrics(result);
+  ui.sharePreviewDate.textContent = shareDate();
   ui.shareFallback.hidden = true;
   ui.shareConfirm.textContent = 'Share Inkprint';
   ui.shareDialog.showModal();

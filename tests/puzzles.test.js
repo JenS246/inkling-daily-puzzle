@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { derivePuzzle, normalizeAnswer, puzzles } from '../src/puzzles.js';
+import { derivePuzzle, getDailyPuzzle, normalizeAnswer, puzzleByDate, puzzles } from '../src/puzzles.js';
 import { MAX_GUESSES, completeDailyStats, emptyState, getPuzzleProgress, loadState } from '../src/storage.js';
 
 test('every cloud word is derived from at least one phrase', () => {
@@ -9,6 +9,51 @@ test('every cloud word is derived from at least one phrase', () => {
     assert.ok(derived.words.length > 0);
     for (const entry of derived.words) assert.ok(entry.frequency >= 1 && entry.frequency <= puzzle.phrases.length);
     for (const phrase of derived.phrases) assert.equal(new Set(phrase.words).size, phrase.words.length, `${puzzle.date}: phrases cannot repeat a cloud word`);
+  }
+});
+
+test('the curated daily bank has four distinct phrases and a strong repeated word', () => {
+  const dates = new Set();
+  const ids = new Set();
+  for (const puzzle of puzzles) {
+    assert.equal(puzzle.phrases.length, 4, `${puzzle.date}: expected four phrases`);
+    assert.equal(new Set(puzzle.phrases.map(({ answer }) => normalizeAnswer(answer))).size, 4, `${puzzle.date}: answers must be distinct`);
+    if (puzzle.date >= '2026-08-28') {
+      assert.ok(Math.max(...derivePuzzle(puzzle).words.map(({ frequency }) => frequency)) >= 3, `${puzzle.date}: cloud needs a strong repeated word`);
+    }
+    assert.equal(dates.has(puzzle.date), false, `${puzzle.date}: duplicate date`);
+    assert.equal(ids.has(puzzle.id), false, `${puzzle.id}: duplicate id`);
+    dates.add(puzzle.date);
+    ids.add(puzzle.id);
+  }
+});
+
+test('the daily schedule advances its date and continues beyond the first bank cycle', () => {
+  assert.equal(getDailyPuzzle('2026-08-29').date, '2026-08-29');
+  assert.equal(getDailyPuzzle('2026-08-29').id, 186);
+  assert.equal(getDailyPuzzle('2026-10-15').date, '2026-10-15');
+  assert.notEqual(getDailyPuzzle('2026-10-15').id, getDailyPuzzle('2026-08-29').id);
+  assert.notDeepEqual(
+    getDailyPuzzle('2026-08-28').phrases.map(({ answer }) => answer),
+    getDailyPuzzle('2026-09-29').phrases.map(({ answer }) => answer)
+  );
+  assert.equal(puzzleByDate('2026-08-22'), undefined);
+});
+
+test('the 480-edition rotation stays unique and puzzle-safe', () => {
+  const editions = new Set();
+  const start = Date.parse('2026-08-28T00:00:00Z');
+  for (let offset = 0; offset < 480; offset += 1) {
+    const date = new Date(start + offset * 86_400_000).toISOString().slice(0, 10);
+    const puzzle = puzzleByDate(date);
+    const derived = derivePuzzle(puzzle);
+    const edition = puzzle.phrases.map(({ answer }) => normalizeAnswer(answer)).sort().join('|');
+    assert.equal(puzzle.phrases.length, 4, `${date}: expected four phrases`);
+    assert.equal(new Set(puzzle.phrases.map(({ answer }) => normalizeAnswer(answer))).size, 4, `${date}: answers must be distinct`);
+    assert.ok(Math.max(...derived.words.map(({ frequency }) => frequency)) >= 3, `${date}: cloud needs a strong repeated word`);
+    for (const phrase of derived.phrases) assert.equal(new Set(phrase.words).size, phrase.words.length, `${date}: phrase repeats a cloud word`);
+    assert.equal(editions.has(edition), false, `${date}: repeated edition`);
+    editions.add(edition);
   }
 });
 

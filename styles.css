@@ -2686,3 +2686,313 @@ a.calendar-day:hover {
     background: color-mix(in srgb, var(--accent) 8%, transparent);
   }
 }
+
+/* Unified inkblot identity and final share composition */
+.inkblot-mark {
+  position: relative;
+  display: inline-block;
+  width: .48em;
+  height: .46em;
+  flex: 0 0 auto;
+  border-radius: 61% 39% 34% 66% / 48% 63% 37% 52%;
+  background: var(--miss);
+  box-shadow:
+    -.16em -.13em 0 -.105em var(--miss),
+    .18em -.1em 0 -.115em var(--miss),
+    .2em .17em 0 -.15em var(--miss),
+    -.18em .17em 0 -.16em var(--miss);
+  transform: rotate(-11deg);
+}
+
+.help-action {
+  border: 2px solid var(--miss);
+  color: var(--miss);
+  font-family: var(--poster);
+  font-size: 1.3rem;
+  font-weight: 950;
+}
+
+.help-action:hover {
+  background: color-mix(in srgb, var(--miss) 12%, transparent);
+  color: var(--miss);
+}
+
+.utility-menu summary {
+  color: var(--ink);
+  font-family: var(--poster);
+  font-size: 1rem;
+  font-weight: 950;
+  letter-spacing: .045em;
+  text-transform: uppercase;
+}
+
+.attempt-track,
+.inkprint-grid {
+  gap: .13rem;
+}
+
+.ink-status {
+  overflow: visible;
+  border: 2px solid var(--miss);
+  border-radius: 58% 42% 35% 65% / 44% 64% 36% 56%;
+  background: transparent;
+  box-shadow:
+    .22em -.12em 0 -.15em var(--miss),
+    -.16em .2em 0 -.16em var(--miss);
+  transform: rotate(-10deg);
+}
+
+.ink-status.is-complete {
+  border-color: var(--miss);
+  background: var(--miss);
+}
+
+.ink-status.is-progress {
+  overflow: visible;
+  border-color: var(--miss);
+  background: linear-gradient(90deg, var(--miss) 52%, transparent 52%);
+}
+
+.ink-status.is-progress::after {
+  content: none;
+}
+
+.ink-status.is-unplayed {
+  border-color: var(--miss);
+  border-style: dashed;
+  box-shadow: none;
+  opacity: .65;
+}
+
+.ink-status.is-failed {
+  border: 2px solid var(--miss);
+  background: repeating-linear-gradient(135deg, var(--miss) 0 2px, transparent 2px 4px);
+  box-shadow:
+    .22em -.12em 0 -.15em var(--miss),
+    -.16em .2em 0 -.16em var(--miss);
+}
+
+.sample-cloud {
+  display: flex;
+  min-height: clamp(220px, 28vw, 300px);
+  align-content: center;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0 clamp(.08rem, .45vw, .25rem);
+  flex-wrap: wrap;
+  padding: clamp(.7rem, 2vw, 1.1rem);
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+  text-align: center;
+}
+
+.sample-cloud > .sample-cloud-word {
+  position: static;
+  inset: auto;
+  display: inline-block;
+  flex: 0 0 auto;
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: clamp(2.25rem, 4.6vw, 4rem);
+  font-weight: 900;
+  letter-spacing: -.055em;
+  line-height: .78;
+  white-space: nowrap;
+  transform: none;
+}
+
+.sample-cloud > .sample-cloud-word:nth-child(5n + 1) { color: #8b4051; }
+.sample-cloud > .sample-cloud-word:nth-child(5n + 2) { color: #8b6c24; }
+.sample-cloud > .sample-cloud-word:nth-child(5n + 3) { color: #315f55; }
+.sample-cloud > .sample-cloud-word:nth-child(5n + 4) { color: #31556f; }
+
+.sample-cloud > .sample-cloud-word[data-frequency="2"] {
+  font-size: clamp(3.6rem, 7vw, 6.4rem);
+}
+
+.sample-cloud > .sample-cloud-word[data-frequency="4"] {
+  font-size: clamp(6.4rem, 12.5vw, 11rem);
+  line-height: .68;
+}
+
+.share-dialog {
+  width: min(680px, calc(100vw - 1.25rem));
+  padding: clamp(.75rem, 2.2vw, 1.35rem);
+}
+
+.share-preview {
+  padding: clamp(1rem, 3.5vw, 2.25rem);
+}
+
+.share-preview h2 {
+  margin-bottom: clamp(.9rem, 2vw, 1.35rem);
+  font-size: clamp(2.1rem, 8vw, 4.1rem);
+}
+
+.share-preview .inkprint-grid {
+  width: 100%;
+  gap: clamp(2px, .45vw, 4px);
+}
+
+.share-preview .inkprint-cell {
+  border-width: 2px;
+}
+
+.share-preview .inkprint-cell::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  display: grid;
+  min-width: 1.55em;
+  height: 1.55em;
+  place-items: center;
+  border-top: 1px solid var(--cell-ink);
+  border-left: 1px solid var(--cell-ink);
+  background: var(--cell-paper);
+  color: var(--cell-ink);
+  content: attr(data-guess);
+  font-family: var(--poster);
+  font-size: clamp(.68rem, 1.8vw, .88rem);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.share-legend {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  justify-content: start;
+  gap: .65rem 1.1rem;
+  margin-top: .9rem;
+  color: #445e61;
+  font-family: var(--playful);
+  font-size: clamp(.84rem, 2.2vw, 1rem);
+  font-weight: 800;
+}
+
+.share-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: .38rem;
+}
+
+.share-legend i {
+  display: inline-block;
+  width: 1.15rem;
+  aspect-ratio: 1;
+  border: 1px solid #24373f;
+}
+
+.share-legend .is-phrase {
+  background: repeating-linear-gradient(135deg, #f4f4ec 0 3px, #24373f 3px 5px);
+}
+
+.share-legend .is-blot {
+  border: 0;
+  border-radius: 43% 57% 38% 62% / 57% 42% 58% 43%;
+  background: #8b4051;
+  transform: rotate(-10deg);
+}
+
+.share-legend .is-open {
+  border-style: dashed;
+  opacity: .55;
+}
+
+.share-preview-metrics {
+  margin-top: .85rem;
+  font-size: clamp(.95rem, 2.4vw, 1.15rem);
+}
+
+.share-preview-date {
+  font-size: clamp(1.35rem, 4vw, 1.8rem);
+}
+
+@media (max-width: 760px) {
+  .issue-line {
+    display: none;
+  }
+
+  .utility-menu summary {
+    min-width: 58px;
+    padding-right: 1.05rem;
+    font-size: .82rem;
+  }
+
+  .utility-menu summary::before,
+  .utility-menu summary::after {
+    right: 0;
+    width: .72rem;
+  }
+
+  .sample-cloud {
+    min-height: 190px;
+    gap: 0 .12rem;
+    padding: .65rem .45rem;
+  }
+
+  .sample-cloud > .sample-cloud-word {
+    font-size: clamp(1.8rem, 8.4vw, 3rem);
+  }
+
+  .sample-cloud > .sample-cloud-word[data-frequency="2"] {
+    font-size: clamp(2.75rem, 12.5vw, 4.4rem);
+  }
+
+  .sample-cloud > .sample-cloud-word[data-frequency="4"] {
+    font-size: clamp(5rem, 22vw, 7.5rem);
+  }
+
+  .calendar-day .ink-status {
+    right: .28rem;
+    bottom: .24rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .share-dialog {
+    width: calc(100vw - .75rem);
+    padding: .55rem;
+  }
+
+  .share-preview {
+    padding: .85rem .65rem;
+  }
+
+  .share-preview h2 {
+    font-size: clamp(1.85rem, 10vw, 2.35rem);
+  }
+
+  .share-legend {
+    gap: .45rem .65rem;
+    font-size: .76rem;
+  }
+
+  .share-preview-metrics {
+    white-space: normal;
+  }
+
+  .calendar-day .ink-status {
+    width: 1.05rem;
+  }
+}
+
+@media (max-width: 340px) {
+  .utility-menu summary {
+    min-width: 36px;
+    padding-right: 0;
+    color: transparent;
+    font-size: 0;
+  }
+
+  .utility-menu summary::before,
+  .utility-menu summary::after {
+    width: 1rem;
+    color: var(--ink);
+  }
+}
+
+@media (max-width: 340px) and (max-height: 620px) {
+  .word-cloud {
+    min-height: 46dvh;
+  }
+}
