@@ -1609,15 +1609,16 @@ a.calendar-day:hover {
   }
 
   #hint-button-label {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
+    font-size: 0;
+  }
+
+  #hint-button-label::after {
+    content: attr(data-short-label);
+    font-size: .76rem;
   }
 
   .hint-action {
-    width: 38px;
+    width: auto;
     min-height: 38px;
   }
 

@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { derivePuzzle, getDailyPuzzle, normalizeAnswer, puzzleByDate, puzzles } from '../src/puzzles.js';
-import { MAX_GUESSES, completeDailyStats, emptyState, getPuzzleProgress, loadState } from '../src/storage.js';
+import { MAX_GUESSES, MAX_HINTS, completeDailyStats, emptyState, getPuzzleProgress, loadState, remainingHints } from '../src/storage.js';
 
 test('every cloud word is derived from at least one phrase', () => {
   for (const puzzle of puzzles) {
@@ -88,6 +88,16 @@ test('invalid local data falls back safely', () => {
   const storage = { getItem: () => '{broken' };
   assert.deepEqual(loadState(storage), emptyState());
   assert.equal(getPuzzleProgress(emptyState(), puzzles[0]).complete, false);
+});
+
+test('hint availability counts down clearly and never exceeds three hints', () => {
+  assert.equal(MAX_HINTS, 3);
+  assert.deepEqual([0, 1, 2, 3].map(remainingHints), [3, 2, 1, 0]);
+  assert.equal(remainingHints(4), 0);
+
+  const state = emptyState();
+  state.puzzles[puzzles[0].date] = { hints: 9 };
+  assert.equal(getPuzzleProgress(state, puzzles[0]).hints, MAX_HINTS);
 });
 
 test('legacy progress migrates into the ten-guess Inkprint', () => {

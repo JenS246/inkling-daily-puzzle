@@ -1,5 +1,5 @@
 import { PALETTES, derivePuzzle, getDailyPuzzle, normalizeAnswer, puzzleByDate, puzzles, utcDateKey } from './puzzles.js';
-import { MAX_GUESSES, completeDailyStats, getPuzzleProgress, loadState, saveState } from './storage.js';
+import { MAX_GUESSES, MAX_HINTS, completeDailyStats, getPuzzleProgress, loadState, remainingHints, saveState } from './storage.js?v=20260829e';
 
 const ui = {
   issueLine: document.querySelector('#issue-line'),
@@ -337,7 +337,7 @@ function useHint() {
   const unsolvedIndex = puzzle.phrases.findIndex((_, index) => !progress().solved.includes(index));
   if (unsolvedIndex < 0) return;
   const currentLevel = progress().hints;
-  const level = Math.min(currentLevel + 1, 3);
+  const level = Math.min(currentLevel + 1, MAX_HINTS);
   const target = puzzle.phrases[unsolvedIndex];
   if (level > currentLevel) {
     writeProgress({ ...progress(), hints: level });
@@ -345,7 +345,7 @@ function useHint() {
     saveState(state);
   }
 
-  if (level === 3) {
+  if (level === MAX_HINTS) {
     activeHintWords = new Set(target.words);
   }
   ui.feedback.textContent = '';
@@ -372,7 +372,7 @@ function renderCompletion() {
 function renderPuzzleState(newlyFoundIndex = -1) {
   const result = progress();
   const foundWords = newlyFoundIndex >= 0 ? puzzle.phrases[newlyFoundIndex].words : [];
-  if (result.hints >= 3 && !isOver(result)) {
+  if (result.hints >= MAX_HINTS && !isOver(result)) {
     const unsolved = puzzle.phrases.find((_, index) => !result.solved.includes(index));
     activeHintWords = new Set(unsolved?.words || []);
   }
@@ -381,12 +381,16 @@ function renderPuzzleState(newlyFoundIndex = -1) {
   ui.gameplayStage.classList.toggle('is-failed', result.failed);
   ui.submitButton.disabled = isOver(result);
   ui.phraseInput.disabled = isOver(result);
-  ui.hintButton.disabled = isOver(result);
-  ui.hintButtonLabel.textContent = isOver(result)
+  const hintsLeft = remainingHints(result.hints);
+  const hintLabel = isOver(result)
     ? result.complete ? 'Complete' : 'Ink ran dry'
-    : result.hints >= 3
-      ? 'Review hint 3/3'
-      : `Hint ${result.hints + 1}/3`;
+    : hintsLeft === 0
+      ? 'No hints left'
+      : `${hintsLeft} ${hintsLeft === 1 ? 'hint' : 'hints'} left`;
+  ui.hintButton.disabled = isOver(result) || hintsLeft === 0;
+  ui.hintButtonLabel.textContent = hintLabel;
+  ui.hintButtonLabel.dataset.shortLabel = isOver(result) ? hintLabel : hintsLeft === 0 ? 'None left' : `${hintsLeft} left`;
+  ui.hintButton.setAttribute('aria-label', hintLabel);
   renderCloud(foundWords);
   renderLedger(newlyFoundIndex);
   renderHintReveal();
@@ -397,7 +401,7 @@ function loadPuzzle(nextPuzzle) {
   puzzle = derivePuzzle(nextPuzzle);
   activeHintWords = new Set();
   const result = progress();
-  if (result.hints >= 3) {
+  if (result.hints >= MAX_HINTS) {
     const unsolved = puzzle.phrases.find((_, index) => !result.solved.includes(index));
     if (unsolved) activeHintWords = new Set(unsolved.words);
   }

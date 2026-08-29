@@ -1,5 +1,11 @@
 const STORAGE_KEY = 'inkling-progress-v1';
 export const MAX_GUESSES = 10;
+export const MAX_HINTS = 3;
+
+export function remainingHints(hints = 0) {
+  const used = Number.isFinite(hints) ? Math.floor(hints) : 0;
+  return Math.max(0, MAX_HINTS - Math.max(0, used));
+}
 
 export const emptyState = () => ({
   version: 1,
@@ -61,6 +67,7 @@ export function getPuzzleProgress(state, puzzle) {
   ].slice(0, MAX_GUESSES);
   const attempts = Array.isArray(saved.attempts) ? saved.attempts.slice(0, MAX_GUESSES) : legacyAttempts;
   const complete = Boolean(saved.complete);
+  const hints = MAX_HINTS - remainingHints(saved.hints);
   return {
     solved: [],
     incorrect: 0,
@@ -75,6 +82,7 @@ export function getPuzzleProgress(state, puzzle) {
     solved,
     incorrect,
     attempts,
+    hints,
     complete,
     failed: !complete && attempts.length >= MAX_GUESSES
   };
