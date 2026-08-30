@@ -21,6 +21,7 @@ const ui = {
   hintReveal: document.querySelector('#hint-reveal'),
   completion: document.querySelector('#completion'),
   completionTitle: document.querySelector('#completion-title'),
+  answerRevealList: document.querySelector('#answer-reveal-list'),
   inkprintCard: document.querySelector('#inkprint-card'),
   inkprintGrid: document.querySelector('#inkprint-grid'),
   inkprintMetrics: document.querySelector('#inkprint-metrics'),
@@ -386,6 +387,11 @@ function renderCompletion() {
   if (!isOver(result)) return;
   ui.completionTitle.textContent = `INKPRINT #${puzzle.id}`;
   ui.completion.classList.toggle('is-failed', result.failed);
+  ui.answerRevealList.replaceChildren(...puzzle.phrases.map(({ answer }) => {
+    const item = document.createElement('li');
+    item.textContent = answer;
+    return item;
+  }));
   renderInkprintGrid(ui.inkprintGrid, result);
   renderResultMetrics(result);
   ui.inkprintDate.textContent = compactDate();

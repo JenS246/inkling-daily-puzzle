@@ -4346,16 +4346,51 @@ body[data-active-view="how-to-play"] {
   }
 }
 
-/* The hint remains in the cloud corner on wide screens, even though its
-   semantic home is now beside the answer input. */
-.gameplay-stage {
-  position: relative;
+/* Keep the hint attached to the answer it helps on wide screens. */
+.phrase-form {
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-template-areas:
+    "input hint-button button"
+    "feedback feedback feedback";
+  column-gap: .55rem;
 }
 
 .phrase-form .puzzle-hint {
-  position: absolute;
-  top: .55rem;
-  right: calc(clamp(150px, 13vw, 190px) + clamp(1rem, 2.5vw, 2.6rem) + .65rem);
+  position: static;
+  grid-area: hint-button;
+  min-height: 48px;
+  align-self: start;
+  margin: 0;
+  padding: .3rem .25rem .18rem;
+  border: 0;
+  border-bottom: 3px solid var(--accent);
+  border-radius: 0;
+  background: transparent;
+  color: var(--accent);
+  font-family: var(--poster);
+  font-size: clamp(.82rem, 1.15vw, 1rem);
+  font-weight: 950;
+  letter-spacing: .02em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.phrase-form .puzzle-hint:hover,
+.phrase-form .puzzle-hint:focus-visible {
+  border-bottom-color: var(--date-ink);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  color: var(--date-ink);
+}
+
+.phrase-form .puzzle-hint:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.phrase-form .puzzle-hint:disabled {
+  border-bottom-color: var(--rule);
+  background: transparent;
+  color: var(--ink-soft);
 }
 
 .hint-mobile-icon {
@@ -4603,5 +4638,82 @@ body[data-active-view="how-to-play"] {
     padding-top: max(4rem, calc(env(safe-area-inset-top) + 3.5rem));
     padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
     overflow: visible;
+  }
+}
+
+/* A finished puzzle always names every answer, whether solved or inkblotted. */
+.completion {
+  grid-template-areas:
+    "heading inkprint"
+    "answers inkprint"
+    "share inkprint";
+  grid-template-columns: minmax(250px, .52fr) minmax(300px, .48fr);
+  width: min(880px, 100%);
+}
+
+.answer-reveal {
+  grid-area: answers;
+  align-self: start;
+  padding-top: .45rem;
+  border-top: 1px solid var(--rule);
+}
+
+.answer-reveal h3 {
+  margin: 0 0 .55rem;
+  color: var(--ink-soft);
+  font-size: .72rem;
+  font-weight: 900;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+
+.answer-reveal ol {
+  display: grid;
+  gap: .35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.answer-reveal li {
+  font-size: clamp(1rem, 1.45vw, 1.18rem);
+  font-weight: 800;
+  line-height: 1.12;
+}
+
+.answer-reveal li::before {
+  margin-right: .45rem;
+  color: var(--accent);
+  content: "\2022";
+}
+
+@media (max-width: 760px) {
+  .gameplay-stage.is-complete .completion {
+    grid-template-areas:
+      "heading"
+      "answers"
+      "inkprint"
+      "share";
+    grid-template-columns: minmax(0, 1fr);
+    gap: .8rem;
+  }
+
+  .answer-reveal {
+    padding-top: .55rem;
+  }
+
+  .answer-reveal ol {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .42rem .8rem;
+  }
+
+  .answer-reveal li {
+    font-size: .94rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .answer-reveal ol {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
