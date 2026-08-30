@@ -403,6 +403,7 @@ function renderPuzzleState(newlyFoundIndex = -1) {
   const hintLabel = hintsLeft === 0 ? 'No hints remaining' : `${hintsLeft} ${hintsLeft === 1 ? 'hint' : 'hints'} remaining`;
   ui.hintButton.disabled = isOver(result) || hintsLeft === 0;
   ui.hintCount.textContent = `${hintsLeft} REMAINING`;
+  ui.hintButton.dataset.remaining = String(hintsLeft);
   ui.hintButton.setAttribute('aria-label', hintLabel);
   renderCloud(foundWords);
   renderLedger(newlyFoundIndex);
