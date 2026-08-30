@@ -2698,12 +2698,12 @@ a.calendar-day:hover {
   height: .46em;
   flex: 0 0 auto;
   border-radius: 61% 39% 34% 66% / 48% 63% 37% 52%;
-  background: var(--miss);
+  background: var(--ink);
   box-shadow:
-    -.16em -.13em 0 -.105em var(--miss),
-    .18em -.1em 0 -.115em var(--miss),
-    .2em .17em 0 -.15em var(--miss),
-    -.18em .17em 0 -.16em var(--miss);
+    -.16em -.13em 0 -.105em var(--ink),
+    .18em -.1em 0 -.115em var(--ink),
+    .2em .17em 0 -.15em var(--ink),
+    -.18em .17em 0 -.16em var(--ink);
   transform: rotate(-11deg);
 }
 
@@ -4278,7 +4278,7 @@ body[data-active-view="how-to-play"] {
   color: color-mix(in srgb, var(--cell-ink) 30%, var(--cell-paper));
 }
 
-/* A lively title and first-play card built from the same painted palette. */
+/* Keep the title as one confident ink mark; the game carries the color. */
 .wordmark-letters {
   display: inline-flex;
   align-items: baseline;
@@ -4286,16 +4286,9 @@ body[data-active-view="how-to-play"] {
 
 .wordmark-letters > span {
   display: inline-block;
+  color: var(--ink);
   transform-origin: 50% 80%;
 }
-
-.wordmark-letters > span:nth-child(1) { color: var(--palette-green); }
-.wordmark-letters > span:nth-child(2) { color: var(--palette-red); }
-.wordmark-letters > span:nth-child(3) { color: var(--palette-gold); }
-.wordmark-letters > span:nth-child(4) { color: var(--palette-blue); }
-.wordmark-letters > span:nth-child(5) { color: var(--palette-sea); }
-.wordmark-letters > span:nth-child(6) { color: var(--palette-rust); }
-.wordmark-letters > span:nth-child(7) { color: var(--palette-charcoal); }
 
 .dialog-inkblots {
   position: relative;
