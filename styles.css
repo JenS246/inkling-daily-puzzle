@@ -2691,19 +2691,26 @@ a.calendar-day:hover {
 }
 
 /* Unified inkblot identity and final share composition */
+@property --blot-color {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #8b4051;
+}
+
 .inkblot-mark {
+  --blot-color: var(--palette-red);
   position: relative;
   display: inline-block;
   width: .48em;
   height: .46em;
   flex: 0 0 auto;
   border-radius: 61% 39% 34% 66% / 48% 63% 37% 52%;
-  background: var(--ink);
+  background: var(--blot-color);
   box-shadow:
-    -.16em -.13em 0 -.105em var(--ink),
-    .18em -.1em 0 -.115em var(--ink),
-    .2em .17em 0 -.15em var(--ink),
-    -.18em .17em 0 -.16em var(--ink);
+    -.16em -.13em 0 -.105em var(--blot-color),
+    .18em -.1em 0 -.115em var(--blot-color),
+    .2em .17em 0 -.15em var(--blot-color),
+    -.18em .17em 0 -.16em var(--blot-color);
   transform: rotate(-11deg);
 }
 
@@ -4311,6 +4318,10 @@ body[data-active-view="how-to-play"] {
 .dialog-copy li:nth-child(3)::marker { color: var(--palette-gold); }
 
 @media (prefers-reduced-motion: no-preference) {
+  .inkblot-mark {
+    animation: inkblot-color-turn 16s ease-in-out infinite;
+  }
+
   .wordmark-letters > span {
     animation: wordmark-settle 620ms cubic-bezier(.2, .8, .25, 1) both;
   }
@@ -4321,6 +4332,33 @@ body[data-active-view="how-to-play"] {
   .wordmark-letters > span:nth-child(5) { animation-delay: 180ms; }
   .wordmark-letters > span:nth-child(6) { animation-delay: 225ms; }
   .wordmark-letters > span:nth-child(7) { animation-delay: 270ms; }
+}
+
+@keyframes inkblot-color-turn {
+  0%, 100% {
+    --blot-color: var(--palette-red);
+    transform: rotate(-11deg) scale(1);
+  }
+  17% {
+    --blot-color: var(--palette-rust);
+    transform: rotate(-9deg) scale(1.025);
+  }
+  34% {
+    --blot-color: var(--palette-gold);
+    transform: rotate(-12deg) scale(.99);
+  }
+  51% {
+    --blot-color: var(--palette-green);
+    transform: rotate(-10deg) scale(1.02);
+  }
+  68% {
+    --blot-color: var(--palette-sea);
+    transform: rotate(-12deg) scale(1);
+  }
+  85% {
+    --blot-color: var(--palette-blue);
+    transform: rotate(-10deg) scale(1.015);
+  }
 }
 
 @keyframes wordmark-settle {
