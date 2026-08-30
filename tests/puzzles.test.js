@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { PALETTES, derivePuzzle, getDailyPuzzle, normalizeAnswer, puzzleByDate, puzzles } from '../src/puzzles.js';
 import { MAX_GUESSES, MAX_HINTS, completeDailyStats, emptyState, getPuzzleProgress, loadState, puzzleSignature, remainingHints } from '../src/storage.js';
-import { hintSequenceForPuzzle, phraseTypeHint } from '../src/hints.js';
+import { hintSequenceForPhrase, hintSequenceForPuzzle, phraseTypeHint, smartHintForPhrase } from '../src/hints.js';
 
 test('every cloud word is derived from at least one phrase', () => {
   for (const puzzle of puzzles) {
@@ -154,6 +154,42 @@ test('expression hints read naturally without a type label', () => {
   assert.equal(phraseTypeHint('expression'), 'An expression');
   assert.equal(phraseTypeHint('common expression'), 'An expression');
   assert.equal(phraseTypeHint('idiom'), 'Phrase type: idiom');
+});
+
+test('smart hints use only reliable phrase-specific context', () => {
+  assert.equal(
+    smartHintForPhrase({ answer: 'walk this way', type: 'song title', note: 'Recorded by Run-DMC.' }),
+    'A song recorded by Run-DMC.'
+  );
+  assert.equal(
+    smartHintForPhrase({ answer: 'break the ice', type: 'idiom', note: 'To ease the first awkwardness of a meeting.' }),
+    'To ease the first awkwardness of a meeting.'
+  );
+  assert.equal(
+    smartHintForPhrase({ answer: 'a wrinkle in time', type: 'book title', note: "Madeleine L'Engle (1962)." }),
+    ''
+  );
+  assert.equal(
+    smartHintForPhrase({ answer: 'open secret', type: 'expression', hint: 'Something widely known but not officially acknowledged.' }),
+    'Something widely known but not officially acknowledged.'
+  );
+  assert.equal(
+    smartHintForPhrase({ answer: 'walk the line', type: 'movie title', note: 'Walk the Line was released in 2005.' }),
+    ''
+  );
+});
+
+test('a smart hint replaces one generic clue without removing the outline', () => {
+  const phrase = { answer: 'walk this way', type: 'song title', note: 'Recorded by Run-DMC.' };
+  const sequence = hintSequenceForPhrase(187, phrase);
+  assert.equal(sequence.length, MAX_HINTS);
+  assert.equal(new Set(sequence).size, MAX_HINTS);
+  assert.ok(sequence.includes('smart'));
+  assert.ok(sequence.includes('outline'));
+  assert.deepEqual(
+    hintSequenceForPhrase(187, { answer: 'walk the line', type: 'movie title', note: '' }),
+    hintSequenceForPuzzle(187)
+  );
 });
 
 test('legacy progress migrates into the ten-guess Inkprint', () => {

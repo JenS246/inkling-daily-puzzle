@@ -1,6 +1,6 @@
 import { PALETTES, derivePuzzle, getDailyPuzzle, normalizeAnswer, puzzleByDate, puzzles, utcDateKey } from './puzzles.js?v=20260830a';
 import { MAX_GUESSES, MAX_HINTS, completeDailyStats, getPuzzleProgress, loadState, puzzleSignature, remainingHints, saveState } from './storage.js?v=20260829f';
-import { hintSequenceForPuzzle, phraseTypeHint } from './hints.js?v=20260829k';
+import { hintSequenceForPhrase, phraseTypeHint, smartHintForPhrase } from './hints.js?v=20260830l';
 
 const ui = {
   issueLine: document.querySelector('#issue-line'),
@@ -258,6 +258,7 @@ function hintMessage(result = progress()) {
   if (lastHint.kind === 'type') {
     return phraseTypeHint(target.type);
   }
+  if (lastHint.kind === 'smart') return smartHintForPhrase(target);
   if (lastHint.kind === 'first') return `First word: ${target.words[0].toLocaleUpperCase('en-US')}`;
   if (lastHint.kind === 'last') return `Last word: ${target.words.at(-1).toLocaleUpperCase('en-US')}`;
   if (lastHint.kind === 'outline' && activeHintWords.size) return 'Outlined words belong together.';
@@ -361,7 +362,7 @@ function useHint() {
   const currentLevel = progress().hints;
   const level = Math.min(currentLevel + 1, MAX_HINTS);
   const target = puzzle.phrases[unsolvedIndex];
-  const kind = hintSequenceForPuzzle(puzzle.id)[level - 1];
+  const kind = hintSequenceForPhrase(puzzle.id, target)[level - 1];
   if (level > currentLevel) {
     writeProgress({ ...progress(), hints: level, lastHint: { kind, phrase: unsolvedIndex } });
     state.stats.hintsUsed += 1;
@@ -544,7 +545,7 @@ async function shareResult(button = ui.shareButton) {
   const text = resultText();
   try {
     await navigator.clipboard.writeText(text);
-    const original = button === ui.shareConfirm ? 'Copy Inkprint' : 'Share Your Inkprint';
+    const original = button === ui.shareConfirm ? 'Copy Inkprint' : 'Share';
     button.textContent = 'Copied';
     window.setTimeout(() => { button.textContent = original; }, 1200);
   } catch {
