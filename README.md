@@ -60,8 +60,11 @@ npm run data:build
 The build combines public idiom, proverb, popular-book, ranked-movie, and
 Rolling Stone song-title lists. It converts dashes to spaces, keeps only 3–7
 word answers made of letters and spaces, removes placeholders and
-family-unsafe terms, deduplicates entries, and ranks more recognizable sources
-first. See `data/SOURCES.md` for source URLs and
+family-unsafe terms, requires English-language book data, applies strict
+popularity thresholds to books and movies, and excludes phrases in the
+editorial denylist. The issued August 30 puzzle is reserved unchanged while
+364 regenerated games fill August 31, 2026 through August 29, 2027. See
+`data/SOURCES.md` for source URLs and
 `data/generated/quality-report.json` for exact build statistics.
 
 ## Add a legacy puzzle

@@ -51,7 +51,7 @@ test('the daily schedule advances its date and continues beyond the first bank c
   assert.equal(puzzleByDate('2026-08-15'), undefined);
 });
 
-test('the 365-edition annual bank stays unique and puzzle-safe', () => {
+test('the 365-edition annual schedule stays unique and puzzle-safe', () => {
   const editions = new Set();
   const phraseUses = new Map();
   const start = Date.parse('2026-08-30T00:00:00Z');
@@ -72,8 +72,29 @@ test('the 365-edition annual bank stays unique and puzzle-safe', () => {
     assert.equal(editions.has(edition), false, `${date}: repeated edition`);
     editions.add(edition);
   }
-  assert.ok(phraseUses.size >= 1000, 'bank should use the source material efficiently');
-  assert.ok(Math.max(...phraseUses.values()) <= 2, 'no answer should appear more than twice');
+  assert.ok(phraseUses.size >= 365, 'bank should balance familiar material with useful reuse');
+  assert.ok(Math.max(...phraseUses.values()) <= 6, 'no answer should appear more than six times');
+});
+
+test('future puzzles exclude every phrase rejected in editorial review', () => {
+  const rejected = new Set(`a cold day in july
+a home bird
+act high and mighty
+all eyes are on
+bell the cat
+betwixt and between
+flat out like a lizard
+little strokes fell great oaks
+run into a buzz
+set the thames on fire
+talk of the devil
+trip the light fantastic`.split('\n'));
+  for (const puzzle of puzzles.filter(({ date }) => date >= '2026-08-31')) {
+    for (const phrase of puzzle.phrases) {
+      assert.equal(rejected.has(phrase.answer), false, `${puzzle.date}: rejected phrase returned`);
+      assert.doesNotMatch(phrase.answer, /\b(el|los|las|una|une|der|die|das|und|ein|uma|avec|pour|des|ett|som|och|eller|veldt|geshvign)\b/i, `${puzzle.date}: likely non-English phrase`);
+    }
+  }
 });
 
 test('frequency counts phrase membership rather than repeated spelling', () => {

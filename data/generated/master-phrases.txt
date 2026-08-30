@@ -1,91 +1,45 @@
 a little bird told me
 all roads lead to rome
 gone with the wind
-into the wild
-in cold blood
 it takes two to tango
 take it easy
-ace in the hole
 add insult to injury
 against the clock
 ahead of the curve
 all hat and no cattle
-all that jazz
 all the rage
-the jungle book
 any port in a storm
 apples and oranges
 back to square one
 batten down the hatches
 beat around the bush
-the fault in our stars
-the kite runner
 lord of the flies
-of mice and men
 black and white
-life of pi
-the book thief
-the green mile
-sense and sensibility
+into the wild
 burn the midnight oil
 the princess bride
-a walk to remember
-me before you
 carry coals to newcastle
-the grapes of wrath
-high and low
 a clockwork orange
-requiem for a dream
-change of heart
-the color purple
-ready player one
-east of eden
-the bourne identity
-no country for old men
-a beautiful mind
+in cold blood
 v for vendetta
 face the music
-the hunt for red october
-harry potter and the prisoner of azkaban
-the time machine
-harry potter and the chamber of secrets
-harry potter and the goblet of fire
-harry potter and the half blood prince
 for a song
 from pillar to post
 stand by me
-the perks of being a wallflower
 burn the candle at both ends
 go with the flow
-cat on a hot tin roof
 let it be
-a streetcar named desire
 high as a kite
 blue suede shoes
 great balls of fire
 hit the roof
 hold the phone
-beauty and the beast
-the lincoln lawyer
-much ado about nothing
-a little princess
-the bourne ultimatum
 in the dark
-the maltese falcon
 jump on the bandwagon
-everything is illuminated
-sweet smell of success
-the bourne supremacy
-walk on the wild side
 let sleeping dogs lie
 heart of glass
-all quiet on the western front
-walk this way
 heart of gold
-bag of bones
-the cider house rules
 nickel and dime
-the big sleep
 candle in the wind
 on cloud nine
 on the spot
@@ -93,30 +47,17 @@ ticket to ride
 one for the road
 peaches and cream
 pie in the sky
-house of sand and fog
-walk the line
 rain cats and dogs
-dawn of the dead
 ring a bell
 rob the cradle
 run in the family
-a monster calls
 six feet under
-black hawk down
-north and south
 swing for the fences
-the english patient
-lost in translation
-tell no one
 test the waters
-we need to talk about kevin
-the invisible man
-a cold day in july
 a dog in the manger
 a good deal
 a great deal
 a hundred and ten percent
-invasion of the body snatchers
 a notch above
 a penny for your thoughts
 above the law
@@ -124,6 +65,7 @@ above the salt
 accident of birth
 accident waiting to happen
 according to hoyle
+ace in the hole
 acknowledge the corn
 across the board
 act of congress
@@ -131,7 +73,6 @@ actions speak louder than words
 add fuel to the fire
 after the fact
 against the grain
-against the run of play
 age before beauty
 agree to disagree
 under the weather
@@ -139,18 +80,17 @@ ahead of the game
 alive and kicking
 all and sundry
 up for grabs
-up in the air
 all bark and no bite
 all bets are off
 all eyes and ears
 all in good time
 all mouth and no trousers
 all over but the shouting
-all over the board
 all over the map
 all over the place
 all rights reserved
 all sizzle and no steak
+all that jazz
 all the marbles
 all the same
 all the tea in china
@@ -168,40 +108,37 @@ around the clock
 at sixes and sevens
 babe in arms
 babe in the woods
-black and blue
 back at you
 back in the day
 back to the drawing board
 bag of tricks
 bang for your buck
 bark up the wrong tree
-the chaos class
 the great gatsby
 the hunger games
 the shawshank redemption
 bed of roses
-end of watch
-nineteen eighty four
 pride and prejudice
 the dark knight
+the fault in our stars
 the godfather part ii
+the kite runner
 behind the scenes
 behind the times
-bell the cat
 bells and whistles
-man som hatar kvinnor
 best of both worlds
 bet the farm
 better late than never
 beyond the pale
+romeo and juliet
 the da vinci code
 the lovely bones
 birds of a feather
 fifty shades of grey
 memoirs of a geisha
+of mice and men
 a game of thrones
 bite the bullet
-the bridges of madison county
 the kashmir files
 the lightning thief
 a cat in gloves catches no mice
@@ -209,9 +146,11 @@ blow hot and cold
 blow off steam
 city of bones
 saving private ryan
+the book thief
+the green mile
 water for elephants
+where the sidewalk ends
 blow the whistle
-blue eyed boy
 brave new world
 city of god
 life is beautiful
@@ -219,56 +158,55 @@ the adventures of huckleberry finn
 the secret life of bees
 a thousand splendid suns
 back to the future
+the golden compass
 american history x
 break a leg
 break the bank
 break the ice
 bring home the bacon
 looking for alaska
+sense and sensibility
 the lion king
 a stitch in time saves nine
 a tale of two cities
 bump in the road
 grave of the fireflies
-le petit prince
 the devil wears prada
 the giving tree
 the glass castle
+the little prince
 the usual suspects
 bury the hatchet
 business as usual
 the maze runner
 the secret garden
-un di velt hot geshvign
-cien anos de soledad
 fifty shades darker
 fifty shades freed
-flickan som lekte med elden
 me talk pretty one day
+one hundred years of solitude
 the picture of dorian gray
 the poisonwood bible
 confessions of a shopaholic
-le comte de monte cristo
+the count of monte cristo
 where the wild things are
 a clash of kings
 a wrinkle in time
-behind closed doors
 call it a day
 call it a night
+me before you
 the adventures of tom sawyer
 the dark knight rises
 tuesdays with morrie
 carry the can
 cast the first stone
 castle in the air
-come and see
 the joy luck club
 anne of green gables
 catch some rays
 paths of glory
+the grapes of wrath
 the great dictator
 the lives of others
-witness for the prosecution
 a storm of swords
 all dressed up and nowhere to go
 all fur coat and no knickers
@@ -276,7 +214,6 @@ circle the wagons
 city of glass
 claim to fame
 clear the air
-luftslottet som sprangdes
 the scarlet letter
 come out in the wash
 come out of the closet
@@ -286,22 +223,22 @@ if i stay
 thirteen reasons why
 city of ashes
 come to grips with
-cook up a storm
 green eggs and ham
 the red tent
 the sea of monsters
-the tragedy of macbeth
 the two towers
 a feast for crows
 charlie and the chocolate factory
 cross to bear
 full metal jacket
 good will hunting
+requiem for a dream
 the lost hero
 cry your eyes out
 cut it fine
 the last song
 change horses in midstream
+crime and punishment
 cut the mustard
 cut to the chase
 lawrence of arabia
@@ -309,16 +246,16 @@ north by northwest
 the bell jar
 the last olympian
 a dance with dragons
-judgment at nuremberg
-like stars on earth
+change of heart
 the night circus
 the other boleyn girl
 chip off the old block
 chomp at the bit
 dead until dark
-a christmas carol
+and then there were none
 dance with the devil
 interview with the vampire
+the color purple
 the lost symbol
 dead of winter
 one for the money
@@ -326,13 +263,16 @@ at the drop of a hat
 bared to you
 deliver the goods
 dodge a bullet
+ready player one
 the chronicles of narnia
 dog and pony show
-dog in the manger
+east of eden
+the bourne identity
 the nanny diaries
 down in the dumps
 down the road
 draw a blank
+no country for old men
 the wolf of wall street
 along came a spider
 bridge to terabithia
@@ -342,17 +282,16 @@ drive a hard bargain
 number the stars
 running with scissors
 the truman show
+a beautiful mind
 drop the ball
 extremely loud and incredibly close
 the sixth sense
 there will be blood
 alice in wonderland
 eat humble pie
-la sombra del viento
 some like it hot
 the great escape
 the scorch trials
-three cups of tea
 under the tuscan sun
 a tree grows in brooklyn
 big little lies
@@ -363,34 +302,32 @@ never let me go
 the elephant man
 the secret in their eyes
 the sun also rises
-all about eve
 an abundance of katherines
-como agua para chocolate
 flowers for algernon
-gangs of wasseypur
+like water for chocolate
 a light in the attic
-children of heaven
 fall off the wagon
 on the road
 the pelican brief
 the rosie project
-zindagi na milegi dobara
 cutting for stone
-the hobbit or there and back again
 the lucky one
-the wages of fear
+harry potter and the prisoner of azkaban
 heart of darkness
+the diary of a young girl
 the son of neptune
+the time machine
 the very hungry caterpillar
 can you keep a secret
 city of fallen angels
 fire in the belly
+harry potter and the chamber of secrets
 harry potter and the deathly hallows
-the mountain ii
+harry potter and the goblet of fire
+harry potter and the half blood prince
 a walk in the woods
 fish out of water
 good in bed
-paan singh tomar
 the graveyard book
 the light between oceans
 the thorn birds
@@ -399,8 +336,7 @@ a prayer for owen meany
 city of lost souls
 fly off the handle
 food for thought
-nesnesitelna lehkost byti
-where the red fern grows
+the unbearable lightness of being
 the grand budapest hotel
 the last lecture
 catch me if you can
@@ -411,24 +347,23 @@ james and the giant peach
 reflected in you
 the big lebowski
 the casual vacancy
+the perks of being a wallflower
 the runaway jury
 the wonderful wizard of oz
 we were liars
 get bent out of shape
 how to train your dragon
-im westen nichts neues
 the bad beginning
 the sound of music
 the wizard of oz
-a grief observed
 and the mountains echoed
 anna and the french kiss
-get off scot free
 get the ball rolling
 get to grips with
 how the grinch stole christmas
 once upon a time in the west
 the deer hunter
+the screwtape letters
 get wind of
 get with the program
 million dollar baby
@@ -442,6 +377,7 @@ go down in flames
 in the mood for love
 my neighbor totoro
 the death cure
+the girl who played with fire
 where the heart is
 a million little pieces
 go off half cocked
@@ -449,57 +385,29 @@ go out on a limb
 go pear shaped
 island of the blue dolphins
 on the waterfront
+the final empire
 the seventh seal
+diary of a wimpy kid
 for whom the bell tolls
 go the extra mile
 go to the dogs
 go to the mattresses
 the third man
 throne of glass
-a farewell to arms
-breakfast of champions
 grease the wheels
 green as grass
-inherit the wind
-it happened one night
 like a rolling stone
 mary and max
-the tell tale heart
-farewell my concubine
 give and take
-les trois mousquetaires
 smells like teen spirit
-the five people you meet in heaven
-the undomestic goddess
-things fall apart
 a change is gonna come
-a woman under the influence
-fanny and alexander
-message in a bottle
-only time will tell
-the battle of algiers
-the hidden fortress
-the other hand
-the paris wife
-the thirteenth tale
-a confederacy of dunces
 a day in the life
 all the light we cannot see
 be my baby
 born to run
-complete harry potter boxed set
-go ask alice
 god only knows
-il nome della rosa
 in my life
 people get ready
-the colour of magic
-the importance of being earnest
-the mark of athena
-the red shoes
-throne of blood
-before i fall
-dil chahta hai
 eternal sunshine of the spotless mind
 hard nut to crack
 have a ball
@@ -508,88 +416,47 @@ light my fire
 river deep mountain high
 stairway to heaven
 sympathy for the devil
-the god of small things
-the gold rush
-the invention of wings
-before i go to sleep
 dancing in the street
-fall of giants
-nights of cabiria
 once upon a time in america
-the virgin spring
-under the dome
-what alice forgot
-winnie the pooh
-a study in scarlet
 all along the watchtower
 bridge over troubled water
-cyrano de bergerac
 georgia on my mind
-raise the red lantern
-rang de basanti
 the tracks of my tears
-time of the gypsies
 champagne taste on a beer budget
-en man som heter ove
-jean de florette
 long tall sally
-the good earth
-the grand illusion
 when doves cry
 whiter shade of pale
-dragonfly in amber
-in her shoes
 she loves you
 sunshine of your love
-the tashkent files
-their eyes were watching god
-ways of seeing
 head and shoulders
-in the woods
 tangled up in blue
-the god delusion
-the world according to garp
 walk on by
-where she went
 whole lotta love
-dara of jasenovac
-franny and zooey
 strawberry fields forever
-the amber spyglass
-the kitchen house
 you really got me
 every breath you take
 hit the ground running
 hit the jackpot
 ring of fire
-speaker for the dead
-the andromeda strain
-the city of ember
 the immortal life of henrietta lacks
 guardians of the galaxy
 hit the road
 hit the spot
 love and happiness
 roll over beethoven
-the princess diaries
-the secret history
 be bop a lula
 living for the city
 not fade away
-the hunger games box set
 brown eyed girl
 dances with wolves
 dog day afternoon
-el amor en los tiempos del colera
 indiana jones and the last crusade
 little red corvette
-the adventures of sherlock holmes
-the great hunt
-the hiding place
+love in the time of cholera
 the imitation game
-the prince of tides
 up on the roof
 you send me
+beauty and the beast
 go your own way
 honky tonk women
 house of the rising sun
@@ -597,39 +464,26 @@ i want you back
 in a heartbeat
 scent of a woman
 take me to the river
-the things they carried
-wall and piece
 born to be wild
-darkly dreaming dexter
-go set a watchman
 in a nutshell
 life of brian
-living dead in dallas
 planet of the apes
-the dragon reborn
 the pursuit of happyness
 will you love me tomorrow
 with or without you
-do the right thing
 how to win friends and influence people
 i saw her standing there
 in the midnight hour
 monty python and the holy grail
-the power of habit
-the truth about forever
+the bourne ultimatum
 while my guitar gently weeps
 who do you love
 i wanna be sedated
 in the cards
 in the hot seat
-little house on the prairie
-pretty little liars
-the horse and his boy
 the invisible guest
-the velveteen rabbit
 castle in the sky
 eight miles high
-fiddler on the roof
 in the long run
 in the nick of time
 in the red
@@ -638,131 +492,70 @@ in the toilet
 in the works
 me and bobby mcgee
 snow flower and the secret fan
-the last picture show
+the maltese falcon
 bring the noise
-dead to the world
-out of the past
-the phantom tollbooth
 the sounds of silence
-the way of kings
 both sides now
 folsom prison blues
-la dolce vita
+is everyone hanging out without me
 losing my religion
-oryx and crake
-the angel experiment
-the language of flowers
-wings of desire
-are you my mother
 i fought the law
 jack of all trades
 jump the gun
 love will tear us apart
-the story of art
-the straight story
-touch of evil
-a great and terrible beauty
 back in black
 i know this much is true
 jump the shark
 jump through hoops
-my man godfrey
-song of the sea
 the thrill is gone
-a separate peace
-a wizard of earthsea
-because of winn dixie
-don quijote de la mancha
 i know why the caged bird sings
 keep an eye on
 keep an eye peeled
-my sassy girl
 there goes my baby
 bizarre love triangle
 kick the bucket
-the hero of ages
-the sea inside
-the silver chair
-the tale of peter rabbit
-the wild pear tree
-city of heavenly fire
 in my room
-jonathan livingston seagull
 king of the hill
 kiss and make up
 knock some sense into
 lean on me
-love you forever
-the forgotten garden
 try a little tenderness
-dilwale dulhania le jayenge
 do you believe in magic
-the mists of avalon
-all together dead
 dance to the music
 fire and rain
 hoochie coochie man
-kind hearts and coronets
 lend an ear
-nights in rodanthe
-the exterminating angel
-the polar express
-veronika decide morrer
 walk away renee
-dead as a doornail
+all quiet on the western front
+fear and loathing in las vegas
 i got a woman
 just like a woman
 only the lonely
-the martian chronicles
 i fall to pieces
 son of a preacher man
-the blue elephant
-the last battle
-world without end
 chain of fools
 dress your family in corduroy and denim
-ensaio sobre a cegueira
 hot fun in the summertime
 loaded for bear
 mack the knife
-portrait of a lady on fire
-tales of caunterbury
 a short history of nearly everything
 all the young dudes
-dreams from my father
 i can see for miles
 look the other way
-the white tiger
-along for the ride
-everything i never told you
-interpreter of maladies
-la casa de los espiritus
 love at first sight
 low hanging fruit
 lower the boom
 walking in the rain
-entwined with you
 he stopped loving her today
 make a break for it
 sloop john b
 sweet little sixteen
-the dead zone
-the man who shot liberty valance
-the mysterious affair at styles
-a bend in the road
 chapel of love
-mad about madeline
 make ends meet
 pictures of you
-the best years of our lives
-the house of hades
-think and grow rich
-a bridge too far
-edge of tomorrow
 match made in heaven
 meeting of the minds
 smoke stack lightning
-children of men
 i want to hold your hand
 monday morning quarterback
 month of sundays
@@ -770,154 +563,80 @@ move heaven and earth
 move the needle
 move up in the world
 one way or another
-shaun of the dead
-state of wonder
 street fighting man
-the constant princess
-the silver linings playbook
-the vampire lestat
 tired of being alone
 train in vain
-dallas buyers club
 like a prayer
 much of a muchness
 my way or the highway
-strangers on a train
-the blues brothers
-walk two moons
-a fistful of dollars
-death of a salesman
 neck of the woods
-the man from earth
-the tragedie of king lear
 wake up little susie
 fight the power
-from dead to worse
-ghost in the shell
 many rivers to cross
 never in a million years
 nine times out of ten
-the adventures of robin hood
-the shadow rising
-the waste lands
-this is spinal tap
 wish you were here
 for your precious love
-let the right one in
-snow falling on cedars
-the bone collector
-the nightmare before christmas
-the ten commandments
-the wild bunch
 we will rock you
-bound by honor
 not have a prayer
-once were warriors
 spirit in the sky
 subterranean homesick blues
-the little house collection
-the philadelphia story
 you keep me hanging on
-dancer in the dark
-dead and gone
-fantastic beasts and where to find them
 have the time of your life
 nothing to write home about
 nuts and bolts
 piece of my heart
-the brief wondrous life of oscar wao
 the harder they come
-the lies of locke lamora
-the lion in winter
-the power of now
-a christmas story
 all shook up
 bad moon rising
-crown of midnight
 off the beaten path
 off the hook
 off the wall
 tears in heaven
 the great pretender
-the manchurian candidate
 watching the detectives
-a taxi driver
 all you need is love
 got my mojo working
-harold and maude
 i heard it through the grapevine
 nowhere to run
 on a lark
 on a roll
-talk to her
-the autobiography of malcolm x
-the bluest eye
-the way he looks
-the white queen
-arsenic and old lace
 how deep is your love
 on all fours
-the complete sherlock holmes
-the thin man
-the tragedy of julius caesar
 the wind cries mary
-a fine balance
-a heartbreaking work of staggering genius
 brown eyed handsome man
-calvin and hobbes
 fake plastic trees
 hit the road jack
-in a lonely place
-my name is khan
-notre dame de paris
 on the back foot
 on the ball
 on the bubble
 on the dot
 on the fly
 radio free europe
-the art book
 bitter sweet symphony
-clear and present danger
-for one more day
-foundation and empire
 goodbye yellow brick road
 i know you got soul
 on the fritz
 on the radar
 on the same page
-the lost weekend
-about a boy
 baby i need your loving
 band of gold
-hiroshima mon amour
 just my imagination
-on dublin street
 on the wagon
 on the warpath
 on thin ice
 summer in the city
-the complete tales of edgar allan poe
-the red circle
-elevator to the gallows
-jab we met
 once in a blue moon
 once in a while
 one trick pony
 sweet home alabama
-the big heat
-the story of my life
 i feel love
 monkey gone to heaven
 out of line
 out of luck
 out of nowhere
 out of order
-the good girl
-the invention of hugo cabret
-through a glass darkly
 visions of johanna
-wizard and glass
 in the blink of an eye
 ode to billie joe
 out of sorts
@@ -927,21 +646,14 @@ out of the picture
 out of the way
 out of the woods
 out of this world
-the best of me
 the boys of summer
-when you are engulfed in flames
-a is for alibi
 all i have to do is dream
 butch cassidy and the sundance kid
 over my dead body
 over the hill
 over the moon
 smoke on the water
-the sense of an ending
-zen and the art of motorcycle maintenance
 beast of burden
-feet of clay
-lock and key
 midnight train to georgia
 pain in the neck
 paint the town red
@@ -954,341 +666,110 @@ i shot the sheriff
 i wanna be your dog
 love me tender
 pass the buck
-the merchant of venice
 come as you are
-flowers in the attic
 i got you babe
 leader of the pack
 pick up the tab
 piece of cake
-what ever happened to baby jane
-when breath becomes air
-everything everywhere all at once
 my sweet lord
 sheena is a punk rocker
-the bean trees
-the breakfast club
-the way of shadows
-the westing game
-call me by your name
 one fine day
 play it by ear
 play the ponies
 play with fire
 save the last dance for me
-the fiery cross
-the history of love
 welcome to the jungle
-words of radiance
-brain on fire
-dead in the family
-die unendliche geschichte
 free man in paris
 on the road again
 one nation under a groove
 point the finger at
 pop the question
 search and destroy
-the big short
-the reptile room
 where did our love go
 into the mystic
 just like heaven
 pot calling the kettle black
-the blind assassin
-the hateful eight
-as i lay dying
-david and goliath
-harold and the purple crayon
 how soon is now
 i will survive
 pull out all the stops
-the social network
 under the boardwalk
-a bronx tale
-boyz n the hood
 push the envelope
 pushing up daisies
 put down roots
 rainy night in georgia
-rendezvous with rama
 running on empty
-the age of innocence
-the last samurai
-the selfish gene
-the year of magical thinking
 then he kissed me
-little miss sunshine
-manchester by the sea
 more than a feeling
 put lipstick on a pig
 put out feelers
 put the brakes on
-remember the titans
-the black echo
-the outlaw josey wales
-the tenth circle
-the throne of fire
-vision in white
-i saw the devil
-the blade itself
-the forever war
-the joy of cooking
-two for the dough
 we gotta get out of this place
-a visit from the goon squad
-all the bright places
-hija de la fortuna
-isle of dogs
-the arctic incident
-the holy mountain
-the marriage plot
-the right stuff
-the shipping news
-luckiest girl alive
-not that kind of girl
 quick and dirty
 quick as a flash
-straight outta compton
-the king of comedy
 the night they drove old dixie down
-the raven boys
-en attendant godot
-his dark materials
 race against time
-the edge of never
-wolves of the calla
-days of heaven
-holidays on ice
-hunt for the wilderpeople
 raise the bar
 raise the roof
 rank and file
 read between the lines
-the best offer
-the fires of heaven
-letters from iwo jima
-my fair lady
-night of the living dead
 reinvent the wheel
-shopaholic and baby
-the dark tower
-little house in the big woods
-my left foot
-point of retreat
 right hand man
 rob peter to pay paul
-the gathering storm
-whisper of the heart
 you are the sunshine of my life
-all about my mother
-breaking the waves
-bringing up baby
-the dark half
-the happiness project
-the rainbow fish
-land of mine
-shadow of night
-vingt mille lieues sous les mers
-between the world and me
 blue eyes crying in the rain
-hannah and her sisters
-run into a buzz
 run off at the mouth
 run on fumes
 run out of steam
-the white ribbon
-towers of midnight
 why do fools fall in love
 with a little help from my friends
-all creatures great and small
-his girl friday
 i put a spell on you
 school of hard knocks
 screw the pooch
-shadow of a doubt
-the scarlet pimpernel
-the twilight saga
-the umbrellas of cherbourg
-the unbecoming of mara dyer
-three to get deadly
 seize the day
-shadow and bone
-crimes and misdemeanors
-people of the book
 set in stone
-set the thames on fire
 set the world on fire
-the bride of frankenstein
-the power of six
-the secret keeper
-the short second life of bree tanner
-vivre sa vie
 shape up or ship out
-the asphalt jungle
-the girl you left behind
-the tale of despereaux
-heir of fire
 shot across the bow
-the blood of olympus
-truly madly guilty
-a moveable feast
-my life as a zucchini
 sick as a parrot
-sight for sore eyes
 sink or swim
-the art of fielding
-the street lawyer
-the wide window
-lets explore diabetes with owls
-why not me
-a night at the opera
-handle with care
 sleep with the fishes
 slower than molasses
-song of susannah
-the one and only ivan
-among the hidden
 smell a rat
-the witch of blackbird pond
-career of evil
-four to score
-kai po che
-shopaholic ties the knot
-the summer i turned pretty
-the woman in white
-heart of the matter
 spick and span
 spill the beans
 spin a yarn
-spit into the wind
 spoiling for a fight
-stone of tears
-the sirens of titan
-my life next door
 start with a clean slate
-the celestine prophecy
-this is where i leave you
-to the lighthouse
-winter of the world
-far from the madding crowd
-house of leaves
 stem the tide
 step up to the plate
 stick in the mud
 stick it to the man
-kane and abel
-life as we knew it
 strike a chord
-the banshees of inisherin
-the longest ride
-eventyr og historier
-the great divorce
-a few good men
-a stolen life
-also sprach zarathustra
-anne of the island
-blue is the warmest colour
 devil with a blue dress on
 sweeten the pot
 swim with sharks
-the immortals of meluha
-the lost world
-the unlikely pilgrimage of harold fry
-a court of thorns and roses
-a crown of swords
 take a flyer
 take a gander
 take a hike
 take a powder
-the lego movie
-the longest day
-and your mother too
 by the time i get to phoenix
-man on fire
-silver linings playbook
-the amityville horror
-evil dead ii
-let the great world spin
-steal like an artist
 take the cake
 take the fifth
-the eternity code
-fried green tomatoes
-guess how much i love you
 standing in the shadows of love
-the count of monte cristo
-the french connection
-the psychopath test
-we were the mulvaneys
-a dirty job
-midnight in paris
-road to perdition
-tell it to the marines
 tempest in a teapot
-ten a penny
 ten to one
-the amulet of samarkand
-the magnificent seven
-the one minute manager
-the time keeper
-a man called ove
 i want to know what love is
-stones from the river
-the boondock saints
-the miserable mill
-the snow child
 tie the knot
 time is money
 tip of the iceberg
-wait for you
-when harry met sally
-who framed roger rabbit
-wreck it ralph
-back to the future part ii
-det som inte dodar oss
-empire of the sun
-la divina commedia
-sound of metal
-the birth of venus
-the dirty dozen
-the last straw
-the opal deception
-the tao of pooh
 to bear fruit
-glengarry glen ross
-star trek into darkness
 the boys are back in town
-the curious case of benjamin button
-the forty rules of love
-the goose girl
-the theory of everything
-this is england
-being john malkovich
-chor nikal ke bhaga
-cloudy with a chance of meatballs
-cold sassy tree
-kung fu hustle
-tender is the night
-the glass menagerie
 to the letter
 toe the line
 tongue in cheek
-a wind in the door
-belle de jour
-between shades of gray
-bonnie and clyde
-rules of civility
-the great beauty
-the round house
 a bit much
 a bite at the cherry
 a busy bee
-a little life
-lucky number slevin
-the accidental tourist
-the alloy of law
-the wind rises
 turn a blind eye
 turn the corner
 a cat has nine lives
@@ -1296,990 +777,287 @@ a cat nap
 a cold fish
 a cut above
 a cut below
-anne of avonlea
-children of the mind
-der schweizerische robinson
-four past midnight
-i am legend and other stories
-the little engine that could
-the marriage bargain
 turn the tables
-two a penny
 a guinea pig
-a home bird
-fates and furies
-kubo and the two strings
-the african queen
 the coast is clear
-the last emperor
-the man from nowhere
-the witching hour
-this present darkness
 a lame duck
 a leg up
 a life of its own
 a lone wolf
-the austere academy
-the foundation trilogy
 the jig is up
-the quiet man
 a million and one
 a plum job
 a rare bird
-beasts of no nation
-before they are hanged
-open your eyes
-the shell seekers
-the vile village
 the walls have ears
-a scandal in bohemia
 a scaredy cat
 a sight for sore eyes
 a sitting duck
-cronica de una muerte anunciada
-night on earth
-the caine mutiny
-the double life of veronique
-the little prince
-the ruins of gorlan
-when marnie was there
-a man for all seasons
 a tall order
 above and beyond
-good bye lenin
-hedwig and the angry inch
-how green was my valley
-the dharma bums
-the path of daggers
 three sheets to the wind
 through thick and thin
-voyage au centre de la terre
-city of thieves
-eyes of the dragon
-halfway to the grave
-the beach house
-the broken circle breakdown
-the house on mango street
-the magdalene sisters
-the motorcycle diaries
-the triplets of belleville
 throw caution to the wind
 throw down the gauntlet
 throw in the towel
 across the pond
-act high and mighty
-children of dune
-down by law
-queen of shadows
-the girl who loved tom gordon
-the lady vanishes
-the snowy day
 throw the book at
-to the nines
-wait until dark
-where we belong
-an echo in the bone
-dead witch walking
-once upon a time in anatolia
-taste of cherry
-the case for christ
-the night before christmas
-the signature of all things
 agreement in principle
-jules and jim
-knife of dreams
-lola and the boy next door
-pushing the limits
-tales of a fourth grade nothing
-the man who would be king
 under the impression
-university of life
 until the cows come home
-joint security area
-miss nelson is missing
-quidditch through the ages
-the ersatz elevator
-the long walk
-the mysterious benedict society
+up in the air
 up to scratch
-after the wedding
-all eyes are on
 all hands on deck
-state of fear
-still life with woodpecker
-those who save us
 up the ante
-a breath of snow and ashes
-across the universe
 all in one piece
-how to be a woman
-love and death
-the boxcar children
-the silent wife
 vale of tears
-the purple rose of cairo
-the story of edgar sawtelle
 walk on eggshells
 walk the plank
-all talk and no trousers
-all the pretty horses
-the last unicorn
-the muppet christmas carol
 all things being equal
 along the lines of
-howl and other poems
-i am pilgrim
-the knife of never letting go
 an early bird
-the book of mormon
 when the chips are down
 whistle in the dark
 and all that
-horton hears a who
-last argument of kings
-the edge of heaven
-the light fantastic
 whistle past the graveyard
 wild goose chase
 ants in your pants
-the hunger games tribute guide
-the painted man
 with bells on
 armed to the teeth
-the shifting fog
 you can say that again
-the infinite sea
-the once and future king
 young at heart
 your mileage may vary
-a memory of light
 at the eleventh hour
-dazed and confused
-the complete maus
-the eyre affair
-the little mermaid
-the ugly truth
-the bone clocks
-the fifth element
-the last juror
 back and forth
-dragons of autumn twilight
-eleven on top
-my cousin vinny
-the godfather part iii
-the lost colony
 back of beyond
-the book of life
-the burning bridge
-the butterfly effect
-a star is born
 back the wrong horse
 back to the salt mines
 backing and filling
-the blind side
-the king of torts
-the peanut butter falcon
-train to busan
-under the never sky
-a long way down
 ball and chain
-chasing harry winston
-kung fu panda
-the golden lily
-the royal tenenbaums
 baptism by fire
-heart shaped box
-out from boneville
-the skin i live in
-the thin red line
 be a barrel of laughs
 be an item
 be footloose and fancy free
 be in seventh heaven
-everyone worth knowing
-manifest der kommunistischen partei
-shopaholic and sister
-the iron daughter
-the road warrior
 be like chalk and cheese
 be lovey dovey
 be on the mend
 be snowed under
-bridge of spies
-ham on rye
-lord of war
-my life in france
-the age of miracles
-the rosie effect
 beauty is only skin deep
 beggar thy neighbor
-enter the dragon
-make way for ducklings
-notes from a small island
-only the brave
-romeo and juliet
-the florida project
-at first sight
 bend an elbow
-grip of the shadow plague
-the memoirs of sherlock holmes
-the moon is a harsh mistress
-die hard with a vengeance
-el juego del angel
-rebel without a cause
 too many cooks spoil the broth
-west side story
-where eagles dare
-where rainbows end
-an ember in the ashes
-drive my car
-i am sam
-the last king of scotland
-the slippery slope
 bitter pill to swallow
-furies of calderon
-her fearful symmetry
-the black dahlia
-the boston girl
-the fall of hyperion
-the secret world of arrietty
+black and blue
 blinded by love
-blood and thunder
-blow away the cobwebs
-escape from alcatraz
-from here to eternity
-we are all completely beside ourselves
 blow your own trumpet
-hearts in atlantis
-on golden pond
-small great things
-the borrowers afield
 blue light special
 bolt from the blue
 bottom of the barrel
-the darkest minds
-the house of mirth
-the power of positive thinking
-the muppet movie
-twelve years a slave
-a canticle for leibowitz
 a second bite at the cherry
 brush under the carpet
 bull in a china shop
-crossroads of twilight
-eyes without a face
-the diamond age
-the two popes
-a bruxa de portobello
-a swiftly tilting planet
-gardens of the moon
-gregor the overlander
-sing you home
-the red badge of courage
-a spool of blue thread
-blood of the fold
 by a whisker
 by all means
-la vie en rose
-the boleyn inheritance
-the camel club
-the iron queen
-the underground railroad
-a very long engagement
 by word of mouth
-frog and toad are friends
-one cut of the dead
-the black prism
-the carnivorous carnival
-the house at pooh corner
-the mermaid chair
-the station agent
 call the shots
-call the tune
-the odd couple
 cat got your tongue
-death comes to pemberley
-out of my mind
-this is how you lose her
-a map of the world
-a painted house
 caught red handed
-it ends with us
-the girl who leapt through time
 clean up nicely
-the left hand of darkness
-a court of mist and fury
 come rain and shine
-rosencrantz and guildenstern are dead
-saving ceecee honeycutt
-band of outsiders
-beezus and ramona
 coming down the pike
 cooking up a storm
 cool as a cucumber
-in a better world
-the farthest shore
-the magnificent ambersons
-the power of one
 wake up and smell the coffee
 cool your heels
 crash a party
 crunch the numbers
-the red violin
-the story of ferdinand
-le diner de cons
-rise of the evening star
-the next always
-wake up sid
-a voice in the wind
 cut the gordian knot
 changing of the guard
 chew the fat
-the tombs of atuan
-what the dog saw and other adventures
-anna dressed in blood
 chickens come home to roost
-memnoch the devil
-the sign of four
-a reliable wife
 chuck a wobbly
-peace like a river
-red storm rising
-song of solomon
-the heart is a lonely hunter
-dead as the dodo
-shadow of the hegemon
-all things bright and beautiful
-once upon a time in hollywood
-the friday night knitting club
-the sisters brothers
-dog days of the summer
-fantastic mr fox
-six of crows
-what happened to goodbye
-beneath this man
 double edged sword
 drag your feet
 drain the lizard
-prince of thorns
-the book of ruth
 dressed up to the nines
 drink the kool aid
-leaves of grass
-tanu weds manu returns
-the magician king
-the richest man in babylon
-a man called otto
-belgarath the sorcerer
 drive a wedge between
 drop a line
-my name is lucy barton
-pawn of prophecy
-the great dune trilogy
-a quiet place
-eyes wide shut
-lean mean thirteen
-promising young woman
-the greatest showman
-the jungle books
-the lake house
 eat your heart out
-harriet the spy
-the paying guests
-essential tales and poems
-every man and his dog
 every man for himself
-lat den ratte komma in
-legends of the fall
-sushi for beginners
-the rise of nine
-what we do in the shadows
-close encounters of the third kind
 fall prey to
-gangs of new york
-my utmost for his highest
-the wee free men
-an american werewolf in london
 feast your eyes on
-snow white and the seven dwarfs
-the desert spear
-the hurt locker
-death on the nile
 fed up with
 feel like a million dollars
-fell off a truck
-field of dreams
 fifteen minutes of fame
-in the unlikely event
-leaving las vegas
-tucker and dale vs evil
-when you reach me
 beyond the shadow of a doubt
 fight like cat and dog
 find your feet
 fish for compliments
-hide and seek
-siege and storm
-the hate u give
-the love dare
-the piano teacher
-the wicker man
-born in fire
-enemy at the gates
 five finger discount
 flash in the pan
-flat out like a lizard
 flesh and blood
 flew the coop
-if tomorrow comes
-reason to breathe
-an itchy day
 bite off more than you can chew
 bite the hand that feeds you
 follow your heart
-the time paradox
-while i was gone
-a fish called wanda
-the black stallion
-the complete poems of emily dickinson
-the sky is everywhere
-the tenant of wildfell hall
-born at midnight
 from soup to nuts
-menace ii society
-playing for keeps
-riders of justice
-the grim grotto
-before the fall
-full fathom five
-the dream thieves
-the long goodbye
-the portrait of a lady
-the yellow wallpaper
-weathering with you
 break out in a cold sweat
 game of chicken
 get a charley horse
 get a word in edgewise
 get carried away
 get in shape
-half of a yellow sun
-the art forger
-the last temptation of christ
-the running man
-the slow regard of silent things
-the taking of pelham one two three
-a single man
-edge of eternity
 get the picture
-the big blue
-the big sick
-the sword of shannara
-fall on your knees
 get the runaround
 get the third degree
-on the island
-thank you for smoking
-the fisher king
-the scorpio races
-visions of sugar plums
-anne frank remembered
 go belly up
 go cold turkey
-one foot in the grave
-saving the world and other extreme sports
-stranger than fiction
-the last anniversary
-the secret of nimh
-the tin drum
-a bear called paddington
-a perfect world
 go off the deep end
 go off the rails
-life as a house
-the guns of navarone
-the hostile hospital
 go under the knife
-little big man
-the kissing hand
-a simple plan
-dead man walking
-green around the gills
-the life of david gale
-worth dying for
-captivated by you
+cat on a hot tin roof
 give lip service
-give lip service to
-just one day
-memoria de mis putas tristes
-the city of lost children
-the electric kool aid acid test
-who am i
-a royal affair
 give the green light
-pain and glory
-dealing with dragons
 hands are tied
 hang it up
 hanging by a thread
 happy go lucky
-heir to the empire
-i am legend
-the last detail
-the meaning of life
-the sweet hereafter
-you can heal your life
-a bad case of stripes
 haul over the coals
-love me if you dare
-on body and soul
-rules of prey
-show me love
-the elements of style
-the great debaters
-as you like it
-best friends forever
 have a lead foot
 have a screw loose
-house of flying daggers
 have bigger fish to fry
 have egg on your face
 have foot in mouth disease
-the flowers of war
-the indigo spell
-the lady from shanghai
-you can count on me
 have one over the eight
 have one too many
 have skin in the game
-instructions not included
-the legend of drunken master
-the secret of kells
-a bittersweet life
 have your say
-less than zero
-rules of attraction
-the book of negroes
 head and shoulders above
-how to steal a million
-the caves of steel
-the red turtle
 heart and soul
-piercing the darkness
-the elfstones of shannara
-the true confessions of charlotte doyle
-castle of wizardry
-cross my heart and hope to spy
-dance upon the air
 highways and byways
 hit a wall
 hit the books
 hit the hay
-i lost my body
-the damned united
-a widow for one year
 hit the sack
-out of the silent planet
-the wasp factory
-crazy rich asians
-library of souls
-husbands and wives
-i capture the castle
-little town on the prairie
-same kind of different as me
-the evolution of mara dyer
-the rum diary
-the sword of summer
 draw a line in the sand
 in a fog
-the young elites
 in a jam
 in a new york minute
 in a pickle
 in a rut
 in broad daylight
-indiana jones and the temple of doom
-jewels of the sun
-peter and the starcatchers
-a tale for the time being
-dead ever after
 in full swing
 in his cups
 in hot water
 in one fell swoop
-notes from a big country
-the illustrated man
-the penultimate peril
 in the interim
-soul of the fire
-the bachman books
-the grand design
-the innocent man
-the runaway bunny
 in the pipeline
-le avventure di pinocchio
-the magic of thinking big
-the vampire armand
-circling the sun
-fear and loathing in las vegas
 is the pope catholic
-the barbarian invasions
-the hour i first believed
-tropic of cancer
-black like me
-herr der diebe
-the republic of thieves
-bring up the bodies
 feel on top of the world
-fell off the back of a lorry
 jump in with both feet
-the maze of bones
-when the bough breaks
-even cowgirls get the blues
 jump the track
 just around the corner
 just for the record
 just what the doctor ordered
-on chesil beach
-son of a witch
-how to stop worrying and start living
 keep a stiff upper lip
 keep it under your hat
-point of origin
-the gifts of imperfection
-blueberries for sal
-god emperor of dune
 keep your nose clean
-keep your powder dry
-men at arms
-the van alen legacy
 kith and kin
-ramona the pest
-the kerala story
-the valley of horses
 larger than life
-the evil dead
-a year in provence
 last but not least
 laughter is the best medicine
 learn the ropes
 let off steam
-out of the dust
-queen of babble
-the calvin and hobbes tenth anniversary book
-the house girl
-army of darkness
-code name verity
 get in on the ground floor
 letter of the law
-master of the game
-shutur eli sharri
-the body farm
-the last duel
-the third wheel
-a history of violence
-a nightmare on elm street
-the darkest night
-the rocky horror picture show
-zero dark thirty
-living in cloud cuckooland
 living on borrowed time
-the hotel new hampshire
-the laughing corpse
-the silver star
-the texas chain saw massacre
-law abiding citizen
-picnic at hanging rock
-the dark knight returns
-the sneetches and other stories
 lose the thread
-the windup girl
-this man confessed
-a darker shade of magic
-green street hooligans
 mad as a hatter
-a thousand acres
-best in show
-the book of three
 may december marriage
-bad luck and trouble
 miss the boat
-the children act
-the jane austen book club
-the land before time
-three days of the condor
-inside llewyn davis
-judas and the black messiah
 movers and shakers
 music to my ears
 mutton dressed up as lamb
-my dogs are barking
-tipping the velvet
-body of evidence
 has the cat got your tongue
-high plains drifter
-to catch a thief
-an object of beauty
-anybody out there
-in the loop
 nice chunk of change
 nine to five job
-terms of endearment
-the blinding knife
-the bucket list
-the constant gardener
-the icebound land
-dad is fat
-empire of storms
-five easy pieces
 no love lost between
-notes on a scandal
-welcome to the monkey house
-a hidden life
-dirty rotten scoundrels
 have one foot in the grave
-not give a fig
 not know jack
 not lift a finger
 not mince words
-welcome to the dollhouse
-an affair to remember
 have your nose in the air
 he would put legs under a chicken
-nosferatu the vampyre
 not ready for prime time
 nutty as a fruitcake
-pigs in heaven
-pop goes the weasel
-the ghost brigades
-the merry adventures of robin hood
-and justice for all
-confessions of an ugly stepsister
-how to be good
-in the bedroom
-jude the obscure
 off his trolley
-the forest of hands and teeth
-man on the moon
 old man winter
 on a hiding to nothing
-queen of sorcery
-rust and bone
-the burgess boys
-the garden of words
-the ice storm
-the odessa file
-down to you
 hit it out of the park
-kabhi khushi kabhie gham
-mordare utan ansikte
 on deck next
 on life support
-reign over me
-the complete works
-waiting for guffman
-from up on poppy hill
-man bites dog
 on the fence
-searching for bobby fischer
-the couple next door
-the greatest game ever played
-the life we bury
-the pillars of creation
-john dies at the end
 on the home stretch
 on the nose
 on the right track
-stories i only tell my friends
-the eagle has landed
-the king and i
-the lunatic cafe
-the painted veil
-bullets over broadway
 on the take
-pierrot le fou
-possible side effects
-still life with bread crumbs
-the black cauldron
-the china syndrome
-a raisin in the sun
-dragons of spring dawning
 one two punch
 open and shut case
-the duke and i
-the good neighbor
-the sum of all fears
-cross of iron
-in the house
 out in the sticks
 out of left field
-stranger than paradise
-a pocket for corduroy
-il pendolo di foucault
-rabbit proof fence
-a shot in the dark
-maria full of grace
-never rarely sometimes always
 out of work
 out the door
-pursuit of god
-son of saul
-the iron knight
-destined for an early grave
-skinny legs and all
-the butterfly garden
-the wrong man
-a darkness at sethanon
-all american girl
 pass with flying colors
-the inheritance of loss
-the power of a praying wife
-we are water
-die leiden des jungen werthers
 pick a fight
 pick up the slack
-my life without me
 pipped to the post
-the good lie
-welcome to lovecraft
-every which way but dead
 play cat and mouse
 play the percentages
 play your cards right
-the children of hurin
-this side of paradise
-uber das geistige in der kunst
-light in august
 point of no return
 point the finger
-tenth of december
 preaching to the choir
-tell me your dreams
-the player of games
-everything we keep
 pull the plug on
 pull yourself together
 puppies and rainbows
 puppy dog eyes
-the cricket in times square
-the mighty storm
-min mormor halsar och sager forlat
 pure as the driven snow
-the new york trilogy
-the song of achilles
-broadway danny rose
-the immortal rules
-the last letter from your lover
-the miraculous journey of edward tulane
-what maisie knew
-all that remains
 life is a bowl of cherries
 put your foot down
-the kid with a bike
-i let you go
 like taking candy from a baby
 like two peas in a pod
-the cask of amontillado
-the complete tales of beatrix potter
-the distant hours
 appetite comes with eating
-back to the future part iii
 queer the pitch
-the legend of sleepy hollow
-angle of repose
 look what the cat dragged in
-my friend leonard
 raise red flags
-the final warning
-through the ever night
-isla and the happily ever after
 rake over the ashes
 read the tea leaves
-the dragonbone chair
-the fifth witness
-the golden fool
-the letters of vincent van gogh
-into the darkest corner
-magic carpet ride
 red light district
-the fury and dark reunion
-yahsi bati the ottoman cowboys
-a passage to india
-map of bones
 right as rain
-roses are red
-no time to die
 roll the dice on
 roll with the punches
-the ballad of buster scruggs
-the last kingdom
-the mammoth hunters
-the winds of war
-triangle of sadness
-a league of their own
-del amor y otros demonios
-kvinden i buret
 more fun than a barrel of monkeys
 rotten to the core
 rub it in
 rule of thumb
 run a tight ship
-the nice guys
-only the good spy young
 run the table
-the book of lost things
-men in black
-the secret of ella and micha
-decision to leave
-dumb and dumber
-how we decide
-the karate kid
-the satanic verses
 no room to swing a cat
-no tree grows to the sky
 sell like hotcakes
-the neverending story
-the sea of tranquility
 absence makes the heart grow fonder
-before i die
-keeping the moon
-not enough room to swing a cat
 sharp as a tack
 shipshape and bristol fashion
 shoot from the hip
-the shape of water
-beverly hills cop
-eye in the sky
-lords and ladies
 not playing with a full deck
 show your cards
 sick and tired of
-stumbling on happiness
-the false prince
-the reluctant fundamentalist
-the six wives of henry viii
-my side of the mountain
 off the top of my head
-raya and the last dragon
 sick as a dog
 sing a different tune
-the field guide
-the sword thief
-the winter sea
-the edge of seventeen
-the lego batman movie
-the man who knew too much
-heretics of dune
-lies that chelsea handler told me
-perdido street station
 sleep like a baby
-the buried giant
-enemy of the state
-in the heights
 soak up the sun
-the last coyote
 son of a gun
-the first phone call from heaven
 square the circle
 storm in a teacup
 sweep under the carpet
@@ -2290,32 +1068,23 @@ swim with the fishes
 sword of damocles
 take a rain check
 take it on the chin
-the girl of fire and thorns
-betwixt and between
 take the gloves off
 take the high road
-seven days in the art world
 take your medicine
 take your time
 taste of your own medicine
 tee many martoonies
 blood is thicker than water
-by the shores of silver lake
 tighten the screws
-til the cows come home
 price yourself out of the market
-the five dysfunctions of a team
 to be a peach
 put a thumb on the scale
 to each his own
-to get cold feet
-to run hot and cold
 as ever trod shoe leather
 toot your own horn
 turn on a dime
 turnabout is fair play
 twenty four seven
-two peas in a pod
 that ship has sailed
 the only game in town
 the powers that be
@@ -2335,17 +1104,13 @@ throw a wrench into
 throw the fight
 throw the game
 throw the match
-trip the light fantastic
 under the table
 up a creek
 up in arms
-mastering the art of french cooking
 up the duff
 up to snuff
 upset the apple cart
 shoulder a weight off your shoulders
-the secret life of walter mitty
-the waste land and other poems
 waiting in the wings
 wet your whistle
 worn to a frazzle
@@ -2354,7 +1119,6 @@ your number is up
 zero in on
 birds of a feather flock together
 to have butterflies in your stomach
-to have one for the road
 to pay an arm and a leg
 too many chiefs and not enough indians
 too many to shake a stick at
@@ -2532,6 +1296,7 @@ a thrashing will break no bones
 a threatened blow is seldom given
 above the curve
 above the fray
+a bridge too far
 a tongue will take you to kiev
 a tree is climbed from its base
 a tree is known by its fruit
@@ -2814,7 +1579,6 @@ discretion is better than valour
 distance is disaffection
 distance yourself from every dirtiness
 distress knows no law
-little strokes fell great oaks
 back to the wall
 back up the truck
 better one eyed than stone blind
@@ -2826,6 +1590,7 @@ bad hair day
 bad old days
 badge of honor
 do things of your capacity
+bag of bones
 doing is better than saying
 balance the books
 ball of fire
@@ -2908,6 +1673,7 @@ close does not shoot any hares
 each smith has his custom
 eagles do not catch flies
 beg to differ
+behind closed doors
 behind its time
 behind the bit
 behind the counter
@@ -2930,6 +1696,7 @@ constant dropping wears away the stone
 eats more than a fire
 eats more than a whale
 empty barrels rattle most
+much ado about nothing
 belly up to the bar
 continuous improvement is better than being good
 empty vessels sound most
@@ -3199,6 +1966,7 @@ break the buck
 break the cycle
 break the deadlock
 break the fourth wall
+only time will tell
 break the internet
 break the sabbath
 break the seal
@@ -3417,7 +2185,6 @@ cast a shadow
 good medicine is bitter to the mouth
 he who wants also gets
 talk is cheap
-talk of the devil
 cast in concrete
 grab the bull by its horns
 he who whispers lies
@@ -3475,7 +2242,6 @@ he is afraid of his own shadow
 human thinks and god plans
 hunger breaks stone walls
 hunger drives the pig home
-time will tell
 tit for tat
 walk the talk
 change of clothes
@@ -4175,6 +2941,7 @@ fee simple absolute in possession
 feel the pinch
 no man is wise at all times
 no money will come without work
+feet of clay
 fence the tables
 fend and prove
 fetch a compass
@@ -5154,6 +3921,7 @@ hide nor hair
 hide the sausage
 hiding to nothing
 high and dry
+high and low
 high and mighty
 high on the hog
 high on the totem pole
@@ -5568,6 +4336,7 @@ lose the bubble
 lose the plot
 loss of face
 lost in the shuffle
+lost in translation
 low on the totem pole
 lower the bar
 luck of the draw
@@ -6633,6 +5402,7 @@ sweat the small stuff
 sweep the board
 sweep the deck
 sweet mary mother of god
+sweet smell of success
 sweet young thing
 sweeten the pill
 sweetness and light

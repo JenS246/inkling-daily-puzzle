@@ -5,15 +5,23 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const rawDir = path.join(root, 'data', 'raw');
 const outDir = path.join(root, 'data', 'generated');
-const gameCount = 365;
-const startDate = Date.parse('2026-08-30T00:00:00Z');
-const startId = 187;
+const gameCount = 364;
+const startDate = Date.parse('2026-08-31T00:00:00Z');
+const startId = 188;
 const dayMs = 86_400_000;
 
 const stopHubs = new Set(`a about after all an and are as at back be been being before but by can cannot come comes could did do does down each every few for from get gets got had has have he her hers him his how i if in into is it its know knows last little make makes many may me might more most much must my never no nor not of off old on once one only or other our ours out over own put same she should so some such take takes than that the their theirs them then there these they this those through to too under up us very was way we were what when where which while who why will with would you your yours`.split(' '));
 const placeholders = new Set('someone somebody something oneself ones xyz abc'.split(' '));
 const blocklist = new Set(fs.readFileSync(path.join(root, 'data', 'blocklist.txt'), 'utf8')
   .split(/\r?\n/).map((line) => line.trim()).filter((line) => line && !line.startsWith('#')));
+const phraseDenylist = new Set(fs.readFileSync(path.join(root, 'data', 'phrase-denylist.txt'), 'utf8')
+  .split(/\r?\n/).map((line) => line.trim()).filter((line) => line && !line.startsWith('#')));
+const issuedAnswers = new Set([
+  'a walk to remember',
+  'walk on the wild side',
+  'walk this way',
+  'walk the line'
+]);
 const blockedStems = ['bastard', 'bitch', 'cunt', 'fagg', 'fuck', 'kill', 'nigger', 'penis', 'porn', 'prostitut', 'shit', 'suicid', 'whore'];
 const wordIsBlocked = (word) => blocklist.has(word) || blockedStems.some((stem) => word.startsWith(stem));
 
@@ -57,7 +65,9 @@ const candidates = [];
 function add(value, type, source, rank, note = '') {
   const answer = clean(value);
   const noteWords = String(note).toLocaleLowerCase('en-US').match(/[a-z]+/g) || [];
-  if (answer && !noteWords.some(wordIsBlocked)) candidates.push({ answer, type, source, rank, note });
+  if (answer && !phraseDenylist.has(answer) && !issuedAnswers.has(answer) && !noteWords.some(wordIsBlocked)) {
+    candidates.push({ answer, type, source, rank, note });
+  }
 }
 
 for (const [file, type, source] of [
@@ -77,8 +87,8 @@ fs.readFileSync(path.join(rawDir, 'rolling-stone-songs.txt'), 'utf8').split(/\r?
   });
 
 parseCsv(fs.readFileSync(path.join(rawDir, 'goodbooks.csv'), 'utf8')).forEach((row, rank) => {
-  if (rank >= 2500) return;
-  const title = row.original_title || row.title;
+  if (rank >= 400 || !String(row.language_code).toLowerCase().startsWith('en')) return;
+  const title = row.title.replace(/\s+\([^)]*\)\s*$/, '').replace(/\s+board book$/i, '') || row.original_title;
   const year = row.original_publication_year ? ` (${Math.trunc(Number(row.original_publication_year))})` : '';
   const authors = row.authors.split(',').map((author) => author.trim())
     .filter((author) => /^[\x20-\x7E]+$/.test(author)).slice(0, 2).join(' and ');
@@ -86,8 +96,8 @@ parseCsv(fs.readFileSync(path.join(rawDir, 'goodbooks.csv'), 'utf8')).forEach((r
 });
 
 parseCsv(fs.readFileSync(path.join(rawDir, 'movies.csv'), 'utf8')).forEach((row, rank) => {
-  if (rank >= 2500) return;
-  if (Number(String(row.Votes).replaceAll(',', '')) < 25_000) return;
+  if (rank >= 600) return;
+  if (Number(String(row.Votes).replaceAll(',', '')) < 150_000) return;
   add(row['Movie Name'], 'movie title', 'IMDb ranked movies', rank);
 });
 
@@ -118,8 +128,7 @@ const master = [...merged.values()].map((item) => ({
 })).sort((a, b) => b.score - a.score || a.answer.localeCompare(b.answer));
 
 const gameEligible = master.filter((item) =>
-  !['cstafie idioms', 'proverbs gist'].includes(item.source) || item.sources.length > 1 ||
-  (item.source === 'cstafie idioms' && item.rank < 500)
+  !['cstafie idioms', 'proverbs gist'].includes(item.source) || item.sources.length > 1
 );
 const hubs = new Map();
 for (const item of gameEligible) {
@@ -144,7 +153,7 @@ const games = [];
 let pass = 0;
 
 function hubPriority([word, items]) {
-  const usable = items.filter((item) => (answerUses.get(item.answer) || 0) < 2);
+  const usable = items.filter((item) => (answerUses.get(item.answer) || 0) < 6);
   const titleMix = new Set(usable.map((item) => item.type)).size;
   return usable.slice(0, 8).reduce((sum, item) => sum + item.score, 0) + titleMix * 120 + Math.min(usable.length, 20) * 20 - word.length;
 }
@@ -159,35 +168,51 @@ function tooSimilar(candidate, chosen, hub) {
   });
 }
 
+function selectEdition(items, hub, maxUses) {
+  const pool = items
+    .filter((item) => (answerUses.get(item.answer) || 0) < maxUses)
+    .sort((a, b) => b.score - a.score || a.answer.localeCompare(b.answer))
+    .slice(0, 20);
+  const options = [];
+  for (let a = 0; a < pool.length - 3; a += 1) {
+    for (let b = a + 1; b < pool.length - 2; b += 1) {
+      for (let c = b + 1; c < pool.length - 1; c += 1) {
+        for (let d = c + 1; d < pool.length; d += 1) {
+          const chosen = [pool[a], pool[b], pool[c], pool[d]];
+          if (new Set(chosen.map((item) => item.type)).size < 2) continue;
+          if (chosen.some((item, index) => tooSimilar(item, chosen.slice(0, index), hub))) continue;
+          const edition = chosen.map((item) => item.answer).sort().join('|');
+          if (usedEditions.has(edition)) continue;
+          options.push({
+            chosen,
+            edition,
+            uses: chosen.reduce((sum, item) => sum + (answerUses.get(item.answer) || 0), 0),
+            score: chosen.reduce((sum, item) => sum + item.score, 0)
+          });
+        }
+      }
+    }
+  }
+  options.sort((a, b) => a.uses - b.uses || b.score - a.score || a.edition.localeCompare(b.edition));
+  return options[0] || null;
+}
+
 function sentenceList(values) {
   if (values.length === 1) return values[0];
   if (values.length === 2) return `${values[0]} and ${values[1]}`;
   return `${values.slice(0, -1).join(', ')}, and ${values.at(-1)}`;
 }
 
-for (const maxUses of [1, 2]) {
+for (const maxUses of [1, 2, 3, 4, 5, 6]) {
   pass = 0;
   while (games.length < gameCount && pass < 5) {
     const orderedHubs = [...hubs.entries()].sort((a, b) => hubPriority(b) - hubPriority(a));
     let added = 0;
     for (const [hub, items] of orderedHubs) {
       if (games.length >= gameCount) break;
-      const usable = items.filter((item) => (answerUses.get(item.answer) || 0) < maxUses);
-      if (usable.length < 4) continue;
-      usable.sort((a, b) => b.score - a.score || a.answer.localeCompare(b.answer));
-      const chosen = [];
-      const seenTypes = new Set();
-      for (const item of usable) {
-        if (chosen.length >= 4) break;
-        if (tooSimilar(item, chosen, hub)) continue;
-        if (!seenTypes.has(item.type) || chosen.length >= 2) {
-          chosen.push(item);
-          seenTypes.add(item.type);
-        }
-      }
-      if (chosen.length < 4) continue;
-      const edition = chosen.map((item) => item.answer).sort().join('|');
-      if (usedEditions.has(edition)) continue;
+      const selected = selectEdition(items, hub, maxUses);
+      if (!selected) continue;
+      const { chosen, edition } = selected;
       const id = startId + games.length;
       const date = new Date(startDate + games.length * dayMs).toISOString().slice(0, 10);
       const types = [...new Set(chosen.map((item) => typeName(item.type)))];
@@ -196,7 +221,7 @@ for (const maxUses of [1, 2]) {
         date,
         phrases: chosen.map(({ answer, type, note }) => ({ answer, type, note })),
         connection: `${hub[0].toUpperCase()}${hub.slice(1)} in four phrases`,
-        connectionNote: `All four answers — ${sentenceList(types)} — share the word ${hub}.`,
+        connectionNote: `All four answers (${sentenceList(types)}) share the word ${hub}.`,
         palette: paletteNames[games.length % paletteNames.length],
         hub
       });
@@ -226,6 +251,8 @@ for (const game of games) for (const phrase of game.phrases) typeCounts[phrase.t
 const report = {
   rawCandidates: candidates.length,
   cleanUniquePhrases: master.length,
+  editorialDenylistSize: phraseDenylist.size,
+  issuedPhrasesReserved: issuedAnswers.size,
   wordsPerPhrase: lengthCounts,
   phrasesBySource: sourceCounts,
   games: games.length,

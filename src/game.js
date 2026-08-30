@@ -1,4 +1,4 @@
-import { PALETTES, derivePuzzle, getDailyPuzzle, normalizeAnswer, puzzleByDate, puzzles, utcDateKey } from './puzzles.js';
+import { PALETTES, derivePuzzle, getDailyPuzzle, normalizeAnswer, puzzleByDate, puzzles, utcDateKey } from './puzzles.js?v=20260830a';
 import { MAX_GUESSES, MAX_HINTS, completeDailyStats, getPuzzleProgress, loadState, puzzleSignature, remainingHints, saveState } from './storage.js?v=20260829f';
 import { hintSequenceForPuzzle, phraseTypeHint } from './hints.js?v=20260829k';
 
@@ -200,13 +200,6 @@ function colorForWord(word, index) {
   return palette[(hash + index + paletteOffset) % palette.length];
 }
 
-function usedCount(word) {
-  const solved = new Set(progress().solved);
-  return puzzle.phrases.reduce((count, phrase, index) => {
-    return count + (solved.has(index) && phrase.words.includes(word) ? 1 : 0);
-  }, 0);
-}
-
 function renderCloud(newlyFoundWords = []) {
   const foundSet = new Set(newlyFoundWords);
   const shuffled = [...puzzle.words].sort((a, b) => {
@@ -221,13 +214,9 @@ function renderCloud(newlyFoundWords = []) {
     word.dataset.word = entry.word;
     word.dataset.frequency = String(entry.frequency);
     word.dataset.length = entry.word.length >= 10 ? 'very-long' : entry.word.length >= 8 ? 'long' : 'standard';
-    const marks = usedCount(entry.word);
-    word.dataset.useMark = marks ? '/'.repeat(marks) : '';
     word.style.setProperty('--word-color', colorForWord(entry.word, index));
     word.setAttribute('role', 'listitem');
     word.setAttribute('aria-label', `${entry.word}, appears in ${entry.frequency} ${entry.frequency === 1 ? 'phrase' : 'phrases'}`);
-    word.classList.toggle('is-used', marks >= entry.frequency);
-    word.classList.toggle('is-partly-used', marks > 0 && marks < entry.frequency);
     word.classList.toggle('is-hinted', activeHintWords.has(entry.word));
     word.classList.toggle('just-found', foundSet.has(entry.word));
     ui.wordCloud.append(word);

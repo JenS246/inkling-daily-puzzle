@@ -426,38 +426,6 @@ main {
   font-size: clamp(2.35rem, 4.2vw, 4.5rem);
 }
 
-.cloud-word.is-used {
-  opacity: .5;
-}
-
-.cloud-word.is-used::after {
-  position: absolute;
-  right: .02em;
-  bottom: .03em;
-  color: var(--paper);
-  content: attr(data-use-mark);
-  font-family: var(--body);
-  font-size: .18em;
-  font-weight: 900;
-  letter-spacing: -.15em;
-  line-height: 1;
-  text-shadow: 0 0 1px var(--ink);
-}
-
-.cloud-word.is-partly-used::after {
-  position: absolute;
-  right: .02em;
-  bottom: .03em;
-  color: var(--paper);
-  content: attr(data-use-mark);
-  font-family: var(--body);
-  font-size: .18em;
-  font-weight: 900;
-  letter-spacing: -.15em;
-  line-height: 1;
-  text-shadow: 0 0 1px var(--ink);
-}
-
 .cloud-word.is-hinted {
   outline: 2px dotted var(--accent);
   outline-offset: .06em;
@@ -1188,7 +1156,7 @@ a.calendar-day:hover {
   grid-template-columns: minmax(105px, .32fr) minmax(0, 1fr);
 }
 
-.dialog-moon {
+.dialog-inkblots {
   display: grid;
   align-content: space-around;
   justify-items: center;
@@ -1196,19 +1164,22 @@ a.calendar-day:hover {
   background: var(--ink);
 }
 
-.dialog-moon i {
+.dialog-inkblots i {
   position: relative;
   display: block;
   width: clamp(2.5rem, 7vw, 4.2rem);
   aspect-ratio: 1;
-  overflow: hidden;
-  border: 1px solid var(--paper);
-  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--paper) 42%, transparent);
+  background: var(--palette-green);
+  border-radius: 47% 53% 39% 61% / 57% 42% 58% 43%;
+  box-shadow: .18rem .12rem 0 color-mix(in srgb, var(--ink) 28%, transparent);
+  transform: rotate(-11deg);
 }
 
-.dialog-moon i:nth-child(2) { background: linear-gradient(90deg, var(--paper) 50%, transparent 50%); }
-.dialog-moon i:nth-child(3) { background: var(--paper); }
-.dialog-moon i:nth-child(4) { background: var(--accent); border-color: var(--accent); }
+.dialog-inkblots i:nth-child(2) { width: clamp(3rem, 8vw, 5rem); background: var(--palette-red); border-radius: 58% 42% 51% 49% / 44% 62% 38% 56%; transform: rotate(9deg); }
+.dialog-inkblots i:nth-child(3) { width: clamp(2rem, 5vw, 3.2rem); background: var(--palette-gold); border-radius: 41% 59% 64% 36% / 55% 39% 61% 45%; transform: rotate(-19deg); }
+.dialog-inkblots i:nth-child(4) { width: clamp(3.4rem, 9vw, 5.4rem); background: var(--palette-blue); border-radius: 63% 37% 45% 55% / 35% 59% 41% 65%; transform: rotate(14deg); }
+.dialog-inkblots i:nth-child(5) { width: clamp(1.7rem, 4vw, 2.6rem); background: var(--palette-charcoal); border-radius: 52% 48% 66% 34% / 62% 46% 54% 38%; transform: rotate(-6deg); }
 
 .dialog-copy {
   padding: clamp(1.3rem, 4vw, 3rem);
@@ -1587,7 +1558,7 @@ a.calendar-day:hover {
     grid-template-columns: 58px minmax(0, 1fr);
   }
 
-  .dialog-moon {
+  .dialog-inkblots {
     padding-inline: .35rem;
   }
 
@@ -1660,6 +1631,13 @@ a.calendar-day:hover {
   --playful: ui-rounded, "Arial Rounded MT Bold", "Trebuchet MS", sans-serif;
   --typewriter: "American Typewriter", "Courier New", monospace;
   --body: var(--playful);
+  --palette-green: #315f55;
+  --palette-red: #8b4051;
+  --palette-gold: #8b6c24;
+  --palette-blue: #31556f;
+  --palette-sea: #71898b;
+  --palette-rust: #9a5d2d;
+  --palette-charcoal: #263f49;
 }
 
 :root[data-theme="dark"] {
@@ -1675,6 +1653,13 @@ a.calendar-day:hover {
   --archive-blue: #7199aa;
   --archive-gold: #b39b62;
   --archive-green: #78a791;
+  --palette-green: #9cc9b1;
+  --palette-red: #e396a5;
+  --palette-gold: #d1b66f;
+  --palette-blue: #91b7c7;
+  --palette-sea: #bbcdc5;
+  --palette-rust: #d49b73;
+  --palette-charcoal: #d6e2db;
 }
 
 .masthead {
@@ -2564,10 +2549,6 @@ a.calendar-day:hover {
 /* Keep the painted palette legible against the night canvas. */
 :root[data-theme="dark"] .cloud-word {
   filter: brightness(1.45) saturate(.82);
-}
-
-:root[data-theme="dark"] .cloud-word.is-used {
-  filter: brightness(1.9) saturate(.62);
 }
 
 @media (min-height: 620px) {
@@ -4295,4 +4276,89 @@ body[data-active-view="how-to-play"] {
   border-color: color-mix(in srgb, var(--cell-ink) 18%, transparent);
   background: transparent;
   color: color-mix(in srgb, var(--cell-ink) 30%, var(--cell-paper));
+}
+
+/* A lively title and first-play card built from the same painted palette. */
+.wordmark-letters {
+  display: inline-flex;
+  align-items: baseline;
+}
+
+.wordmark-letters > span {
+  display: inline-block;
+  transform-origin: 50% 80%;
+}
+
+.wordmark-letters > span:nth-child(1) { color: var(--palette-green); }
+.wordmark-letters > span:nth-child(2) { color: var(--palette-red); }
+.wordmark-letters > span:nth-child(3) { color: var(--palette-gold); }
+.wordmark-letters > span:nth-child(4) { color: var(--palette-blue); }
+.wordmark-letters > span:nth-child(5) { color: var(--palette-sea); }
+.wordmark-letters > span:nth-child(6) { color: var(--palette-rust); }
+.wordmark-letters > span:nth-child(7) { color: var(--palette-charcoal); }
+
+.dialog-inkblots {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 15% 8%, color-mix(in srgb, var(--palette-blue) 38%, transparent) 0 .22rem, transparent .27rem),
+    radial-gradient(circle at 78% 92%, color-mix(in srgb, var(--palette-red) 42%, transparent) 0 .3rem, transparent .35rem),
+    var(--ink);
+}
+
+.dialog-copy {
+  background:
+    radial-gradient(ellipse at 97% 5%, color-mix(in srgb, var(--palette-gold) 13%, transparent) 0 12%, transparent 13%),
+    radial-gradient(ellipse at 8% 96%, color-mix(in srgb, var(--palette-blue) 9%, transparent) 0 15%, transparent 16%),
+    var(--paper);
+}
+
+.dialog-copy li:nth-child(1)::marker { color: var(--palette-red); }
+.dialog-copy li:nth-child(2)::marker { color: var(--palette-blue); }
+.dialog-copy li:nth-child(3)::marker { color: var(--palette-gold); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .wordmark-letters > span {
+    animation: wordmark-settle 620ms cubic-bezier(.2, .8, .25, 1) both;
+  }
+
+  .wordmark-letters > span:nth-child(2) { animation-delay: 45ms; }
+  .wordmark-letters > span:nth-child(3) { animation-delay: 90ms; }
+  .wordmark-letters > span:nth-child(4) { animation-delay: 135ms; }
+  .wordmark-letters > span:nth-child(5) { animation-delay: 180ms; }
+  .wordmark-letters > span:nth-child(6) { animation-delay: 225ms; }
+  .wordmark-letters > span:nth-child(7) { animation-delay: 270ms; }
+}
+
+@keyframes wordmark-settle {
+  0% { opacity: 0; transform: translateY(-.18em) rotate(-4deg) scale(.96); }
+  65% { opacity: 1; transform: translateY(.04em) rotate(1deg) scale(1.02); }
+  100% { opacity: 1; transform: none; }
+}
+
+/* Keep hints in their own row on narrow screens so they never cover a word. */
+@media (max-width: 760px) {
+  .puzzle-hint {
+    grid-area: hint;
+    position: static;
+    z-index: auto;
+    align-self: center;
+    justify-self: end;
+    margin: .15rem .3rem .25rem 0;
+    background: transparent;
+  }
+
+  .gameplay-stage .word-cloud {
+    padding-top: .35rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .rules-dialog[open] {
+    grid-template-columns: 64px minmax(0, 1fr);
+  }
+
+  .dialog-inkblots {
+    padding-inline: .3rem;
+  }
 }

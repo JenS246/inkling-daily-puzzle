@@ -1,4 +1,4 @@
-import { puzzles } from './puzzles.js';
+import { puzzles } from './puzzles.js?v=20260830a';
 
 const games = [...puzzles].sort((a, b) => a.date.localeCompare(b.date));
 const container = document.querySelector('#games');

@@ -1,4 +1,4 @@
-import { GENERATED_PUZZLES } from './generated-puzzles.js';
+import { GENERATED_PUZZLES } from './generated-puzzles.js?v=20260830a';
 
 export const PALETTES = {
   bottle: ['#214f3b', '#9c3327', '#a27616', '#213f62', '#272824'],
@@ -9,6 +9,19 @@ export const PALETTES = {
 };
 
 const LEGACY_PUZZLES = [
+  {
+    id: 187,
+    date: '2026-08-30',
+    phrases: [
+      { answer: 'a walk to remember', type: 'book title', note: 'Nicholas Sparks (1999).' },
+      { answer: 'walk on the wild side', type: 'song title', note: 'Recorded by Lou Reed.' },
+      { answer: 'walk this way', type: 'song title', note: 'Recorded by Run-DMC.' },
+      { answer: 'walk the line', type: 'movie title', note: '' }
+    ],
+    connection: 'Walk in four phrases',
+    connectionNote: 'All four answers (a book title, song titles, and a movie title) share the word walk.',
+    palette: 'bottle'
+  },
   {
     id: 186,
     date: '2026-08-29',
@@ -193,8 +206,8 @@ const LEGACY_PUZZLES = [
   }
 ];
 
-const DAILY_START = '2026-08-30';
-const DAILY_START_ID = 187;
+const DAILY_START = '2026-08-31';
+const DAILY_START_ID = 188;
 const DAY_MS = 86_400_000;
 function dateOffset(dateKey) {
   const value = Date.parse(`${dateKey}T00:00:00Z`);

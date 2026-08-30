@@ -1,34 +1,36 @@
 {
-  "rawCandidates": 7888,
-  "cleanUniquePhrases": 7326,
+  "rawCandidates": 6567,
+  "cleanUniquePhrases": 6096,
+  "editorialDenylistSize": 49,
+  "issuedPhrasesReserved": 4,
   "wordsPerPhrase": {
-    "3": 3167,
-    "4": 2058,
-    "5": 1046,
-    "6": 661,
-    "7": 394
+    "3": 2529,
+    "4": 1711,
+    "5": 882,
+    "6": 597,
+    "7": 377
   },
   "phrasesBySource": {
-    "idiomash": 735,
-    "cstafie idioms": 3878,
-    "proverbs gist": 1521,
-    "Goodbooks 10k": 955,
-    "IMDb ranked movies": 532,
-    "Rolling Stone songs": 191
+    "idiomash": 691,
+    "cstafie idioms": 3858,
+    "proverbs gist": 1517,
+    "Goodbooks 10k": 170,
+    "IMDb ranked movies": 76,
+    "Rolling Stone songs": 189
   },
-  "games": 365,
-  "phraseSlots": 1460,
-  "uniquePhrasesUsed": 1032,
-  "phraseReuseRate": 0.2932,
-  "maximumPhraseUses": 2,
-  "gamesWithFourWayHub": 365,
+  "games": 364,
+  "phraseSlots": 1456,
+  "uniquePhrasesUsed": 365,
+  "phraseReuseRate": 0.7493,
+  "maximumPhraseUses": 6,
+  "gamesWithFourWayHub": 364,
   "phraseTypesUsed": {
-    "book title": 533,
-    "song title": 198,
-    "movie title": 317,
-    "idiom": 407,
-    "proverb": 5
+    "idiom": 684,
+    "book title": 230,
+    "song title": 399,
+    "movie title": 100,
+    "proverb": 43
   },
-  "firstDate": "2026-08-30",
+  "firstDate": "2026-08-31",
   "lastDate": "2027-08-29"
 }
