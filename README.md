@@ -19,7 +19,7 @@ The interface is intentionally closer to an inked typographic painting than a st
 - Cloud words remain fully colored throughout play, so solved answers do not reveal later ones.
 - Every puzzle offers three hints from the top bar. Hint types and order vary by puzzle; an outlined-word hint lasts for one guess.
 - First-time players see a one-time editorial How to Play sheet. The permanent `?` control opens the expanded instructions and a puzzle-like LIGHT example.
-- Finished puzzles open a spoiler-free Inkprint dialog with score, guesses, elapsed time, and hints. The Share action copies a compact text Inkprint directly.
+- Finished puzzles open a spoiler-free preview of the exact 1080-by-1080 full-color Inkprint image they can share. Supported phones use the native image share sheet, desktop browsers copy the PNG, and a download plus compact-text fallback remains available.
 - The archive is a bounded calendar. Future dates cannot be opened; filled, shaded, slashed, and blank dates distinguish solved, in-progress, failed, and unplayed puzzles.
 - Twelve hand-built archive puzzles cover August 16-27, 2026, before the rotating daily schedule begins.
 - Progress, streaks, appearance, statistics, hints, and archive results live in browser `localStorage` only.

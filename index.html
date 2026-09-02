@@ -10,7 +10,7 @@
     <meta property="og:type" content="website" />
     <title>INKLING - Daily hidden phrases</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><g fill=%22%238b4051%22><circle cx=%2248%22 cy=%2252%22 r=%2234%22/><circle cx=%2220%22 cy=%2227%22 r=%229%22/><circle cx=%2279%22 cy=%2231%22 r=%2211%22/><circle cx=%2278%22 cy=%2277%22 r=%227%22/><circle cx=%2221%22 cy=%2278%22 r=%225%22/></g></svg>" />
-    <link rel="stylesheet" href="styles.css?v=20260901b" />
+    <link rel="stylesheet" href="styles.css?v=20260902a" />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to puzzle</a>
@@ -166,23 +166,25 @@
 
     <dialog id="share-dialog" class="share-dialog" aria-labelledby="share-preview-title">
       <div class="share-preview">
-        <h2 id="share-preview-title">INKPRINT <span id="share-preview-number"></span></h2>
-        <div id="share-preview-grid" class="inkprint-grid is-preview" aria-label="Your ten guess Inkprint"></div>
-        <div class="share-details">
-          <div id="share-preview-metrics" class="share-preview-metrics"></div>
-          <p id="share-preview-date" class="share-preview-date"></p>
-        </div>
+        <h2 id="share-preview-title" class="sr-only">Your full-color Inkprint</h2>
+        <canvas id="share-card" class="share-card" width="1080" height="1080" role="img" aria-label="Your full-color Inkprint share image"></canvas>
+        <p class="share-preview-note">Your spoiler-free Inkprint image</p>
       </div>
       <div class="share-actions">
         <button id="share-close" class="plain-button" type="button">Close</button>
-        <button id="share-confirm" class="ink-button" type="button">Copy Inkprint</button>
+        <button id="share-confirm" class="ink-button" type="button">Share image</button>
       </div>
       <div id="share-fallback" class="share-fallback" hidden>
-        <label for="share-text">Copy your Inkprint</label>
-        <textarea id="share-text" rows="7" readonly></textarea>
+        <p id="share-fallback-message">Image sharing is unavailable in this browser.</p>
+        <div class="share-fallback-actions">
+          <a id="share-download" class="ink-button share-download" download>Download image</a>
+          <button id="share-copy-text" class="plain-button" type="button">Copy text instead</button>
+        </div>
+        <label class="sr-only" for="share-text">Text version of your Inkprint</label>
+        <textarea id="share-text" rows="7" readonly hidden></textarea>
       </div>
     </dialog>
 
-    <script type="module" src="src/game.js?v=20260901b"></script>
+    <script type="module" src="src/game.js?v=20260902a"></script>
   </body>
 </html>

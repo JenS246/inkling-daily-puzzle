@@ -4859,3 +4859,109 @@ body[data-active-view="how-to-play"] {
 .issue-line {
   text-transform: none;
 }
+
+/* The share preview is the exact full-color PNG users send or save. */
+.share-dialog {
+  width: min(620px, calc(100vw - 1rem));
+  max-height: calc(100dvh - 1rem);
+  padding: clamp(.65rem, 2.5vw, 1.15rem);
+  border: 2px solid var(--accent);
+  background: var(--paper);
+}
+
+.share-preview {
+  padding: 0;
+  background: transparent;
+  color: var(--ink);
+}
+
+.share-card {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  border: 1px solid color-mix(in srgb, var(--ink) 32%, transparent);
+  background: #f1f1e9;
+  box-sizing: border-box;
+}
+
+.share-preview-note {
+  margin: .55rem 0 0;
+  color: var(--ink-soft);
+  font-family: var(--playful);
+  font-size: .84rem;
+  font-weight: 750;
+  text-align: center;
+}
+
+.share-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: .5rem;
+  margin-top: .65rem;
+}
+
+.share-actions .plain-button,
+.share-actions .ink-button,
+.share-fallback-actions .plain-button,
+.share-fallback-actions .ink-button {
+  min-height: 48px;
+}
+
+.share-fallback {
+  margin-top: .8rem;
+  padding-top: .75rem;
+  border-top: 1px solid var(--rule);
+}
+
+.share-fallback p {
+  margin: 0 0 .65rem;
+  color: var(--ink-soft);
+  font-family: var(--playful);
+  font-size: .9rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.share-fallback-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+
+.share-download {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.share-fallback textarea {
+  width: 100%;
+  margin-top: .65rem;
+  box-sizing: border-box;
+}
+
+@media (max-width: 380px) {
+  .share-dialog {
+    width: calc(100vw - .5rem);
+    max-height: calc(100dvh - .5rem);
+    padding: .45rem;
+  }
+
+  .share-preview-note {
+    margin-top: .4rem;
+    font-size: .76rem;
+  }
+
+  .share-actions {
+    margin-top: .45rem;
+  }
+
+  .share-actions button {
+    flex: 1 1 0;
+    padding-inline: .55rem;
+    white-space: nowrap;
+  }
+}

@@ -30,13 +30,13 @@ const ui = {
   inkprintDate: document.querySelector('#inkprint-date'),
   shareButton: document.querySelector('#share-button'),
   shareDialog: document.querySelector('#share-dialog'),
-  sharePreviewNumber: document.querySelector('#share-preview-number'),
-  sharePreviewGrid: document.querySelector('#share-preview-grid'),
-  sharePreviewMetrics: document.querySelector('#share-preview-metrics'),
-  sharePreviewDate: document.querySelector('#share-preview-date'),
+  shareCard: document.querySelector('#share-card'),
   shareClose: document.querySelector('#share-close'),
   shareConfirm: document.querySelector('#share-confirm'),
   shareFallback: document.querySelector('#share-fallback'),
+  shareFallbackMessage: document.querySelector('#share-fallback-message'),
+  shareDownload: document.querySelector('#share-download'),
+  shareCopyText: document.querySelector('#share-copy-text'),
   shareText: document.querySelector('#share-text'),
   archiveList: document.querySelector('#archive-list'),
   calendarMonth: document.querySelector('#calendar-month'),
@@ -58,6 +58,8 @@ let formTimer = 0;
 let viewportSettleTimers = [];
 let touchSubmitLock = false;
 let archiveMonthKey = dailyPuzzle.date.slice(0, 7);
+let shareCardBlobPromise = null;
+let shareDownloadUrl = '';
 const MONTH_LABELS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 
 function hashString(value) {
@@ -127,21 +129,6 @@ function shareMetrics(result = progress()) {
   const guesses = `${result.attempts.length} ${result.attempts.length === 1 ? 'guess' : 'guesses'}`;
   const hints = `${result.hints} ${result.hints === 1 ? 'hint' : 'hints'}`;
   return `${phrases} | ${guesses} | ${hints} | ${elapsedTime(result)}`;
-}
-
-function renderShareMetrics(result = progress()) {
-  const values = [
-    `${result.solved.length} ${result.solved.length === 1 ? 'phrase' : 'phrases'}`,
-    `${result.attempts.length} ${result.attempts.length === 1 ? 'guess' : 'guesses'}`,
-    `${result.hints} ${result.hints === 1 ? 'hint' : 'hints'}`,
-    elapsedTime(result)
-  ];
-  ui.sharePreviewMetrics.replaceChildren(...values.map((value) => {
-    const item = document.createElement('span');
-    item.textContent = value;
-    return item;
-  }));
-  ui.sharePreviewMetrics.setAttribute('aria-label', shareMetrics(result));
 }
 
 function renderInkprintGrid(container, result = progress()) {
@@ -592,28 +579,348 @@ function resultText() {
   return `INKPRINT #${puzzle.id}\n${symbols.slice(0, 5).join('')}\n${symbols.slice(5).join('')}\n\n${shareMetrics(result)} | ${shareDate()}\n\nhttps://jens246.github.io/inkling-daily-puzzle/`;
 }
 
+function seededRandom(seed) {
+  let value = seed || 1;
+  return () => {
+    value = Math.imul(value ^ (value >>> 15), value | 1);
+    value ^= value + Math.imul(value ^ (value >>> 7), value | 61);
+    return ((value ^ (value >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function drawPaperTexture(context, random, width, height) {
+  context.save();
+  for (let index = 0; index < 760; index += 1) {
+    const opacity = .018 + random() * .028;
+    context.fillStyle = `rgba(36, 55, 63, ${opacity})`;
+    const size = random() < .9 ? 1 : 2;
+    context.fillRect(Math.floor(random() * width), Math.floor(random() * height), size, size);
+  }
+  context.restore();
+}
+
+function drawInkblot(context, random, x, y, palette) {
+  const blobs = [
+    [0, 0, 43], [-34, -11, 24], [35, 10, 27], [-16, 34, 22],
+    [18, -34, 25], [42, -25, 14], [-44, 27, 15], [7, 45, 15]
+  ];
+  context.save();
+  blobs.forEach(([offsetX, offsetY, radius], index) => {
+    context.beginPath();
+    context.fillStyle = palette[index % palette.length];
+    context.globalAlpha = index < 5 ? .96 : .86;
+    context.arc(x + offsetX, y + offsetY, radius, 0, Math.PI * 2);
+    context.fill();
+  });
+  for (let index = 0; index < 7; index += 1) {
+    const angle = random() * Math.PI * 2;
+    const distance = 54 + random() * 24;
+    context.beginPath();
+    context.fillStyle = palette[index % palette.length];
+    context.globalAlpha = .7;
+    context.arc(x + Math.cos(angle) * distance, y + Math.sin(angle) * distance, 3 + random() * 5, 0, Math.PI * 2);
+    context.fill();
+  }
+  context.restore();
+}
+
+function drawSolvePattern(context, x, y, width, height, solveNumber, color) {
+  context.save();
+  context.beginPath();
+  context.rect(x, y, width, height);
+  context.clip();
+  context.fillStyle = color;
+  context.globalAlpha = .14;
+  context.fillRect(x, y, width, height);
+  context.globalAlpha = 1;
+  context.strokeStyle = color;
+  context.fillStyle = color;
+  context.lineWidth = solveNumber === 4 ? 6 : 8;
+
+  if (solveNumber === 1) {
+    for (let line = -height; line < width + height; line += 29) {
+      context.beginPath();
+      context.moveTo(x + line, y + height);
+      context.lineTo(x + line + height, y);
+      context.stroke();
+    }
+  } else if (solveNumber === 2) {
+    const square = 27;
+    for (let row = 0; row * square < height; row += 1) {
+      for (let column = 0; column * square < width; column += 1) {
+        if ((row + column) % 2 === 0) context.fillRect(x + column * square, y + row * square, square, square);
+      }
+    }
+  } else if (solveNumber === 3) {
+    context.lineWidth = 7;
+    for (let line = 14; line < width; line += 31) {
+      context.beginPath();
+      context.moveTo(x + line, y);
+      context.lineTo(x + line, y + height);
+      context.stroke();
+    }
+    for (let line = 14; line < height; line += 31) {
+      context.beginPath();
+      context.moveTo(x, y + line);
+      context.lineTo(x + width, y + line);
+      context.stroke();
+    }
+  } else {
+    for (let line = -height; line < width + height; line += 24) {
+      context.beginPath();
+      context.moveTo(x + line, y + height);
+      context.lineTo(x + line + height, y);
+      context.stroke();
+      context.beginPath();
+      context.moveTo(x + line, y);
+      context.lineTo(x + line + height, y + height);
+      context.stroke();
+    }
+  }
+  context.restore();
+}
+
+function drawShareCell(context, random, result, index, x, y, width, height, palette, colors) {
+  const attempt = result.attempts[index];
+  context.save();
+  context.fillStyle = colors.paper;
+  context.fillRect(x, y, width, height);
+  context.strokeStyle = attempt ? colors.ink : colors.rule;
+  context.lineWidth = attempt ? 3 : 2;
+  if (!attempt) context.setLineDash([10, 9]);
+  context.strokeRect(x + 1, y + 1, width - 2, height - 2);
+  context.setLineDash([]);
+
+  if (attempt?.kind === 'miss') {
+    const missColor = palette[(index + 1) % palette.length];
+    context.fillStyle = missColor;
+    context.globalAlpha = .1;
+    context.fillRect(x, y, width, height);
+    context.globalAlpha = .92;
+    const centerX = x + width / 2;
+    const centerY = y + height / 2;
+    const blotPoints = 16;
+    context.beginPath();
+    for (let point = 0; point < blotPoints; point += 1) {
+      const angle = (point / blotPoints) * Math.PI * 2;
+      const radiusX = width * (.2 + random() * .16);
+      const radiusY = height * (.2 + random() * .16);
+      const pointX = centerX + Math.cos(angle) * radiusX;
+      const pointY = centerY + Math.sin(angle) * radiusY;
+      if (point === 0) context.moveTo(pointX, pointY);
+      else context.lineTo(pointX, pointY);
+    }
+    context.closePath();
+    context.fill();
+    context.globalAlpha = 1;
+  } else if (attempt) {
+    let solveNumber = 0;
+    for (let attemptIndex = 0; attemptIndex <= index; attemptIndex += 1) {
+      if (result.attempts[attemptIndex]?.kind !== 'miss') solveNumber += 1;
+    }
+    drawSolvePattern(context, x, y, width, height, Math.min(solveNumber, 4), palette[(solveNumber - 1) % palette.length]);
+  }
+
+  context.fillStyle = attempt ? colors.ink : colors.soft;
+  context.globalAlpha = attempt ? .88 : .55;
+  context.font = '700 22px Arial, sans-serif';
+  context.textAlign = 'left';
+  context.textBaseline = 'top';
+  context.fillText(String(index + 1).padStart(2, '0'), x + 14, y + 13);
+  context.restore();
+}
+
+function drawShareCard(result = progress()) {
+  const canvas = ui.shareCard;
+  const context = canvas.getContext('2d');
+  const width = canvas.width;
+  const height = canvas.height;
+  const colors = { paper: '#f1f1e9', ink: '#24373f', soft: '#596b69', rule: '#a9b0aa' };
+  const palette = PALETTES[puzzle.palette] || PALETTES.bottle;
+  const random = seededRandom(hashString(`${puzzle.id}:${puzzle.date}:inkprint`));
+
+  context.clearRect(0, 0, width, height);
+  context.fillStyle = colors.paper;
+  context.fillRect(0, 0, width, height);
+  drawPaperTexture(context, random, width, height);
+  context.strokeStyle = colors.ink;
+  context.lineWidth = 5;
+  context.strokeRect(30, 30, width - 60, height - 60);
+
+  context.fillStyle = colors.ink;
+  context.textAlign = 'left';
+  context.textBaseline = 'alphabetic';
+  context.font = '900 88px Arial Black, Arial, sans-serif';
+  context.fillText('INKLING', 70, 126);
+  context.fillStyle = colors.soft;
+  context.font = '700 24px Arial, sans-serif';
+  context.fillText(shareDate().toUpperCase(), 74, 170);
+  drawInkblot(context, random, 913, 122, palette);
+
+  context.strokeStyle = colors.ink;
+  context.lineWidth = 2;
+  context.beginPath();
+  context.moveTo(72, 214);
+  context.lineTo(1008, 214);
+  context.stroke();
+
+  context.fillStyle = colors.ink;
+  context.font = '900 44px Arial Black, Arial, sans-serif';
+  context.fillText('INKPRINT', 72, 286);
+  context.textAlign = 'right';
+  context.font = '800 34px Arial, sans-serif';
+  context.fillText(`#${puzzle.id}`, 1008, 284);
+  context.textAlign = 'left';
+
+  const cellWidth = 172;
+  const cellHeight = 166;
+  const gap = 18;
+  const gridX = 72;
+  const gridY = 334;
+  for (let index = 0; index < MAX_GUESSES; index += 1) {
+    const column = index % 5;
+    const row = Math.floor(index / 5);
+    drawShareCell(
+      context,
+      random,
+      result,
+      index,
+      gridX + column * (cellWidth + gap),
+      gridY + row * (cellHeight + gap),
+      cellWidth,
+      cellHeight,
+      palette,
+      colors
+    );
+  }
+
+  const metrics = [
+    ['PHRASES', `${result.solved.length}/${puzzle.phrases.length}`],
+    ['GUESSES', `${result.attempts.length}/${MAX_GUESSES}`],
+    ['TIME', elapsedTime(result)],
+    ['HINTS', String(result.hints)]
+  ];
+  const metricWidth = 234;
+  metrics.forEach(([label, value], index) => {
+    const metricX = 72 + index * metricWidth;
+    context.fillStyle = palette[index % palette.length];
+    context.fillRect(metricX, 756, 56, 7);
+    context.fillStyle = colors.soft;
+    context.font = '800 20px Arial, sans-serif';
+    context.fillText(label, metricX, 804);
+    context.fillStyle = colors.ink;
+    context.font = '900 42px Arial Black, Arial, sans-serif';
+    context.fillText(value, metricX, 858);
+  });
+
+  context.strokeStyle = colors.rule;
+  context.lineWidth = 2;
+  context.beginPath();
+  context.moveTo(72, 910);
+  context.lineTo(1008, 910);
+  context.stroke();
+  context.fillStyle = colors.ink;
+  context.font = 'italic 700 25px Georgia, serif';
+  context.fillText('Every word belongs somewhere.', 72, 959);
+  context.fillStyle = colors.soft;
+  context.textAlign = 'right';
+  context.font = '700 20px Arial, sans-serif';
+  context.fillText('jens246.github.io/inkling-daily-puzzle', 1008, 959);
+
+  ui.shareCard.setAttribute(
+    'aria-label',
+    `Inkprint ${puzzle.id}: ${result.solved.length} of ${puzzle.phrases.length} phrases in ${result.attempts.length} guesses, ${result.hints} hints, ${shareDate()}`
+  );
+}
+
+function canvasBlob() {
+  return new Promise((resolve) => {
+    ui.shareCard.toBlob((blob) => resolve(blob), 'image/png');
+  });
+}
+
+function clearShareDownload() {
+  if (shareDownloadUrl) URL.revokeObjectURL(shareDownloadUrl);
+  shareDownloadUrl = '';
+  ui.shareDownload.removeAttribute('href');
+}
+
+function showShareFallback(blob, message = 'Direct image sharing is unavailable in this browser.') {
+  clearShareDownload();
+  ui.shareFallbackMessage.textContent = message;
+  ui.shareText.value = resultText();
+  ui.shareText.hidden = true;
+  if (blob) {
+    shareDownloadUrl = URL.createObjectURL(blob);
+    ui.shareDownload.href = shareDownloadUrl;
+    ui.shareDownload.download = `inkling-${puzzle.date}-inkprint.png`;
+    ui.shareDownload.hidden = false;
+  } else {
+    ui.shareDownload.hidden = true;
+  }
+  ui.shareFallback.hidden = false;
+}
+
 function openSharePreview() {
   const result = progress();
-  ui.sharePreviewNumber.textContent = `#${puzzle.id}`;
-  renderInkprintGrid(ui.sharePreviewGrid, result);
-  renderShareMetrics(result);
-  ui.sharePreviewDate.textContent = shareDate();
+  clearShareDownload();
+  drawShareCard(result);
+  shareCardBlobPromise = canvasBlob().catch(() => null);
   ui.shareFallback.hidden = true;
-  ui.shareConfirm.textContent = 'Copy Inkprint';
+  ui.shareText.hidden = true;
+  ui.shareConfirm.textContent = 'Share image';
   if (!ui.shareDialog.open) ui.shareDialog.showModal();
 }
 
-async function shareResult(button = ui.shareButton) {
+async function shareInkprintImage() {
+  ui.shareConfirm.textContent = 'Preparing…';
+  const blob = await shareCardBlobPromise;
+  if (!blob) {
+    showShareFallback(null, 'The Inkprint image could not be created in this browser.');
+    ui.shareConfirm.textContent = 'Share image';
+    return;
+  }
+
+  try {
+    const file = typeof File === 'undefined'
+      ? null
+      : new File([blob], `inkling-${puzzle.date}-inkprint.png`, { type: 'image/png' });
+    if (file && navigator.share && navigator.canShare?.({ files: [file] })) {
+      ui.shareConfirm.textContent = 'Sharing…';
+      await navigator.share({
+        title: `Inkling Inkprint #${puzzle.id}`,
+        text: `${shareMetrics()} | ${shareDate()}\nhttps://jens246.github.io/inkling-daily-puzzle/`,
+        files: [file]
+      });
+      ui.shareConfirm.textContent = 'Shared';
+    } else if (navigator.clipboard?.write && typeof ClipboardItem !== 'undefined') {
+      await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+      ui.shareConfirm.textContent = 'Image copied';
+    } else {
+      showShareFallback(blob);
+      ui.shareConfirm.textContent = 'Share image';
+      return;
+    }
+    window.setTimeout(() => { ui.shareConfirm.textContent = 'Share image'; }, 1400);
+  } catch (error) {
+    if (error?.name === 'AbortError') {
+      ui.shareConfirm.textContent = 'Share image';
+      return;
+    }
+    showShareFallback(blob, 'Your browser blocked direct sharing. Download the image or copy the text version.');
+    ui.shareConfirm.textContent = 'Share image';
+  }
+}
+
+async function copyShareText() {
   const text = resultText();
   try {
     await navigator.clipboard.writeText(text);
-    const original = button === ui.shareConfirm ? 'Copy Inkprint' : 'Share';
-    button.textContent = 'Copied';
-    window.setTimeout(() => { button.textContent = original; }, 1200);
+    ui.shareCopyText.textContent = 'Text copied';
+    window.setTimeout(() => { ui.shareCopyText.textContent = 'Copy text instead'; }, 1400);
   } catch {
-    openSharePreview();
     ui.shareText.value = text;
-    ui.shareFallback.hidden = false;
+    ui.shareText.hidden = false;
     ui.shareText.focus();
     ui.shareText.select();
   }
@@ -761,12 +1068,14 @@ ui.welcomeDialog.addEventListener('close', () => {
 ui.calendarPrevious.addEventListener('click', () => changeArchiveMonth(-1));
 ui.calendarNext.addEventListener('click', () => changeArchiveMonth(1));
 ui.inkprintCard.addEventListener('click', openSharePreview);
-ui.shareButton.addEventListener('click', () => shareResult(ui.shareButton));
+ui.shareButton.addEventListener('click', openSharePreview);
 ui.shareClose.addEventListener('click', () => ui.shareDialog.close());
 ui.shareDialog.addEventListener('click', (event) => {
   if (event.target === ui.shareDialog) ui.shareDialog.close();
 });
-ui.shareConfirm.addEventListener('click', () => shareResult(ui.shareConfirm));
+ui.shareDialog.addEventListener('close', clearShareDownload);
+ui.shareConfirm.addEventListener('click', shareInkprintImage);
+ui.shareCopyText.addEventListener('click', copyShareText);
 ui.themeToggle.addEventListener('click', toggleTheme);
 ui.contrastToggle.addEventListener('click', toggleContrast);
 document.addEventListener('pointerdown', (event) => {
