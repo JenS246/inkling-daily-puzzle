@@ -13,10 +13,10 @@ The interface is intentionally closer to an inked typographic painting than a st
 - `src/hints.js` gives each numbered puzzle a stable, varied sequence of three hint types.
 - Unique cloud words, word frequencies, and shared-word relationships are derived automatically.
 - `src/game.js` renders the words in deterministic order. CSS packs them into a dense, responsive composition without using phrase membership.
-- Players type a complete phrase and press Enter or select Try it. They have ten guesses to find all four phrases.
+- Players can tap cloud words in order to build a guess or type a complete phrase, then press Enter. Tapping a selected word removes it from the guess. They have ten guesses to find all four phrases.
 - Every attempt fills one cell in a 5-by-2 Inkprint: four increasing patterns for solved phrases, inkblots for misses, and faint cells for unused guesses.
 - Solved phrases join the Found ledger, which also shows how many remain; their cloud words receive an ink-settle animation.
-- A word fades only when every phrase that uses it has been found.
+- Cloud words remain fully colored throughout play, so solved answers do not reveal later ones.
 - Every puzzle offers three hints from the top bar. Hint types and order vary by puzzle; an outlined-word hint lasts for one guess.
 - First-time players see a one-time editorial How to Play sheet. The permanent `?` control opens the expanded instructions and a puzzle-like LIGHT example.
 - Finished puzzles open a spoiler-free Inkprint dialog with score, guesses, elapsed time, and hints. The Share action copies a compact text Inkprint directly.
@@ -88,8 +88,8 @@ Do not repeat a word inside a single phrase. A word shared by different phrases 
 
 ## Accessibility
 
-- A semantic, screen-reader-labeled word list
-- A native form that works with Enter and the Try it button
+- Screen-reader-labeled word buttons with exposed selected state
+- A native form that works with Enter and the Enter button
 - Minimum 44px touch targets for every interactive control
 - Strong focus states and live feedback regions
 - Color-independent solve, used-word, and archive states

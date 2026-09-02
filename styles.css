@@ -395,7 +395,14 @@ main {
   position: relative;
   display: inline-block;
   flex: 0 0 auto;
+  min-width: 44px;
+  min-height: 44px;
+  margin: 0;
+  padding: 0 .025em;
+  border: 0;
+  background: transparent;
   color: var(--word-color, var(--ink));
+  cursor: pointer;
   font-family: var(--display);
   font-size: clamp(3.2rem, 6vw, 6.5rem);
   font-weight: 900;
@@ -404,6 +411,16 @@ main {
   text-rendering: geometricPrecision;
   text-transform: uppercase;
   transform-origin: 50% 60%;
+}
+
+.cloud-word.is-in-guess {
+  outline: 2px solid currentColor;
+  outline-offset: .035em;
+  background: color-mix(in srgb, currentColor 8%, transparent);
+}
+
+.cloud-word:disabled {
+  cursor: default;
 }
 
 .cloud-word[data-frequency="2"] {

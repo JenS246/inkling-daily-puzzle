@@ -201,6 +201,34 @@ function colorForWord(word, index) {
   return palette[(hash + index + paletteOffset) % palette.length];
 }
 
+function guessWords() {
+  return normalizeAnswer(ui.phraseInput.value).split(' ').filter(Boolean);
+}
+
+function syncCloudGuessSelection() {
+  const selectedWords = new Set(guessWords());
+  ui.wordCloud.querySelectorAll('.cloud-word').forEach((wordButton) => {
+    const selected = selectedWords.has(wordButton.dataset.word);
+    const frequency = Number(wordButton.dataset.frequency);
+    wordButton.classList.toggle('is-in-guess', selected);
+    wordButton.setAttribute('aria-pressed', String(selected));
+    wordButton.setAttribute(
+      'aria-label',
+      `${wordButton.dataset.word}, appears in ${frequency} ${frequency === 1 ? 'phrase' : 'phrases'}. ${selected ? 'Remove from' : 'Add to'} guess.`
+    );
+  });
+}
+
+function toggleGuessWord(selectedWord) {
+  if (isOver()) return;
+  const words = guessWords();
+  const selectedIndex = words.indexOf(selectedWord);
+  if (selectedIndex >= 0) words.splice(selectedIndex, 1);
+  else words.push(selectedWord);
+  ui.phraseInput.value = words.join(' ');
+  ui.phraseInput.dispatchEvent(new Event('input', { bubbles: true }));
+}
+
 function renderCloud(newlyFoundWords = []) {
   const foundSet = new Set(newlyFoundWords);
   const shuffled = [...puzzle.words].sort((a, b) => {
@@ -209,19 +237,22 @@ function renderCloud(newlyFoundWords = []) {
 
   ui.wordCloud.replaceChildren();
   shuffled.forEach((entry, index) => {
-    const word = document.createElement('span');
+    const word = document.createElement('button');
     word.className = 'cloud-word';
+    word.type = 'button';
     word.textContent = entry.word.toLocaleUpperCase('en-US');
     word.dataset.word = entry.word;
     word.dataset.frequency = String(entry.frequency);
     word.dataset.length = entry.word.length >= 10 ? 'very-long' : entry.word.length >= 8 ? 'long' : 'standard';
     word.style.setProperty('--word-color', colorForWord(entry.word, index));
-    word.setAttribute('role', 'listitem');
-    word.setAttribute('aria-label', `${entry.word}, appears in ${entry.frequency} ${entry.frequency === 1 ? 'phrase' : 'phrases'}`);
+    word.setAttribute('aria-pressed', 'false');
+    word.disabled = isOver();
     word.classList.toggle('is-hinted', activeHintWords.has(entry.word));
     word.classList.toggle('just-found', foundSet.has(entry.word));
+    word.addEventListener('click', () => toggleGuessWord(entry.word));
     ui.wordCloud.append(word);
   });
+  syncCloudGuessSelection();
 }
 
 function renderLedger(newlyFoundIndex = -1) {
@@ -671,6 +702,7 @@ ui.phraseInput.addEventListener('input', () => {
   }
   ui.feedback.textContent = '';
   ui.phraseForm.classList.remove('is-correct', 'is-wrong');
+  syncCloudGuessSelection();
 });
 ui.phraseInput.addEventListener('focus', settleVisibleViewport);
 ui.phraseInput.addEventListener('blur', settleVisibleViewport);
