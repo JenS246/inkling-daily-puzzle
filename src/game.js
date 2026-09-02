@@ -630,7 +630,7 @@ function drawSolvePattern(context, x, y, width, height, solveNumber, color) {
   context.rect(x, y, width, height);
   context.clip();
   context.fillStyle = color;
-  context.globalAlpha = .14;
+  context.globalAlpha = .24;
   context.fillRect(x, y, width, height);
   context.globalAlpha = 1;
   context.strokeStyle = color;
@@ -743,31 +743,38 @@ function drawShareCard(result = progress()) {
   context.fillStyle = colors.paper;
   context.fillRect(0, 0, width, height);
   drawPaperTexture(context, random, width, height);
-  context.strokeStyle = colors.ink;
-  context.lineWidth = 5;
-  context.strokeRect(30, 30, width - 60, height - 60);
 
-  context.fillStyle = colors.ink;
+  context.fillStyle = palette[0];
+  context.fillRect(30, 30, width - 60, 184);
+  context.strokeStyle = palette[0];
+  context.lineWidth = 12;
+  context.strokeRect(30, 30, width - 60, height - 60);
+  context.strokeStyle = colors.ink;
+  context.lineWidth = 3;
+  context.strokeRect(48, 48, width - 96, height - 96);
+
+  context.fillStyle = colors.paper;
   context.textAlign = 'left';
   context.textBaseline = 'alphabetic';
   context.font = '900 88px Arial Black, Arial, sans-serif';
   context.fillText('INKLING', 70, 126);
-  context.fillStyle = colors.soft;
+  context.globalAlpha = .88;
   context.font = '700 24px Arial, sans-serif';
   context.fillText(shareDate().toUpperCase(), 74, 170);
+  context.globalAlpha = 1;
   drawInkblot(context, random, 913, 122, palette);
 
-  context.strokeStyle = colors.ink;
-  context.lineWidth = 2;
-  context.beginPath();
-  context.moveTo(72, 214);
-  context.lineTo(1008, 214);
-  context.stroke();
+  const paletteBandWidth = 936 / palette.length;
+  palette.forEach((color, index) => {
+    context.fillStyle = color;
+    context.fillRect(72 + index * paletteBandWidth, 226, paletteBandWidth + 1, 14);
+  });
 
   context.fillStyle = colors.ink;
   context.font = '900 44px Arial Black, Arial, sans-serif';
   context.fillText('INKPRINT', 72, 286);
   context.textAlign = 'right';
+  context.fillStyle = palette[0];
   context.font = '800 34px Arial, sans-serif';
   context.fillText(`#${puzzle.id}`, 1008, 284);
   context.textAlign = 'left';
@@ -826,6 +833,11 @@ function drawShareCard(result = progress()) {
   context.textAlign = 'right';
   context.font = '700 20px Arial, sans-serif';
   context.fillText('jens246.github.io/inkling-daily-puzzle', 1008, 959);
+
+  palette.forEach((color, index) => {
+    context.fillStyle = color;
+    context.fillRect(72 + index * paletteBandWidth, 998, paletteBandWidth + 1, 18);
+  });
 
   ui.shareCard.setAttribute(
     'aria-label',
