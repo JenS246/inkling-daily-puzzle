@@ -630,8 +630,8 @@ main {
   animation: cursor-blink 920ms steps(1, end) infinite;
 }
 
-.phrase-form input:focus + .entry-prompt,
-.phrase-form input:not(:placeholder-shown) + .entry-prompt {
+.phrase-form input:focus ~ .entry-prompt,
+.phrase-form input:not(:placeholder-shown) ~ .entry-prompt {
   display: none;
 }
 
@@ -4764,4 +4764,98 @@ body[data-active-view="how-to-play"] {
   .answer-reveal ol {
     grid-template-columns: minmax(0, 1fr);
   }
+}
+
+/* The answer line remains typographic while each selected word stays removable. */
+.guess-builder {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: .42rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0 .1rem;
+  border-bottom: 2px solid var(--accent);
+  background: var(--paper);
+  box-sizing: border-box;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.guess-builder::-webkit-scrollbar {
+  display: none;
+}
+
+.phrase-input-wrap.has-token-display input {
+  color: transparent;
+  caret-color: transparent;
+}
+
+.phrase-form .guess-word {
+  min-width: 44px;
+  min-height: 44px;
+  flex: 0 0 auto;
+  margin: 0;
+  padding: .2rem .08rem .08rem;
+  border: 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--ink) 38%, transparent);
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--playful);
+  font-size: clamp(1.05rem, 2vw, 1.32rem);
+  font-weight: 750;
+  letter-spacing: 0;
+  line-height: 1;
+  text-transform: none;
+  white-space: nowrap;
+}
+
+.phrase-form .guess-word:hover,
+.phrase-form .guess-word:focus-visible {
+  border-bottom-color: var(--accent);
+  background: transparent;
+  color: var(--accent);
+}
+
+.phrase-form .guess-word:active {
+  transform: translateY(1px);
+}
+
+.phrase-form .guess-edit {
+  position: relative;
+  min-width: 44px;
+  min-height: 44px;
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--accent);
+}
+
+.phrase-form .guess-edit::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 1.15rem;
+  background: currentColor;
+  content: "";
+  transform: translate(-50%, -50%);
+}
+
+.phrase-form .guess-edit:hover,
+.phrase-form .guess-edit:focus-visible {
+  border: 0;
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+  color: var(--accent);
+}
+
+.issue-line {
+  text-transform: none;
 }

@@ -13,7 +13,7 @@ The interface is intentionally closer to an inked typographic painting than a st
 - `src/hints.js` gives each numbered puzzle a stable, varied sequence of three hint types.
 - Unique cloud words, word frequencies, and shared-word relationships are derived automatically.
 - `src/game.js` renders the words in deterministic order. CSS packs them into a dense, responsive composition without using phrase membership.
-- Players can tap cloud words in order to build a guess or type a complete phrase, then press Enter. Tapping a selected word removes it from the guess. They have ten guesses to find all four phrases.
+- Players can tap cloud words in order to build a guess or type a complete phrase, then press Enter. The guess line renders selected words as subtle text buttons; tapping one removes it so it can be added back in a different order. They have ten guesses to find all four phrases.
 - Every attempt fills one cell in a 5-by-2 Inkprint: four increasing patterns for solved phrases, inkblots for misses, and faint cells for unused guesses.
 - Solved phrases join the Found ledger, which also shows how many remain; their cloud words receive an ink-settle animation.
 - Cloud words remain fully colored throughout play, so solved answers do not reveal later ones.
@@ -23,6 +23,7 @@ The interface is intentionally closer to an inked typographic painting than a st
 - The archive is a bounded calendar. Future dates cannot be opened; filled, shaded, slashed, and blank dates distinguish solved, in-progress, failed, and unplayed puzzles.
 - Twelve hand-built archive puzzles cover August 16-27, 2026, before the rotating daily schedule begins.
 - Progress, streaks, appearance, statistics, hints, and archive results live in browser `localStorage` only.
+- User-facing puzzle dates use clear conventional labels such as `Sept 2, 2026`.
 - Archive completions do not affect the daily streak.
 - The app has no backend, account system, analytics, cookies, or external runtime dependencies.
 

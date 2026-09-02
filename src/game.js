@@ -8,7 +8,9 @@ const ui = {
   gameplayStage: document.querySelector('.gameplay-stage'),
   wordCloud: document.querySelector('#word-cloud'),
   phraseForm: document.querySelector('#phrase-form'),
+  phraseInputWrap: document.querySelector('.phrase-input-wrap'),
   phraseInput: document.querySelector('#phrase-input'),
+  guessBuilder: document.querySelector('#guess-builder'),
   phraseLedger: document.querySelector('#phrase-ledger'),
   remainingCount: document.querySelector('#remaining-count'),
   remainingLabel: document.querySelector('#remaining-label'),
@@ -56,6 +58,7 @@ let formTimer = 0;
 let viewportSettleTimers = [];
 let touchSubmitLock = false;
 let archiveMonthKey = dailyPuzzle.date.slice(0, 7);
+const MONTH_LABELS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 
 function hashString(value) {
   let hash = 2166136261;
@@ -66,12 +69,9 @@ function hashString(value) {
   return hash >>> 0;
 }
 
-function formatDate(dateKey) {
-  return new Intl.DateTimeFormat('en-US', {
-    month: 'long',
-    day: 'numeric',
-    timeZone: 'UTC'
-  }).format(new Date(`${dateKey}T12:00:00Z`));
+function formatDate(dateKey = puzzle.date) {
+  const [year, month, day] = dateKey.split('-').map(Number);
+  return `${MONTH_LABELS[month - 1]} ${day}, ${year}`;
 }
 
 function progress() {
@@ -87,17 +87,8 @@ function isOver(result = progress()) {
   return result.complete || result.failed;
 }
 
-function compactDate(dateKey = puzzle.date) {
-  const [, month, day] = dateKey.split('-');
-  return `${Number(month)}${String(Number(day)).padStart(2, '0')}`;
-}
-
 function shareDate(dateKey = puzzle.date) {
-  return new Intl.DateTimeFormat('en-US', {
-    month: 'short',
-    day: 'numeric',
-    timeZone: 'UTC'
-  }).format(new Date(`${dateKey}T12:00:00Z`)).toUpperCase();
+  return formatDate(dateKey);
 }
 
 function elapsedTime(result = progress()) {
@@ -205,6 +196,33 @@ function guessWords() {
   return normalizeAnswer(ui.phraseInput.value).split(' ').filter(Boolean);
 }
 
+function renderGuessBuilder() {
+  const words = guessWords();
+  const previousScroll = ui.guessBuilder.scrollLeft;
+  const wordButtons = words.map((word, index) => {
+    const button = document.createElement('button');
+    button.className = 'guess-word';
+    button.type = 'button';
+    button.textContent = word;
+    button.setAttribute('aria-label', `Remove ${word} from guess`);
+    button.addEventListener('click', () => removeGuessWord(index));
+    return button;
+  });
+  if (words.length) {
+    const editButton = document.createElement('button');
+    editButton.className = 'guess-edit';
+    editButton.type = 'button';
+    editButton.setAttribute('aria-label', 'Edit guess');
+    editButton.addEventListener('click', () => ui.phraseInput.focus());
+    wordButtons.push(editButton);
+  }
+  ui.guessBuilder.replaceChildren(...wordButtons);
+  const showBuilder = words.length > 0 && document.activeElement !== ui.phraseInput && !isOver();
+  ui.guessBuilder.hidden = !showBuilder;
+  ui.phraseInputWrap.classList.toggle('has-token-display', showBuilder);
+  if (showBuilder) ui.guessBuilder.scrollLeft = previousScroll;
+}
+
 function syncCloudGuessSelection() {
   const selectedWords = new Set(guessWords());
   ui.wordCloud.querySelectorAll('.cloud-word').forEach((wordButton) => {
@@ -217,6 +235,20 @@ function syncCloudGuessSelection() {
       `${wordButton.dataset.word}, appears in ${frequency} ${frequency === 1 ? 'phrase' : 'phrases'}. ${selected ? 'Remove from' : 'Add to'} guess.`
     );
   });
+  renderGuessBuilder();
+}
+
+function updateGuessWords(words, scrollToEnd = false) {
+  ui.phraseInput.value = words.join(' ');
+  ui.phraseInput.dispatchEvent(new Event('input', { bubbles: true }));
+  if (scrollToEnd && !ui.guessBuilder.hidden) ui.guessBuilder.scrollLeft = ui.guessBuilder.scrollWidth;
+}
+
+function removeGuessWord(index) {
+  if (isOver()) return;
+  const words = guessWords();
+  words.splice(index, 1);
+  updateGuessWords(words);
 }
 
 function toggleGuessWord(selectedWord) {
@@ -225,8 +257,7 @@ function toggleGuessWord(selectedWord) {
   const selectedIndex = words.indexOf(selectedWord);
   if (selectedIndex >= 0) words.splice(selectedIndex, 1);
   else words.push(selectedWord);
-  ui.phraseInput.value = words.join(' ');
-  ui.phraseInput.dispatchEvent(new Event('input', { bubbles: true }));
+  updateGuessWords(words, selectedIndex < 0);
 }
 
 function renderCloud(newlyFoundWords = []) {
@@ -426,7 +457,7 @@ function renderCompletion() {
   }));
   renderInkprintGrid(ui.inkprintGrid, result);
   renderResultMetrics(result);
-  ui.inkprintDate.textContent = compactDate();
+  ui.inkprintDate.textContent = formatDate();
 }
 
 function renderPuzzleState(newlyFoundIndex = -1) {
@@ -453,7 +484,7 @@ function renderPuzzleState(newlyFoundIndex = -1) {
 function loadPuzzle(nextPuzzle) {
   puzzle = derivePuzzle(nextPuzzle);
   activeHintWords = new Set();
-  ui.issueLine.textContent = formatDate(puzzle.date).toLocaleUpperCase('en-US');
+  ui.issueLine.textContent = formatDate(puzzle.date);
   ui.archiveNotice.hidden = puzzle.date === dailyPuzzle.date;
   ui.feedback.textContent = '';
   ui.phraseInput.value = '';
@@ -704,8 +735,17 @@ ui.phraseInput.addEventListener('input', () => {
   ui.phraseForm.classList.remove('is-correct', 'is-wrong');
   syncCloudGuessSelection();
 });
-ui.phraseInput.addEventListener('focus', settleVisibleViewport);
-ui.phraseInput.addEventListener('blur', settleVisibleViewport);
+ui.phraseInput.addEventListener('focus', () => {
+  renderGuessBuilder();
+  settleVisibleViewport();
+});
+ui.phraseInput.addEventListener('blur', () => {
+  window.setTimeout(renderGuessBuilder, 0);
+  settleVisibleViewport();
+});
+ui.guessBuilder.addEventListener('click', (event) => {
+  if (!event.target.closest('.guess-word')) ui.phraseInput.focus();
+});
 ui.hintButton.addEventListener('click', useHint);
 ui.welcomeClose.addEventListener('click', () => {
   state.preferences.welcomed = true;

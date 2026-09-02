@@ -10,7 +10,7 @@
     <meta property="og:type" content="website" />
     <title>INKLING - Daily hidden phrases</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><g fill=%22%238b4051%22><circle cx=%2248%22 cy=%2252%22 r=%2234%22/><circle cx=%2220%22 cy=%2227%22 r=%229%22/><circle cx=%2279%22 cy=%2231%22 r=%2211%22/><circle cx=%2278%22 cy=%2277%22 r=%227%22/><circle cx=%2221%22 cy=%2278%22 r=%225%22/></g></svg>" />
-    <link rel="stylesheet" href="styles.css?v=20260901a" />
+    <link rel="stylesheet" href="styles.css?v=20260901b" />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to puzzle</a>
@@ -49,6 +49,7 @@
             <label class="sr-only" for="phrase-input">Enter your phrase guess</label>
             <div class="phrase-input-wrap">
               <input id="phrase-input" name="phrase" type="text" placeholder=" " autocomplete="off" autocapitalize="words" spellcheck="false" enterkeyhint="done" />
+              <div id="guess-builder" class="guess-builder" role="group" aria-label="Current guess. Tap a word to remove it." hidden></div>
               <span class="entry-prompt" aria-hidden="true">Enter your guess<span class="prompt-cursor"></span></span>
             </div>
             <button class="puzzle-hint" id="hint-button" type="button" aria-label="3 hints remaining"><span id="hint-button-label"><span class="hint-call">HINT:</span> <span class="hint-count" id="hint-count">3 REMAINING</span></span><span class="hint-mobile-icon" aria-hidden="true">?</span></button>
@@ -182,6 +183,6 @@
       </div>
     </dialog>
 
-    <script type="module" src="src/game.js?v=20260901a"></script>
+    <script type="module" src="src/game.js?v=20260901b"></script>
   </body>
 </html>
