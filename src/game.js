@@ -150,6 +150,7 @@ function renderInkprintGrid(container, result = progress()) {
     } else {
       solvedCount += 1;
       cell.classList.add('is-solve', `pattern-${Math.min(solvedCount, 4)}`);
+      cell.style.setProperty('--cell-ink', `var(--daily-color-${Math.min(solvedCount, 4)})`);
       cell.dataset.state = 'phrase';
       cell.setAttribute('aria-label', `Guess ${index + 1}, phrase found`);
     }
@@ -177,6 +178,14 @@ function colorForWord(word, index) {
   const hash = hashString(`${puzzle.id}:${word}:ink`);
   if (hash % 10 < 3) return 'var(--ink)';
   return palette[(hash + index + paletteOffset) % palette.length];
+}
+
+function applyPuzzlePalette() {
+  const palette = PALETTES[puzzle.palette] || PALETTES.bottle;
+  palette.forEach((color, index) => {
+    document.documentElement.style.setProperty(`--daily-ink-${index + 1}`, color);
+  });
+  document.documentElement.dataset.puzzlePalette = puzzle.palette;
 }
 
 function guessWords() {
@@ -470,6 +479,7 @@ function renderPuzzleState(newlyFoundIndex = -1) {
 
 function loadPuzzle(nextPuzzle) {
   puzzle = derivePuzzle(nextPuzzle);
+  applyPuzzlePalette();
   activeHintWords = new Set();
   ui.issueLine.textContent = formatDate(puzzle.date);
   ui.archiveNotice.hidden = puzzle.date === dailyPuzzle.date;

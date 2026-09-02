@@ -3035,6 +3035,178 @@ a.calendar-day:hover {
   }
 }
 
+/* Carry each puzzle's print palette into the playable page. */
+:root {
+  --daily-ink-1: #8d392d;
+  --daily-ink-2: #252723;
+  --daily-ink-3: #9a741b;
+  --daily-ink-4: #334b66;
+  --daily-ink-5: #48604b;
+  --daily-color-1: var(--daily-ink-1);
+  --daily-color-2: var(--daily-ink-2);
+  --daily-color-3: var(--daily-ink-3);
+  --daily-color-4: var(--daily-ink-4);
+  --daily-color-5: var(--daily-ink-5);
+  --daily-on-color: #f1f1e9;
+  --daily-registration: linear-gradient(
+    90deg,
+    var(--daily-color-1) 0 20%,
+    var(--daily-color-2) 20% 40%,
+    var(--daily-color-3) 40% 60%,
+    var(--daily-color-4) 60% 80%,
+    var(--daily-color-5) 80% 100%
+  );
+}
+
+:root[data-theme="dark"] {
+  --daily-color-1: color-mix(in srgb, var(--daily-ink-1) 54%, var(--ink));
+  --daily-color-2: color-mix(in srgb, var(--daily-ink-2) 52%, var(--ink));
+  --daily-color-3: color-mix(in srgb, var(--daily-ink-3) 58%, var(--ink));
+  --daily-color-4: color-mix(in srgb, var(--daily-ink-4) 54%, var(--ink));
+  --daily-color-5: color-mix(in srgb, var(--daily-ink-5) 58%, var(--ink));
+  --daily-on-color: var(--paper);
+}
+
+.view[data-view="today"] {
+  position: relative;
+}
+
+body[data-active-view="today"] .masthead::after {
+  position: absolute;
+  right: 0;
+  bottom: -5px;
+  left: 0;
+  height: 5px;
+  background: var(--daily-registration);
+  content: "";
+  pointer-events: none;
+}
+
+body[data-active-view="today"] .issue-line {
+  color: var(--daily-color-4);
+}
+
+body[data-active-view="today"] .found-ledger,
+body[data-active-view="today"] .completion {
+  position: relative;
+  background: color-mix(in srgb, var(--daily-color-1) 8%, transparent);
+}
+
+body[data-active-view="today"] .found-ledger {
+  border-left: 4px solid var(--daily-color-1);
+}
+
+body[data-active-view="today"] .found-ledger::before,
+body[data-active-view="today"] .completion::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 5px;
+  background: var(--daily-registration);
+  content: "";
+  pointer-events: none;
+}
+
+body[data-active-view="today"] .remaining-readout strong,
+body[data-active-view="today"] .completion h2,
+body[data-active-view="today"] .inkprint-details > span:last-child {
+  color: var(--daily-color-1);
+}
+
+body[data-active-view="today"] .found-ledger li[data-pattern="1"]::before {
+  border-color: var(--daily-color-1);
+  background: repeating-linear-gradient(135deg, var(--paper) 0 2px, var(--daily-color-1) 2px 4px);
+}
+
+body[data-active-view="today"] .found-ledger li[data-pattern="2"]::before {
+  border-color: var(--daily-color-2);
+  background: conic-gradient(var(--daily-color-2) 25%, var(--paper) 0 50%, var(--daily-color-2) 0 75%, var(--paper) 0) 0 0 / 5px 5px;
+}
+
+body[data-active-view="today"] .found-ledger li[data-pattern="3"]::before {
+  border-color: var(--daily-color-3);
+  background: repeating-linear-gradient(45deg, var(--daily-color-3) 0 2px, var(--paper) 2px 4px);
+}
+
+body[data-active-view="today"] .found-ledger li[data-pattern="4"]::before {
+  border-color: var(--daily-color-4);
+  background:
+    repeating-linear-gradient(45deg, transparent 0 1px, var(--daily-color-4) 1px 3px),
+    repeating-linear-gradient(135deg, var(--paper) 0 1px, var(--daily-color-4) 1px 3px);
+}
+
+body[data-active-view="today"] .phrase-form input,
+body[data-active-view="today"] .guess-builder {
+  border-bottom-color: var(--daily-color-1);
+}
+
+body[data-active-view="today"] .phrase-form .puzzle-hint {
+  border-color: var(--daily-color-4);
+  border-bottom-color: var(--daily-color-4);
+  background: color-mix(in srgb, var(--daily-color-4) 7%, var(--paper));
+  color: var(--daily-color-4);
+}
+
+body[data-active-view="today"] .phrase-form .puzzle-hint:disabled {
+  border-color: var(--rule);
+  background: var(--paper-raised);
+  color: var(--ink-soft);
+}
+
+body[data-active-view="today"] .phrase-form #submit-button,
+body[data-active-view="today"] .completion > .ink-button {
+  border-color: var(--daily-color-1);
+  background: var(--daily-color-1);
+  color: var(--daily-on-color);
+}
+
+body[data-active-view="today"] .phrase-form #submit-button:hover:not(:disabled),
+body[data-active-view="today"] .phrase-form #submit-button:focus-visible,
+body[data-active-view="today"] .completion > .ink-button:hover,
+body[data-active-view="today"] .completion > .ink-button:focus-visible {
+  border-color: var(--daily-color-4);
+  background: var(--daily-color-4);
+  color: var(--daily-on-color);
+}
+
+body[data-active-view="today"] .phrase-form #submit-button:disabled {
+  border-color: var(--rule);
+  background: var(--rule);
+  color: var(--paper);
+}
+
+body[data-active-view="today"] .inkprint-card {
+  border-left: 4px solid var(--daily-color-1);
+  background: color-mix(in srgb, var(--daily-color-4) 6%, var(--paper-raised));
+}
+
+body[data-active-view="today"] .answer-reveal li:nth-child(1)::before { color: var(--daily-color-1); }
+body[data-active-view="today"] .answer-reveal li:nth-child(2)::before { color: var(--daily-color-2); }
+body[data-active-view="today"] .answer-reveal li:nth-child(3)::before { color: var(--daily-color-3); }
+body[data-active-view="today"] .answer-reveal li:nth-child(4)::before { color: var(--daily-color-4); }
+
+@media (max-width: 760px) {
+  body[data-active-view="today"] .masthead::after {
+    display: none;
+  }
+
+  body[data-active-view="today"] .view[data-view="today"]::before {
+    position: absolute;
+    top: max(1rem, env(safe-area-inset-top));
+    right: 3.4rem;
+    left: .15rem;
+    height: 5px;
+    background: var(--daily-registration);
+    content: "";
+    pointer-events: none;
+  }
+
+  body[data-active-view="today"] .found-ledger {
+    border-left-width: 3px;
+  }
+}
+
 @media (max-width: 340px) {
   .utility-menu summary {
     min-width: 36px;
