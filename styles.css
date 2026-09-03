@@ -413,6 +413,12 @@ main {
   transform-origin: 50% 60%;
 }
 
+.cloud-word-label {
+  display: inline-block;
+  pointer-events: none;
+  transform-origin: 50% 60%;
+}
+
 .cloud-word.is-in-guess {
   outline: 2px solid currentColor;
   outline-offset: .035em;
@@ -448,7 +454,7 @@ main {
   outline-offset: .06em;
 }
 
-.cloud-word.just-found {
+.cloud-word.just-found .cloud-word-label {
   animation: ink-settle 560ms cubic-bezier(.22, .75, .28, 1);
 }
 
@@ -1624,7 +1630,7 @@ a.calendar-day:hover {
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .cloud-word.just-found,
+  .cloud-word.just-found .cloud-word-label,
   .found-ledger li.just-found,
   .phrase-form.is-wrong,
   .prompt-cursor { animation: none; }

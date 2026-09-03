@@ -16,7 +16,7 @@ The interface is intentionally closer to an inked typographic painting than a st
 - The active game page inherits each puzzle's five-color ink palette for its registration rules, answer controls, progress patterns, and completion treatment in both light and dark modes.
 - Players can tap cloud words in order to build a guess or type a complete phrase, then press Enter. The guess line renders selected words as subtle text buttons; tapping one removes it so it can be added back in a different order. They have ten guesses to find all four phrases.
 - Every attempt fills one cell in a 5-by-2 Inkprint: four increasing patterns for solved phrases, inkblots for misses, and faint cells for unused guesses.
-- Solved phrases join the Found ledger, which also shows how many remain; their cloud words receive an ink-settle animation.
+- Solved phrases join the Found ledger, which also shows how many remain; their labels receive an isolated ink-settle animation that leaves the mobile button hitboxes stable.
 - Cloud words remain fully colored throughout play, so solved answers do not reveal later ones.
 - Every puzzle offers three hints from the top bar. Hint types and order vary by puzzle; an outlined-word hint lasts for one guess.
 - First-time players see a one-time editorial How to Play sheet. The permanent `?` control opens the expanded instructions and a puzzle-like LIGHT example.

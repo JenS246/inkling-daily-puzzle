@@ -267,7 +267,10 @@ function renderCloud(newlyFoundWords = []) {
     const word = document.createElement('button');
     word.className = 'cloud-word';
     word.type = 'button';
-    word.textContent = entry.word.toLocaleUpperCase('en-US');
+    const label = document.createElement('span');
+    label.className = 'cloud-word-label';
+    label.textContent = entry.word.toLocaleUpperCase('en-US');
+    word.append(label);
     word.dataset.word = entry.word;
     word.dataset.frequency = String(entry.frequency);
     word.dataset.length = entry.word.length >= 10 ? 'very-long' : entry.word.length >= 8 ? 'long' : 'standard';
